@@ -20,22 +20,25 @@ function Navbar() {
           <div className="navbar-end">
             <a className="navbar-item is-active">
               <Link to="/" className="navbar-item"> Home</Link>
-              {/* Home */}
+
             </a>
             <a className="navbar-item">
               <Link to="/memories" className="navbar-item"> Memory Index</Link>
             </a>
             <a className="navbar-item">
+              <Link to="/memories/map" className="navbar-item"> Memory Map</Link>
+            </a>
+            <a className="navbar-item">
               <Link to="/about" className="navbar-item">About</Link> 
-              {/* About */}
+
             </a>
             <a className="navbar-item">
               <Link to="/register" className="navbar-item">Register</Link> 
-              {/* Register */}
+
             </a>
             <a className="navbar-item">
               <Link to="/login" className="navbar-item">Login</Link> 
-              {/* Login */}
+
             </a>
           </div>
         </div>

@@ -5,6 +5,7 @@ import Home from './components/common/Home'
 import About from './components/common/About'
 import AllMemories from './components/memories/AllMemories'
 import SingleMemory from './components/memories/SingleMemory'
+import MemoryMap from './components/memories/MemoryMap'
 // import Register from './components'
 
 function App() {
@@ -15,7 +16,8 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
         {/* <Route path="/register" component={Register}/>
-          <Route path="/login" component={Login}/> */}
+        <Route path="/login" component={Login}/> */}
+        <Route path="/memories/map" component={MemoryMap} />
         <Route path="/memories/:id" component={SingleMemory} />
         <Route path="/memories" component={AllMemories} />
       </Switch>
