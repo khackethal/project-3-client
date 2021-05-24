@@ -34,9 +34,10 @@ function AllMemories() {
           <div className="card" key={memory.name}>
             <h3>{memory.title}</h3>
             <p>{memory.location}</p>
+            <p>{memory.date}</p>
 
             <Link to={`/memories/${memory._id}`}>
-              <img height ="540px" width="810px"  src={memory.image} alt={memory.name} />
+              <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} />
             </Link>
 
           </div>

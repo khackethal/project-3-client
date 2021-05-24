@@ -13,7 +13,7 @@ function SingleMemory() {
   React.useEffect( () => {
     const getData = async () => {
       try {
-        const result = await axios.get(`api/memories/${id}`)
+        const result = await axios.get(`/api/memories/${id}`)
         setSingleMemory(result.data)
 
       } catch (err) {
@@ -21,7 +21,9 @@ function SingleMemory() {
       }
     }
     getData()
-  },[])
+  },[id])
+
+  console.log(memory)
 
 
   return (
@@ -30,13 +32,12 @@ function SingleMemory() {
       { isLoading && <p> ... loading</p>}
       { memory && (
         <>
-          <h1>{memory.name}</h1>
-          <h2>{memory.area}</h2>
+          <h1>{memory.title}</h1>
+          <h2>{memory.location}</h2>
           <p>{memory.description}</p>
-          <img height ="540px" width="810px"  src={memory.image} alt={memory.name} />
+          <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} />
         </>
       )}
-
 
 
     </section>

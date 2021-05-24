@@ -23,7 +23,7 @@ function Navbar() {
               {/* Home */}
             </a>
             <a className="navbar-item">
-              <Link to="/memoryindex" className="navbar-item"> Memory Index</Link>
+              <Link to="/memories" className="navbar-item"> Memory Index</Link>
             </a>
             <a className="navbar-item">
               <Link to="/about" className="navbar-item">About</Link> 
