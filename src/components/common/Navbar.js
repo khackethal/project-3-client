@@ -1,7 +1,9 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Navbar() {
   return (
+
     <nav className="navbar is-info">
       <div className="container">
         <div className="navbar-brand">
@@ -17,16 +19,23 @@ function Navbar() {
         <div id="navbarMenuHeroB" className="navbar-menu">
           <div className="navbar-end">
             <a className="navbar-item is-active">
-              Home
+              <Link to="/" className="navbar-item"> Home</Link>
+              {/* Home */}
             </a>
             <a className="navbar-item">
-              About
+              <Link to="/memoryindex" className="navbar-item"> Memory Index</Link>
             </a>
             <a className="navbar-item">
-              Register
+              <Link to="/about" className="navbar-item">About</Link> 
+              {/* About */}
             </a>
             <a className="navbar-item">
-              Login
+              <Link to="/register" className="navbar-item">Register</Link> 
+              {/* Register */}
+            </a>
+            <a className="navbar-item">
+              <Link to="/login" className="navbar-item">Login</Link> 
+              {/* Login */}
             </a>
           </div>
         </div>
