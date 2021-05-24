@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 function Navbar() {
   return (
+
     <nav className="navbar is-info">
       <div className="container">
         <div className="navbar-brand">
@@ -17,23 +18,23 @@ function Navbar() {
         <div id="navbarMenuHeroB" className="navbar-menu">
           <div className="navbar-end">
             <a className="navbar-item is-active">
-              <Link to="/"> Home</Link>
+              <Link to="/" className="navbar-item"> Home</Link>
               {/* Home */}
             </a>
             <a className="navbar-item">
-              <Link to="/memories"> Memory Index</Link>
+              <Link to="/memories" className="navbar-item"> Memory Index</Link>
             </a>
             <a className="navbar-item">
-              <Link to="/about">About</Link> 
+              <Link to="/about" className="navbar-item">About</Link> 
               {/* About */}
             </a>
             <a className="navbar-item">
-              <Link to="/register">Register</Link> 
+              <Link to="/register" className="navbar-item">Register</Link> 
               {/* Register */}
             </a>
             <a className="navbar-item">
-              <Link to="/login">Login</Link> 
-              {/*Login */}
+              <Link to="/login" className="navbar-item">Login</Link> 
+              {/* Login */}
             </a>
           </div>
         </div>
