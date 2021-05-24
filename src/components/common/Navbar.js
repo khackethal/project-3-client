@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
 function Navbar() {
   return (
 
@@ -19,34 +18,24 @@ function Navbar() {
         <div id="navbarMenuHeroB" className="navbar-menu">
           <div className="navbar-end">
             <a className="navbar-item is-active">
-              <Link to="/" className="navbar-item"> Home</Link>
-
+              <Link to="/" > Home</Link>
             </a>
             <a className="navbar-item">
-              <Link to="/memories" className="navbar-item"> Memory Index</Link>
+              <Link to="/memories" > Memory Index</Link>
             </a>
             <a className="navbar-item">
-              <Link to="/memories/map" className="navbar-item"> Memory Map</Link>
+              <Link to="/about" >About</Link> 
             </a>
             <a className="navbar-item">
-              <Link to="/about" className="navbar-item">About</Link> 
-
+              <Link to="/register" >Register</Link> 
             </a>
             <a className="navbar-item">
-              <Link to="/register" className="navbar-item">Register</Link> 
-
-            </a>
-            <a className="navbar-item">
-              <Link to="/login" className="navbar-item">Login</Link> 
-
+              <Link to="/login" >Login</Link> 
             </a>
           </div>
         </div>
       </div>
     </nav>
-
   )
 }
-
-
 export default Navbar
