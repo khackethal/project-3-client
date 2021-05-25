@@ -1,0 +1,21 @@
+import React from 'react'
+
+export function useForm(initialFormData) {
+
+  const [formData, setFormData] = React.useState(initialFormData)
+  const [formError, setFormError] = React.useState(initialFormData)
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+    setFormError({ ...formData, [e.target.name]: ['',''] })
+    console.log(formError)
+  }
+
+  return {
+    formData,
+    setFormData,
+    handleChange,
+    formError,
+    setFormError,
+  }
+}
