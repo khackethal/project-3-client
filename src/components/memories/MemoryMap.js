@@ -67,7 +67,7 @@ function MemoryMap() {
             <Popup latitude={Number(selectedMemory.latitude)} longitude={Number(selectedMemory.longitude)}
               // onClose={() => {
               //   setSelectedMemory(null) }}
-                >
+            >
               <div>
                 <h2>{selectedMemory.title}</h2>
                 <p>{selectedMemory.location}</p>
@@ -76,7 +76,11 @@ function MemoryMap() {
                   <img width="400px" height="400px" src={selectedMemory.imageUrl} alt={selectedMemory.location} />
             
                 </Link>
-
+                <br></br>
+                <button onClick={ e => {
+                  e.preventDefault()
+                  setSelectedMemory(null)
+                }}>close</button>
               </div>
             </Popup>
           ) }      
