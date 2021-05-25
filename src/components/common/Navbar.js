@@ -24,9 +24,6 @@ function Navbar() {
               <Link to="/memories/map" > Memory Map</Link>
             </a>
             <a className="navbar-item">
-              <Link to="/about" >About</Link>
-            </a>
-            <a className="navbar-item">
               <Link to="/register" >Register</Link>
             </a>
             <a className="navbar-item">

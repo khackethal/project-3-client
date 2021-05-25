@@ -3,10 +3,14 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Navbar from './components/common/Navbar'
 import Home from './components/common/Home'
 import About from './components/common/About'
+
+// * auth imports
+import Register from './components/auth/Register'
+import Login from './components/auth/Login'
+
 import AllMemories from './components/memories/AllMemories'
 import SingleMemory from './components/memories/SingleMemory'
 import MemoryMap from './components/memories/MemoryMap'
-// import Register from './components'
 
 function App() {
   return (
@@ -15,14 +19,13 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
-        {/* <Route path="/register" component={Register}/>
-        <Route path="/login" component={Login}/> */}
+        <Route path="/register" component={Register}/>
+        <Route path="/login" component={Login}/>
         <Route path="/memories/map" component={MemoryMap} />
         <Route path="/memories/:id" component={SingleMemory} />
         <Route path="/memories" component={AllMemories} />
       </Switch>
-    </BrowserRouter>
-  )
+    </  )
 }
 
 export default App
