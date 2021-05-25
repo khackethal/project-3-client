@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import Error from '../auth/Error'
+import Error from '../common/Error.js'
 
 function AllMemories() {
   const [ memories, setAllMemories ] = React.useState(null)

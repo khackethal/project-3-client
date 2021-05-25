@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-import Error from '../auth/Error.js'
+import Error from '../common/Error.js'
 import { useParams } from 'react-router-dom' 
 import ReactMapGl, { Marker } from 'react-map-gl'
 

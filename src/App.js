@@ -25,7 +25,8 @@ function App() {
         <Route path="/memories/:id" component={SingleMemory} />
         <Route path="/memories" component={AllMemories} />
       </Switch>
-    </  )
+    </BrowserRouter>
+  )
 }
 
 export default App
