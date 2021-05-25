@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 
 function Home() {
@@ -11,14 +12,14 @@ function Home() {
       <div className="hero-head">
       </div>
 
-      
+
       <div className="hero-body">
         <div className="container has-text-centered">
           <p className="title">
-          MemoryMap
+            MemoryMap
           </p>
           <p className="subtitle">
-          A spatial log of your cherished memories 
+            A spatial log of your cherished memories
           </p>
         </div>
       </div>
@@ -28,10 +29,15 @@ function Home() {
           <div className="container">
             <ul>
               <li className="is-active">
-                <a>Memory Index</a>
-              </li>  
+                <a className="navbar-item">
+                  <Link to="/memories" className="is-inverted" > Memory Index</Link>
+                </a>
+              </li>
               <li>
-                <a>About</a>  
+                <a className="navbar-item">
+                  <Link to="/about" >About</Link>
+                  {/* About */}
+                </a>
               </li>
             </ul>
           </div>
