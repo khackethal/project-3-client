@@ -21,13 +21,7 @@ function Navbar() {
               <Link to="/" > Home</Link>
               {/* Home */}
             </a>
-            <a className="navbar-item">
-              <Link to="/memories" > Memory Index</Link>
-            </a>
-            <a className="navbar-item">
-              <Link to="/about" >About</Link> 
-              {/* About */}
-            </a>
+          
             <a className="navbar-item">
               <Link to="/register" >Register</Link> 
               {/* Register */}
