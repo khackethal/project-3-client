@@ -6,7 +6,6 @@ import { registerUser } from '../../lib/api'
 function Register() {
 
   const history = useHistory()
-  const [isMatching, setIsMatching] = React.useState(false)
   // const [isEmpty, setIsEmpty] = React.useState(true)
   const { formData, handleChange, formError, setFormError } = useForm({
     username: '',
@@ -14,6 +13,10 @@ function Register() {
     password: '',
     passwordConfirmation: '',
   })
+
+  const handleValidity = () => {
+    console.log('click')
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -25,7 +28,6 @@ function Register() {
       const errorName = err.response.data.name
       const errorMessage = err.response.data.message
       setFormError([errorName,errorMessage])
-      // setIsMatching(formData.password !== formData.passwordConfirmation)
     }
   }
 
@@ -68,7 +70,8 @@ function Register() {
               type="email"
               placeholder="Email input"
               name="email"
-              onChange={handleSubmit}
+              // onChange={handleSubmit}
+              onChange={handleValidity}
             />
           </div>
           {/* <p className="help is-danger">This email is invalid</p> */}
@@ -80,7 +83,7 @@ function Register() {
             <input
               className=
                 {`input 
-                ${ (formData.password === '') || isMatching ? 'is-danger' : ''}
+                ${ (formData.password === '') || (formError[0] === 'NoMatch') ? 'is-danger' : ''}
                 `}
               type="password"
               placeholder="e.g. soulfuldreamyclouds"
@@ -96,8 +99,7 @@ function Register() {
             <input
               className=
                 {`input 
-                ${formData.password === '' ||
-                isMatching
+                ${formData.password === '' || (formError[0] === 'NoMatch')
                 &&
                 'is-danger'}`}
               type="password"
@@ -106,7 +108,7 @@ function Register() {
               onChange={handleChange}
             />
           </div>
-          {isMatching ?
+          {(formError[0] === 'NoMatch') ?
             <p className="help is-danger">Passwords not matching</p>
             :
             ''

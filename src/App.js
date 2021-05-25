@@ -21,11 +21,12 @@ function App() {
         <Route path="/about" component={About} />
         <Route path="/register" component={Register}/>
         <Route path="/login" component={Login}/>
-        <Route path="/memories/map" component={MemoryMap} />
-        <Route path="/memories/:id" component={SingleMemory} />
-        <Route path="/memories" component={AllMemories} />
+        {/* <Route path="/memories/map" component={MemoryMap} /> */}
+        {/* <Route path="/memories/:id" component={SingleMemory} /> */}
+        {/* <Route path="/memories" component={AllMemories} /> */}
       </Switch>
-    </  )
+    </BrowserRouter>
+  )
 }
 
 export default App
