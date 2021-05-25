@@ -8,9 +8,9 @@ import About from './components/common/About'
 import Register from './components/auth/Register'
 import Login from './components/auth/Login'
 
-import AllMemories from './components/memories/AllMemories'
-import SingleMemory from './components/memories/SingleMemory'
-import MemoryMap from './components/memories/MemoryMap'
+// import AllMemories from './components/memories/AllMemories'
+// import SingleMemory from './components/memories/SingleMemory'
+// import MemoryMap from './components/memories/MemoryMap'
 
 function App() {
   return (

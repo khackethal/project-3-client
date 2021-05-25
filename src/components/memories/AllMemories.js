@@ -8,7 +8,6 @@ function AllMemories() {
   const [ isError, setIsError ] = React.useState(false)
   const isLoading = !memories && !isError
 
-
   React.useEffect(() => {
     const getData = async () => {
       try { 
