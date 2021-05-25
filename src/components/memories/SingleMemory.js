@@ -1,14 +1,11 @@
 import React from 'react'
 import axios from 'axios'
-import Error from '../auth/Error.js'
+import Error from '../common/Error'
 import { useParams } from 'react-router-dom' 
 import ReactMapGl, { Marker} from 'react-map-gl'
 
 
 import { useRef, useState } from 'react'
-import mapboxgl from '!mapbox-gl'
-
-mapboxgl.accessToken = 'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDFnb2tsdDA4YXgydW90cXpjY2Fyc2oifQ.hMGNb-QI2MKxWxTRBNOIBg'
 
 function SingleMemory() {
   const [ memory, setSingleMemory ] = React.useState(null)
@@ -16,6 +13,7 @@ function SingleMemory() {
   const [ isError, setIsError ] = React.useState(false)
   const isLoading = !memory && !isError
 
+  
 
   //* For normal page content
 
