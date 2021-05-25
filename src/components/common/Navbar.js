@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
 function Navbar() {
   return (
+
     <nav className="navbar is-info">
       <div className="container">
         <div className="navbar-brand">
@@ -18,23 +18,22 @@ function Navbar() {
         <div id="navbarMenuHeroB" className="navbar-menu">
           <div className="navbar-end">
             <a className="navbar-item is-active">
-              <Link to="/" className="navbar-item"> Home</Link>
-              {/* Home */}
+              <Link to="/" > Home</Link>
             </a>
             <a className="navbar-item">
-              <Link to="/memories" className="navbar-item"> Memory Index</Link>
+              <Link to="/memories" > Memory Index</Link>
             </a>
             <a className="navbar-item">
-              <Link to="/about" className="navbar-item">About</Link> 
-              {/* About */}
+              <Link to="/memories/map" > Memory Map</Link>
             </a>
             <a className="navbar-item">
-              <Link to="/register" className="navbar-item">Register</Link> 
-              {/* Register */}
+              <Link to="/about" >About</Link> 
             </a>
             <a className="navbar-item">
-              <Link to="/login" className="navbar-item">Login</Link> 
-              {/* Login */}
+              <Link to="/register" >Register</Link> 
+            </a>
+            <a className="navbar-item">
+              <Link to="/login" >Login</Link> 
             </a>
           </div>
         </div>
