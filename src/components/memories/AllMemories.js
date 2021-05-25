@@ -7,6 +7,7 @@ function AllMemories() {
   const [ memories, setAllMemories ] = React.useState(null)
   const [ isError, setIsError ] = React.useState(false)
   const isLoading = !memories && !isError
+  const [ searchTerm, setSerachTerm ] = React.useState('')
 
 
   React.useEffect(() => {
@@ -21,6 +22,24 @@ function AllMemories() {
     getData()
   },[])
 
+  //* search functions
+  const handleInput = (e) => {
+    setSerachTerm(e.target.value)
+  }
+
+  const handleClear = () => {
+    setSerachTerm('')
+  }
+
+  const filteredMemories =  memories?.filter((memory) => {
+    return (
+      memory.title.toLowerCase().includes(searchTerm) ||
+      memory.location.toLowerCase().includes(searchTerm) ||
+      memory.date.includes(searchTerm) ||
+      memory.tags.includes(searchTerm) 
+    )
+  })
+
 
   
   return (
@@ -30,7 +49,20 @@ function AllMemories() {
         <div className="column is-multiline"></div>
         { isError && <Error />}
         { isLoading && <p>...loading</p>}
-        { memories && (memories.map(memory => 
+        <p>Search </p>
+        <input
+          className="input"
+          type="text"
+          placeholder="Search memories.."
+          onChange={handleInput}
+          value={searchTerm}
+        />
+
+        <button className="button" onClick={handleClear}>
+        Clear
+        </button>
+
+        { filteredMemories && (filteredMemories.map(memory => 
           <div className="card" key={memory.name}>
             <h3>{memory.title}</h3>
             <p>{memory.location}</p>
