@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getToken } from './auth'
+import { getToken } from '../lib/auth'
 
 const baseUrl = 'mongodb://localhost/memorymapdb'
 const registerPath = '/register'
@@ -7,12 +7,11 @@ const loginPath = '/login'
 const checkUserPath = '/checkuser'
 const memoriesPath = '/memories'
 
-
-// export function headers() {
-//   return {
-//     headers: { Authorization: `Bearer ${getToken()}` },
-//   }
-// }
+function headers() {
+  return {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  }
+}
 
 export function getAllMemories() {
   return axios.get(`${baseUrl}${memoriesPath}`)
@@ -29,6 +28,9 @@ export function editMemory(id, formdata) {
 export function deleteMemory(id) {
   return axios.delete(`${baseUrl}${memoriesPath}${id}`, headers())
 }
+
+
+
 
 
 
