@@ -1,16 +1,33 @@
 import axios from 'axios'
-// import getToken from '../lib/auth'
+import { getToken } from '../lib/auth'
 
 const baseUrl = '/api'
 const registerPath = '/register'
 const loginPath = '/login'
 const checkUserPath = '/checkuser'
+const memoriesPath = '/memories'
 
-// export function headers() {
-//   return {
-//     headers: { Authorization: `Bearer ${getToken()}` },
-//   }
-// }
+function headers() {
+  return {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  }
+}
+
+export function getAllMemories() {
+  return axios.get(`${baseUrl}${memoriesPath}`)
+}
+export function getSingleMemory(memoryId) {
+  return axios.get(`${baseUrl}${memoriesPath}${memoryId}`)
+}
+export function createMemory(formdata) {
+  return axios.post(`${baseUrl}${memoriesPath}`, formdata, headers())
+}
+export function editMemory(id, formdata) {
+  return axios.put(`${baseUrl}${memoriesPath}${id}`, formdata, headers())
+}
+export function deleteMemory(id) {
+  return axios.delete(`${baseUrl}${memoriesPath}${id}`, headers())
+}
 
 // * authentication requests
 export function registerUser(formData) {
@@ -18,6 +35,7 @@ export function registerUser(formData) {
 }
 
 export function loginUser(formData) {
+  console.log('formData: ', formData)
   return axios.post(`${baseUrl}${loginPath}`, formData)
 }
 
