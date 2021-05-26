@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import ReactMapGl, { Marker } from 'react-map-gl'
 
 
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 function SingleMemory() {
   const [ memory, setSingleMemory ] = React.useState(null)
