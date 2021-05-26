@@ -76,8 +76,9 @@ function MemoryMap() {
         Clear
       </button> */}
       <div>
-        <ReactMapGl {...viewport} mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
-          mapboxStyle="mapbox://styles/kathackethal/ckp43j6d90i7b17l11rrg3nh3"
+        <ReactMapGl {...viewport} 
+          mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
+          // mapStyle="mapbox://styles/kathackethal/ckp5bkpci1oy717l1ye73c2iv"
           onViewportChange={viewport => {
             setViewport(viewport)
           }}
@@ -88,9 +89,10 @@ function MemoryMap() {
               
               <button className="mapButton" onClick={ e  => {
                 e.preventDefault()
-                setSelectedMemory(memory) }} >
+                setSelectedMemory(memory) }}
+              >
 
-                <img height="40px" width="40px" src="http://assets.stickpng.com/thumbs/5888925dbc2fc2ef3a1860ad.png" alt="red location pin"/>
+                <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" alt="red location pin"/>
               </button>
             </Marker>
           
@@ -98,8 +100,8 @@ function MemoryMap() {
 
           { selectedMemory && (
             <Popup latitude={Number(selectedMemory.latitude)} longitude={Number(selectedMemory.longitude)}
-              onClose={() => {
-                setSelectedMemory(null) }}
+              // onClose={() => {
+              //   setSelectedMemory(null) }}
             >
               <div>
                 <h2>{selectedMemory.title}</h2>
@@ -110,6 +112,9 @@ function MemoryMap() {
             
                 </Link>
                 <br></br>
+                <button onClick= { e => {
+                  setSelectedMemory(null)
+                }}>Close</button>
               </div>
             </Popup>
           ) }      
