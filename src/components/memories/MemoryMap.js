@@ -3,13 +3,15 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 
-import { useRef, useState } from 'react'
+
+import { useState } from 'react'
 import ReactMapGl, { Marker, Popup } from 'react-map-gl'
 
 function MemoryMap() {
   const [memories, setAllMemories] = React.useState(null)
   const [isError, setIsError] = React.useState(false)
   const isLoading = !memories && !isError
+  const [ searchTerm, setSerachTerm ] = React.useState('')
 
 
   React.useEffect(() => {
@@ -37,27 +39,60 @@ function MemoryMap() {
   const [selectedMemory, setSelectedMemory] = React.useState(null)
 
 
+  //* search functions
+  const handleInput = (e) => {
+    setSerachTerm(e.target.value)
+  }
+
+  //* had a button to clear here as well but I think it looks really ugly, uncomment function and button to see
+  //* might solve with styling, but also don't think we stirctly need it?
+  // const handleClear = () => {
+  //   setSerachTerm('')
+  // }
+
+  const filteredMemories =  memories?.filter((memory) => {
+    return (
+      memory.title.toLowerCase().includes(searchTerm) ||
+      memory.location.toLowerCase().includes(searchTerm) ||
+      memory.date.includes(searchTerm) ||
+      memory.tags.includes(searchTerm)
+    
+    )
+  })
+
 
 
   return (
     <>
-
+      { isLoading && <p>...loading</p>}
+      <input
+        className="input"
+        type="text"
+        placeholder="Search memories.."
+        onChange={handleInput}
+        value={searchTerm}
+      />
+      {/* <button className="button" onClick={handleClear}>
+        Clear
+      </button> */}
       <div>
-        <ReactMapGl {...viewport} mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
+        <ReactMapGl {...viewport} 
+          mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
+          // mapStyle="mapbox://styles/kathackethal/ckp5bkpci1oy717l1ye73c2iv"
           onViewportChange={viewport => {
             setViewport(viewport)
           }}
         >
 
-          {memories && memories.map(memory =>
+          { filteredMemories && filteredMemories.map(memory => 
             <Marker key={memory.name} latitude={Number(memory.latitude)} longitude={Number(memory.longitude)}>
 
               <button className="mapButton" onClick={e => {
                 e.preventDefault()
-                setSelectedMemory(memory)
-              }} >
+                setSelectedMemory(memory) }}
+              >
 
-                <img height="40px" width="40px" src="http://assets.stickpng.com/thumbs/5888925dbc2fc2ef3a1860ad.png" alt="red location pin" />
+                <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" alt="red location pin"/>
               </button>
             </Marker>
 
@@ -77,10 +112,9 @@ function MemoryMap() {
 
                 </Link>
                 <br></br>
-                <button onClick={ e => {
-                  e.preventDefault()
+                <button onClick= { e => {
                   setSelectedMemory(null)
-                }}>close</button>
+                }}>Close</button>
               </div>
             </Popup>
           )}

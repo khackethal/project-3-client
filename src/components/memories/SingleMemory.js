@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import ReactMapGl, { Marker } from 'react-map-gl'
 
 
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 function SingleMemory() {
   const [ memory, setSingleMemory ] = React.useState(null)
@@ -38,7 +38,7 @@ function SingleMemory() {
     longitude: -0.13519,
     width: '500px',
     height: '500px',
-    zoom: 10,
+    zoom: 14,
 
   })
 
@@ -51,29 +51,76 @@ function SingleMemory() {
       { isLoading && <p> ... loading</p>}
       { memory && (
         <>
-          <h1>{memory.title}</h1>
-          <h2>{memory.location}</h2>
-          <p>{memory.description}</p>
+          {/* // version 1 - unstyled */}
+          {/* <div className="card">
+            <div className="column">
+              <p className="bd-notification-">{memory.title}</p>
+              <h2>{memory.location}</h2>
+            
+              <div className="container">
+              <div className="column is-half">
+                <p>{memory.description}</p>
+              </div>
 
-          <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} />
+              <div className="column is-half">
+                <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} />
+              </div>
+              </div>
 
-          <div>
-            <ReactMapGl {...viewport} mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
-              onViewportChange={viewport => {
-                setViewport(viewport)
-              }}
-            >
+              <div>
+                <ReactMapGl {...viewport} mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
+                  onViewportChange={viewport => {
+                    setViewport(viewport)
+                  }}
+                >
 
+                  <Marker latitude={Number(memory.latitude)} longitude={Number(memory.longitude)}>
+                    <div>
+                      <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
+                    </div>
+                  </Marker>
+                    
 
-              <Marker latitude={Number(memory.latitude)} longitude={Number(memory.longitude)}>
-                <div>
-                  <img height="40px" width="40px" src="http://assets.stickpng.com/thumbs/5888925dbc2fc2ef3a1860ad.png" />
+                </ReactMapGl>
+              </div>
+            </div>
+          </div> */}
+{/* 
+        // version 2 - basic styling added */}
+          <div className="card">    
+            <div className="columns">
+              <div className="column">
+                <p className="column">{memory.title}</p>
+                <h2 className="column">{memory.location}</h2>
+                <div className="column is-60">{memory.description}</div>
+                <div className="columns is-mobile">
+
+                  <div className="column">
+                    <p className="bd-notification is-info"> <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} /></p>
+                  </div>
+
+                  <div className="column">
+                    <p className="bd-notification is-info">
+                      <ReactMapGl {...viewport} mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
+                        onViewportChange={viewport => {
+                          setViewport(viewport)
+                        }}
+                      >
+
+                        <Marker latitude={Number(memory.latitude)} longitude={Number(memory.longitude)}>
+                          <div>
+                            <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
+                          </div>
+                        </Marker>
+                      
+
+                      </ReactMapGl>
+                    </p>
+                  </div>
                 </div>
-              </Marker>
-                
-
-            </ReactMapGl>
-          </div>
+              </div>
+            </div>
+          </div>  
         </>
       )}
 
