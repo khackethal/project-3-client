@@ -28,9 +28,9 @@ function Home() {
         <nav className="tabs is-boxed is-fullwidth">
           <div className="container">
             <ul>
-              <li className="is-active">
+              <li className="is-active has-text-info">
                 <a className="navbar-item">
-                  <Link to="/memories" className="is-inverted" > Memory Index</Link>
+                  <Link to="/register" >Register</Link>
                 </a>
               </li>
               <li>

@@ -11,6 +11,10 @@ import Login from './components/auth/Login'
 import AllMemories from './components/memories/AllMemories'
 import SingleMemory from './components/memories/SingleMemory'
 import MemoryMap from './components/memories/MemoryMap'
+import NewMemory from './components/memories/NewMemory'
+// import ImageUploadField from './components/memories/ImageUploadField'
+
+
 
 function App() {
   return (
@@ -21,9 +25,11 @@ function App() {
         <Route path="/about" component={About} />
         <Route path="/register" component={Register}/>
         <Route path="/login" component={Login}/>
+        <Route path="/newmemory" component={NewMemory} />
         <Route path="/memories/map" component={MemoryMap} />
         <Route path="/memories/:id" component={SingleMemory} />
         <Route path="/memories" component={AllMemories} />
+
       </Switch>
     </BrowserRouter>
   )

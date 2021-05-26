@@ -24,10 +24,10 @@ function Navbar() {
               <Link to="/memories/map" > Memory Map</Link>
             </a>
             <a className="navbar-item">
-              <Link to="/register" >Register</Link>
+              <Link to="/login" >Login</Link>
             </a>
             <a className="navbar-item">
-              <Link to="/login" >Login</Link>
+              <Link to="/newmemory">New Memory</Link>
             </a>
           </div>
         </div>
