@@ -1,5 +1,5 @@
 import axios from 'axios'
-import getToken from '../lib/auth'
+// import getToken from '../lib/auth'
 
 const baseUrl = '/api'
 const registerPath = '/register'
