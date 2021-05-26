@@ -2,27 +2,34 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useForm } from '../../hooks/useForm'
 import { loginUser } from '../../lib/api'
+import { setToken } from '../../lib/auth'
 
 function Login() {
 
   const history = useHistory()
+  const [isError,setIsError] = React.useState(false)
   const { formData, handleChange, formError, setFormError } = useForm({
-    username: '',
     email: '',
     password: '',
-    passwordConfirmation: '',
   })
+
+  const handleRequiredMet = (e) => {
+    if (e.target.value.length > 0) {
+      // ! in formError, find e.target.name and set its value to ''
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
-      await loginUser(formData)
+      const res = await loginUser(formData)
+      setToken(res.data.token)
       // history.push('/memories')
     } catch (err) {
-      const errorName = err.response.data.name
+      setIsError(true)
       const errorMessage = err.response.data.message
-      setFormError([errorName,errorMessage])
+      setFormError(errorMessage)
     }
   }
 
@@ -35,14 +42,36 @@ function Login() {
         <div className="field">
           <label className="label">Email</label>
           <div className="control">
-            <input className="input" type="email" placeholder="e.g. alinic@bossman.com" />
+            <input
+              className=
+                {`
+                  input ${ isError ? 'is-danger' : '' }
+                `}
+              type="email"
+              placeholder="e.g. alinic@bossman.com"
+              onBlur={handleRequiredMet}
+            />
+            <p className="help is-danger">
+              {isError && formError.email}
+            </p>
           </div>
         </div>
 
         <div className="field">
           <label className="label">Password</label>
           <div className="control">
-            <input className="input" type="password" placeholder="e.g. famgrapejuiceismyfav" />
+            <input
+              className=
+                {`
+                input ${ isError ? 'is-danger' : '' }
+                `}
+              type="password" 
+              placeholder="e.g. famgrapejuiceismyfav"
+              onBlur={handleRequiredMet}
+            />
+            <p className="help is-danger">
+              {isError && formError.password}
+            </p>
           </div>
         </div>
 
