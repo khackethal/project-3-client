@@ -1,26 +1,27 @@
-import React from 'react'
 import axios from 'axios'
-import Error from '../common/Error'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom' 
 import ReactMapGl, { Marker } from 'react-map-gl'
 
+import Error from '../common/Error'
+import { baseUrl, memoriesPath } from '../../lib/api'
 
-import { useState } from 'react'
+
 
 function SingleMemory() {
-  const [ memory, setSingleMemory ] = React.useState(null)
+  const [ memory, setSingleMemory ] = useState(null)
   const { id } = useParams()
-  const [ isError, setIsError ] = React.useState(false)
+  const [ isError, setIsError ] = useState(false)
   const isLoading = !memory && !isError
 
   
 
   //* For normal page content
 
-  React.useEffect( () => {
+  useEffect( () => {
     const getData = async () => {
       try {
-        const result = await axios.get(`/api/memories/${id}`)
+        const result = await axios.get(`${baseUrl}${memoriesPath}/${id}`)
         setSingleMemory(result.data)
         setViewport({ ...viewport, latitude: (Number(result.data.latitude)), longitude: (Number(result.data.longitude)) })
 
@@ -39,7 +40,6 @@ function SingleMemory() {
     width: '500px',
     height: '500px',
     zoom: 14,
-
   })
 
 
@@ -85,7 +85,7 @@ function SingleMemory() {
               </div>
             </div>
           </div> */}
-{/* 
+          {/* 
         // version 2 - basic styling added */}
           <div className="card">    
             <div className="columns">

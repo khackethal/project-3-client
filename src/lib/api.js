@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { getToken } from '../lib/auth'
 
-const baseUrl = '/api'
-const registerPath = '/register'
-const loginPath = '/login'
-const checkUserPath = '/checkuser'
-const memoriesPath = '/memories'
+export const baseUrl = '/api'
+export const registerPath = '/register'
+export const loginPath = '/login'
+export const checkUserPath = '/checkuser'
+export const memoriesPath = '/memories'
 
 function headers() {
   return {

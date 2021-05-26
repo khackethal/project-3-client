@@ -1,23 +1,21 @@
-import React from 'react'
+// import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-
-
-
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ReactMapGl, { Marker, Popup } from 'react-map-gl'
+import { baseUrl, memoriesPath } from '../../lib/api'
 
 function MemoryMap() {
-  const [ memories, setAllMemories ] = React.useState(null)
-  const [ isError, setIsError ] = React.useState(false)
+  const [ memories, setAllMemories ] = useState(null)
+  const [ isError, setIsError ] = useState(false)
   const isLoading = !memories && !isError
-  const [ searchTerm, setSerachTerm ] = React.useState('')
+  const [ searchTerm, setSerachTerm ] = useState('')
 
 
-  React.useEffect(() => {
+  useEffect(() => {
     const getData = async () => {
       try { 
-        const res = await axios.get('/api/memories')
+        const res = await axios.get(`${baseUrl}${memoriesPath}`)
         setAllMemories(res.data)
       } catch (err) {
         setIsError(true)
@@ -33,10 +31,9 @@ function MemoryMap() {
     width: '100vw',
     height: '100vh',
     zoom: 6,
-
   })
 
-  const [ selectedMemory, setSelectedMemory ] = React.useState(null)
+  const [ selectedMemory, setSelectedMemory ] = useState(null)
 
   //* search functions
   const handleInput = (e) => {
@@ -55,13 +52,9 @@ function MemoryMap() {
       memory.location.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
       memory.tags.includes(searchTerm)
-    
     )
   })
 
-
-
-  
   return (
     <>
       { isLoading && <p>...loading</p>}
@@ -89,7 +82,8 @@ function MemoryMap() {
               
               <button className="mapButton" onClick={ e  => {
                 e.preventDefault()
-                setSelectedMemory(memory) }}
+                setSelectedMemory(memory) 
+              }}
               >
 
                 <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" alt="red location pin"/>
