@@ -58,7 +58,7 @@ function AllMemories() {
           value={searchTerm}
         />
 
-        <button className="button" onClick={handleClear}>
+        <button className="button is-link is-small is-outlined" onClick={handleClear}>
         Clear
         </button>
 
