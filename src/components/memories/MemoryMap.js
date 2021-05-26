@@ -78,7 +78,7 @@ function MemoryMap() {
       <div>
         <ReactMapGl {...viewport} 
           mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
-          // mapStyle="mapbox://styles/kathackethal/ckp5bkpci1oy717l1ye73c2iv"
+          mapStyle="mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i"
           onViewportChange={viewport => {
             setViewport(viewport)
           }}
