@@ -9,7 +9,6 @@ function AllMemories() {
   const isLoading = !memories && !isError
   const [ searchTerm, setSerachTerm ] = React.useState('')
 
-
   React.useEffect(() => {
     const getData = async () => {
       try { 

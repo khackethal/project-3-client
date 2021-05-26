@@ -1,13 +1,20 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useForm } from '../../hooks/useForm.js'
-import { registerUser } from '../../lib/api'
+import { userCheck, registerUser } from '../../lib/api'
+// import { setToken } from '../../lib/auth'
 
 function Register() {
-
+  
   const history = useHistory()
-  const [isMatching, setIsMatching] = React.useState(false)
-  // const [isEmpty, setIsEmpty] = React.useState(true)
+
+  // * check if email && username are unique
+  const [isUniqueId, setIsUniqueId] = React.useState(true)
+
+  // * check password match
+  const [isPasswordMatch, setIsPasswordMatch] = React.useState(true)
+
+  // * useform hook
   const { formData, handleChange, formError, setFormError } = useForm({
     username: '',
     email: '',
@@ -15,22 +22,57 @@ function Register() {
     passwordConfirmation: '',
   })
 
+  const handleValidity = () => {
+    setFormError({ ...formError, email: 'This email is invalid.' })
+  }
+
+  const handlePassMatch = async () => {
+    if (
+      (formData.password !== formData.passwordConfirmation)
+      &&
+      (formData.passwordConfirmation !== '')
+    ) {
+      setIsPasswordMatch(false)
+      setFormError({ ...formError, passwordConfirmation: 'Passwords do not match.' })
+    } else if (formData.password === formData.passwordConfirmation) {
+      setIsPasswordMatch(true)
+      setFormError({ ...formError, passwordConfirmation: '' })
+    }
+  }
+
+  const handleUnique = async () => {
+    try {
+      await userCheck({
+        username: formData.username,
+        email: formData.email,
+      })
+      setIsUniqueId(true)
+      setFormError({ ...formError, username: '' })
+    } catch (err) {
+      const errorMessage = err.response.data.errMessage.username
+      setIsUniqueId(false)
+      setFormError({ ...formError, username: errorMessage })
+    }
+  }
+
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault(e)
 
     try {
       await registerUser(formData)
+      // setToken(res.data.token)
       history.push('/memories')
     } catch (err) {
-      const errorName = err.response.data.name
-      const errorMessage = err.response.data.message
-      setFormError([errorName,errorMessage])
-      // setIsMatching(formData.password !== formData.passwordConfirmation)
+      const errorMessage = err.response.data.errMessage
+      console.log('errMessage: ', errorMessage)
+      console.log('err.response: ', err.response)
+      setFormError({ ...formError, ...errorMessage })
     }
   }
 
   return (
     <>
+      <p>{console.log('formError: ', formError)}</p>
       <form
         className="column is-half is-offset-one-quarter"
         onSubmit={handleSubmit}
@@ -41,20 +83,18 @@ function Register() {
             <input
               className=
                 {`input 
-                ${formError[0] === 'NotUnique' ? 'is-danger' : ''}
+                ${!isUniqueId ? 'is-danger' : ''}
                 `}
               type="text"
               placeholder="e.g. dreamer666"
               name="username"
               onChange={handleChange}
+              onBlur={handleUnique}
             />
           </div>
-          <p
-            className=
-              {`help 
-              ${formError[0] === 'NotUnique' ? 'is-danger' : ''}
-              `}
-          >{formError[1]}</p>
+          <p className="help is-danger">
+            {!isUniqueId && 'Invalid credentials, try something else.'}
+          </p>
         </div>
 
         <div className="field">
@@ -63,29 +103,32 @@ function Register() {
             <input
               className=
                 {`input 
-                ${formError[0] === 'NotUnique' ? 'is-danger' : ''}
+                ${!isUniqueId || formError.username ? 'is-danger' : ''}
                 `}
               type="email"
               placeholder="Email input"
               name="email"
-              onChange={handleSubmit}
+              onChange={handleChange}
+              onInvalid={handleValidity}
+              onBlur={handleUnique}
             />
           </div>
-          {/* <p className="help is-danger">This email is invalid</p> */}
+          <p className="help is-danger">
+            {formError.email}
+          </p>
+
         </div>
 
         <div className="field">
           <label className="label">Password</label>
           <div className="control has-icons-left has-icons-right">
             <input
-              className=
-                {`input 
-                ${ (formData.password === '') || isMatching ? 'is-danger' : ''}
-                `}
+              className={`input ${!isPasswordMatch ? 'is-danger' : '' }`}
               type="password"
               placeholder="e.g. soulfuldreamyclouds"
               name="password"
               onChange={handleChange}
+              onBlur={handlePassMatch}
             />
           </div>
         </div>
@@ -94,23 +137,17 @@ function Register() {
           <label className="label">Password Confirmation</label>
           <div className="control has-icons-left has-icons-right">
             <input
-              className=
-                {`input 
-                ${formData.password === '' ||
-                isMatching
-                &&
-                'is-danger'}`}
+              className= {`input ${ !isPasswordMatch ? 'is-danger' : '' }`}
               type="password"
               placeholder="e.g. soulfuldreamyclouds"
               name="passwordConfirmation"
               onChange={handleChange}
+              onBlur={handlePassMatch}
             />
           </div>
-          {isMatching ?
-            <p className="help is-danger">Passwords not matching</p>
-            :
-            ''
-          }
+          <p className="help is-danger">
+            {!isPasswordMatch && 'Passwords not matching'}
+          </p>
         </div>
 
         <button type="submit" className="button is-fullwidth">

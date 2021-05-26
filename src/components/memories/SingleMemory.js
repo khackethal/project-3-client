@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import Error from '../common/Error'
 import { useParams } from 'react-router-dom' 
-import ReactMapGl, { Marker} from 'react-map-gl'
+import ReactMapGl, { Marker } from 'react-map-gl'
 
 
 import { useState } from 'react'
