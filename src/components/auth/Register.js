@@ -2,7 +2,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useForm } from '../../hooks/useForm.js'
 import { userCheck, registerUser } from '../../lib/api'
-// import { setToken } from '../../lib/auth'
+import { setToken } from '../../lib/auth'
 
 function Register() {
   
@@ -59,8 +59,8 @@ function Register() {
     e.preventDefault(e)
 
     try {
-      await registerUser(formData)
-      // setToken(res.data.token)
+      const res = await registerUser(formData)
+      setToken(res.data.token)
       history.push('/memories')
     } catch (err) {
       const errorMessage = err.response.data.errMessage

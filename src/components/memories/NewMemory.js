@@ -21,11 +21,13 @@ function NewMemory() {
     description: '',
     tags: '',
   })
-  console.log(formData)
+
   const [formError, setFormError] = React.useState(formData)
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
+
   const handleUpload = (files) => {
     handleChange({ target: { name: 'image', value: files } })
   }
@@ -38,6 +40,7 @@ function NewMemory() {
       // const res = await createMemory(formData)
 
       const res = await axios.post(`${baseUrl}${memoriesPath}`, formData, headers() )
+      
 
       console.log(res.data)
       history.push(`${memoriesPath}/${res.data._id}`)
