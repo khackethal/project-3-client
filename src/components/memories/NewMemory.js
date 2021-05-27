@@ -5,7 +5,9 @@ import { useForm } from '../../hooks/useForm'
 import { createMemory } from '../../lib/api'
 
 function NewMemory() {
+
   const history = useHistory()
+
   const { formdata, formErrors, handleChange, setFormErrors } = useForm({
     title: '',
     location: '',
@@ -22,6 +24,7 @@ function NewMemory() {
 
     try {
       const res = await createMemory(formdata)
+      console.log('res.data: ', res.data)
       history.push(`/memories/${res.data._id}`)
     } catch (err) {
       setFormErrors(err.response.data.errors)

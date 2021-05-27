@@ -54,12 +54,13 @@ function Navbar() {
             </a>
 
             <a className="navbar-item">
-              <Link to="/memories/map" >Memory Map</Link>
+              <Link to="/newmemory" >New Memory</Link>
             </a>
 
             <a className="navbar-item">
-              <Link to="/about" >About</Link> 
+              <Link to="/memories/map" >Memory Map</Link>
             </a>
+
 
             {!isLogged &&
               <a className="navbar-item">
@@ -83,6 +84,8 @@ function Navbar() {
                 </Link> 
               </a>
             }
+
+
 
             <a className="navbar-item">
               <Link to="/api" >Api Test</Link> 
