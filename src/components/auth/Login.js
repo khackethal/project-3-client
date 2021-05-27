@@ -7,29 +7,21 @@ import { setToken } from '../../lib/auth'
 function Login() {
 
   const history = useHistory()
-  const [isError,setIsError] = React.useState(false)
-  const { formData, handleChange, formError, setFormError } = useForm({
+  const [errorMessage,setErrorMessage] = React.useState('')
+  const { formData, handleChange } = useForm({
     email: '',
     password: '',
   })
-
-  const handleRequiredMet = (e) => {
-    if (e.target.value.length > 0) {
-      // ! in formError, find e.target.name and set its value to ''
-    }
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
-      const res = await loginUser(formData)
-      setToken(res.data.token)
+      const req = await loginUser(formData)
+      setToken(req.data.token)
       history.push('/memories')
     } catch (err) {
-      setIsError(true)
-      const errorMessage = err.response.data.message
-      setFormError(errorMessage)
+      setErrorMessage(err.response.data.errMessage.password)
     }
   }
 
@@ -45,15 +37,13 @@ function Login() {
             <input
               className=
                 {`
-                  input ${ isError ? 'is-danger' : '' }
+                  input ${ errorMessage ? 'is-danger' : '' }
                 `}
               type="email"
+              name="email"
               placeholder="e.g. alinic@bossman.com"
-              onBlur={handleRequiredMet}
+              onChange={handleChange}
             />
-            <p className="help is-danger">
-              {isError && formError.email}
-            </p>
           </div>
         </div>
 
@@ -63,21 +53,22 @@ function Login() {
             <input
               className=
                 {`
-                input ${ isError ? 'is-danger' : '' }
+                input ${ errorMessage ? 'is-danger' : '' }
                 `}
               type="password" 
+              name="password"
               placeholder="e.g. famgrapejuiceismyfav"
-              onBlur={handleRequiredMet}
+              onChange={handleChange}
             />
             <p className="help is-danger">
-              {isError && formError.password}
+              {errorMessage}
             </p>
           </div>
         </div>
 
         <div className="field is-grouped">
           <div className="control">
-            <button className="button is-link">Submit</button>
+            <button className="button is-link">Log In</button>
           </div>
         </div>
       </form>

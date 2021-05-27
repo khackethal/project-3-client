@@ -39,7 +39,9 @@ function NewMemory() {
 
       // const res = await createMemory(formData)
 
-      const res = await axios.post(`${baseUrl}${memoriesPath}`, formData, headers() )
+      const res = await axios.post(`${baseUrl}${memoriesPath}`, formData, { headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFmZDBiZmZjZDEyNzcyZDZhZjE4NjgiLCJpYXQiOjE2MjIxMzQ5NzgsImV4cCI6MTYyMjE3ODE3OH0.Bt2D3Xo8Aa4kwhKnk3BBDz6W_KrwSUTx-iVfn9lQnhs' }, 
+      })
+    
       
 
       console.log(res.data)
@@ -122,7 +124,7 @@ function NewMemory() {
                 onUpload={handleUpload}
               />
             
-          {/* 
+              {/* 
             <div className="field" htmlFor="imageUrl">
               <label className="label">Image Upload</label>
               <div className="control">
