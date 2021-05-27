@@ -1,26 +1,27 @@
-import React from 'react'
 import axios from 'axios'
-import Error from '../common/Error'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom' 
 import ReactMapGl, { Marker } from 'react-map-gl'
 
+import Error from '../common/Error'
+import { baseUrl, memoriesPath } from '../../lib/api'
 
-import { useState } from 'react'
+
 
 function SingleMemory() {
-  const [ memory, setSingleMemory ] = React.useState(null)
+  const [ memory, setSingleMemory ] = useState(null)
   const { id } = useParams()
-  const [ isError, setIsError ] = React.useState(false)
+  const [ isError, setIsError ] = useState(false)
   const isLoading = !memory && !isError
 
   
 
   //* For normal page content
 
-  React.useEffect( () => {
+  useEffect( () => {
     const getData = async () => {
       try {
-        const result = await axios.get(`/api/memories/${id}`)
+        const result = await axios.get(`${baseUrl}${memoriesPath}/${id}`)
         setSingleMemory(result.data)
         setViewport({ ...viewport, latitude: (Number(result.data.latitude)), longitude: (Number(result.data.longitude)) })
 
@@ -39,7 +40,6 @@ function SingleMemory() {
     width: '500px',
     height: '500px',
     zoom: 14,
-
   })
 
 
@@ -85,7 +85,7 @@ function SingleMemory() {
               </div>
             </div>
           </div> */}
-{/* 
+          {/* 
         // version 2 - basic styling added */}
           <div className="card">    
             <div className="columns">
@@ -101,7 +101,9 @@ function SingleMemory() {
 
                   <div className="column">
                     <p className="bd-notification is-info">
-                      <ReactMapGl {...viewport} mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
+                      <ReactMapGl {...viewport} 
+                        mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
+                        mapStyle="mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i"
                         onViewportChange={viewport => {
                           setViewport(viewport)
                         }}
