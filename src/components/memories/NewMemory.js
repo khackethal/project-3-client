@@ -11,8 +11,7 @@ import ImageUploadField from './ImageUploadField'
 function NewMemory() {
 
   const history = useHistory()
-
-  const { formdata, formErrors, handleChange, setFormErrors } = useForm({
+  const [formData, setFormData] = React.useState({
     title: '',
     location: '',
     longitude: '',
@@ -37,9 +36,14 @@ function NewMemory() {
     e.preventDefault()
 
     try {
-      const res = await createMemory(formdata)
-      console.log('res.data: ', res.data)
-      history.push(`/memories/${res.data._id}`)
+
+      // const res = await createMemory(formData)
+
+      const res = await axios.post(`${baseUrl}${memoriesPath}`, formData, headers() )
+      
+
+      console.log(res.data)
+      history.push(`${memoriesPath}/${res.data._id}`)
     } catch (err) {
       console.log(err)
       // console.log(err.response.data.errMessage)
