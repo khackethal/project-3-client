@@ -18,13 +18,13 @@ function Navbar() {
         <div id="navbarMenuHeroB" className="navbar-menu">
           <div className="navbar-end">
             <a className="navbar-item is-active">
-              <Link to="/" > Home</Link>
+              <Link to="/" >Home</Link>
             </a>
             <a className="navbar-item">
-              <Link to="/memories" > Memory Index</Link>
+              <Link to="/memories" >Memory Index</Link>
             </a>
             <a className="navbar-item">
-              <Link to="/memories/map" > Memory Map</Link>
+              <Link to="/memories/map" >Memory Map</Link>
             </a>
             <a className="navbar-item">
               <Link to="/about" >About</Link> 
