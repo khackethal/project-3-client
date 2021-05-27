@@ -108,7 +108,7 @@ function MemoryMap() {
                 <p>{selectedMemory.location}</p>
 
                 <Link to={`/memories/${selectedMemory._id}`}>
-                  <img width="400px" height="400px" src={selectedMemory.imageUrl} alt={selectedMemory.location} />
+                  <img width="400px" height="400px" src={selectedMemory.image} alt={selectedMemory.location} />
 
                 </Link>
                 <br></br>

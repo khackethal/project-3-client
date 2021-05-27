@@ -1,12 +1,12 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import Register from './components/auth/Register'
+import Login from './components/auth/Login'
 
 import Navbar from './components/common/Navbar'
 import Home from './components/common/Home'
 import About from './components/common/About'
 
 // * auth imports
-import Register from './components/auth/Register'
-import Login from './components/auth/Login'
 
 import AllMemories from './components/memories/AllMemories'
 import SingleMemory from './components/memories/SingleMemory'

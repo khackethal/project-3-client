@@ -2,115 +2,172 @@
 import React from 'react'
 import { useHistory } from 'react-router'
 import { useForm } from '../../hooks/useForm'
-import { createMemory } from '../../lib/api'
+import { createMemory, baseUrl, memoriesPath, headers } from '../../lib/api'
+import axios from 'axios'
+import ImageUploadField from './ImageUploadField'
+
+
 
 function NewMemory() {
+
   const history = useHistory()
-  const { formdata, formErrors, handleChange, setFormErrors } = useForm({
+  const [formData, setFormData] = React.useState({
     title: '',
     location: '',
     longitude: '',
     latitude: '',
     date: '',
-    imageUrl: '',
+    image: '',
     description: '',
     tags: '',
   })
+  console.log(formData)
+  const [formError, setFormError] = React.useState(formData)
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+  const handleUpload = (files) => {
+    handleChange({ target: { name: 'image', value: files } })
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
-      const res = await createMemory(formdata)
-      history.push(`/memories/${res.data._id}`)
+
+      // const res = await createMemory(formData)
+
+      const res = await axios.post(`${baseUrl}${memoriesPath}`, formData, headers() )
+
+      console.log(res.data)
+      history.push(`${memoriesPath}/${res.data._id}`)
     } catch (err) {
-      setFormErrors(err.response.data.errors)
+      console.log(err)
+      // console.log(err.response.data.errMessage)
+      // setFormError(err.res.data.errors)   
     }
   }
 
+
+
+
+
+
+
   return (
     <section className="section">
+
+      <>{console.log('formData: ', formData)}</>
+      <>{console.log('formError: ', formError)}</>
+
       <div className="container">
         <div className="columns">
           <form
-            className="column is-half is-offset-one-quarter box is-black"
+            className="column is-half is-offset-one-quarter box"
             onSubmit={handleSubmit}
           >
-            <div className="field">
+            <div className="field" htmlFor="title">
               <label className="label">Title</label>
               <div className="control">
                 <input
-                  className={`input ${formErrors.title ? 'is-danger' : ''}`}
+
+                  className={`input ${formError.title ? 'is-danger' : ''}`}
                   placeholder="Title"
                   name="title"
                   onChange={handleChange}
-                  value={formdata.title}
+                  value={formData.title}
                 />
               </div>
-              {formErrors.title && <p className="help is-danger">{formErrors.title}</p>}
+              {formError.title && <p className="help is-danger">{formError.title}</p>}
             </div>
 
 
-            <div className="field">
+            <div className="field" htmlFor="location">
               <label className="label">Location</label>
               <div className="control">
                 <input
-                  className={`input ${formErrors.location ? 'is-danger' : ''}`}
+                  className={`input ${formError.location ? 'is-danger' : ''}`}
                   placeholder="Location"
                   name="location"
                   onChange={handleChange}
-                  value={formdata.location}
+                  value={formData.location}
                 />
               </div>
-              {formErrors.location && (
-                <p className="help is-danger">{formErrors.location}</p>
+              {formError.location && (
+                <p className="help is-danger">{formError.location}</p>
               )}
             </div>
 
 
 
-            <div className="field">
+            {/* <div className="field">
               <label className="label">Image URL</label>
               <div className="control">
                 <input
-                  className={`input ${formErrors.image ? 'is-danger' : ''}`}
+                  className={`input ${formError.imageUrl ? 'is-danger' : ''}`}
                   placeholder="Image URL"
-                  name="image"
+                  name="imageUrl"
                   onChange={handleChange}
-                  value={formdata.image}
+                  value={formData.imageUrl}
                 />
               </div>
-              {formErrors.image && <p className="help is-danger">{formErrors.image}</p>}
-            </div>
+              {formError.imageUrl && <p className="help is-danger">{formError.imageUrl}</p>}
+            </div> */}
 
             <div className="field">
+              <ImageUploadField
+                onUpload={handleUpload}
+              />
+            
+          {/* 
+            <div className="field" htmlFor="imageUrl">
               <label className="label">Image Upload</label>
               <div className="control">
-{/* image upload field */}
-
-
-              </div>
-              {formErrors.image && <p className="help is-danger">{formErrors.image}</p>}
+                <input
+                  name="file" type="file"
+                  className="file-upload" data-cloudinary-field="image_id"
+                  data-form-data="{ 'transformation': {'crop':'limit','tags':'samples','width':3000,'height':2000}}"
+                />
+              </div> */}
+              {formError.image && <p className="help is-danger">{formError.image}</p>}
             </div>
 
 
 
 
-            <div className="field">
+            <div className="field" htmlFor="description">
               <label className="label">Description</label>
               <div className="control">
                 <textarea
-                  className={`textarea ${formErrors.tastingNotes ? 'is-danger' : ''}`}
+                  className={`textarea ${formError.desription ? 'is-danger' : ''}`}
                   placeholder="Describe the memory...."
                   name="description"
                   onChange={handleChange}
-                  value={formdata.description}
+                  value={formData.description}
                 />
               </div>
-              {formErrors.description && (
-                <p className="help is-danger">{formErrors.description}</p>
+              {formError.description && (
+                <p className="help is-danger">{formError.description}</p>
               )}
             </div>
+
+
+
+            {/* <div className="field" htmlFor="date">
+              <label className="label">Date</label>
+              <div className="control">
+                <textarea
+                  className={`input ${formError.date ? 'is-danger' : ''}`}
+                  placeholder="Date"
+                  name="date"
+                  onChange={handleChange}
+                  value={formData.date}
+                />
+              </div>
+              {formError.date && (
+                <p className="help is-danger">{formError.date}</p>
+              )}
+            </div> */}
 
 
 
@@ -122,7 +179,7 @@ function NewMemory() {
 
 
           </form>
-                  
+
 
 
         </div>
@@ -133,3 +190,53 @@ function NewMemory() {
 }
 
 export default NewMemory
+
+
+// function showUploadWidget() {
+  //   cloudinary.openUploadWidget({
+  //     cloudName: "dhtnqavlg",
+  //     uploadPreset: "dv9geidh",
+  //     sources: [
+  //       "url",
+  //       "image_search",
+  //       "facebook",
+  //       "instagram",
+  //       "camera",
+  //       "local"
+  //     ],
+  //     googleApiKey: "<image_search_google_api_key>",
+  //     showAdvancedOptions: true,
+  //     cropping: true,
+  //     multiple: false,
+  //     defaultSource: "local",
+  //     styles: {
+  //       palette: {
+  //         window: "#FFFFFF",
+  //         sourceBg: "#F7F3F3",
+  //         windowBorder: "#C5C0B2",
+  //         tabIcon: "#BB3107",
+  //         inactiveTabIcon: "#8C6D2F",
+  //         menuIcons: "#E2D5B0",
+  //         link: "#E2D5B0",
+  //         action: "#FFFFFF",
+  //         inProgress: "#00ffcc",
+  //         complete: "#33ff00",
+  //         error: "#cc3333",
+  //         textDark: "#790707",
+  //         textLight: "#2F2020"
+  //       },
+  //       fonts: {
+  //         default: null,
+  //         ''IBM Plex Sans', sans-serif': {
+  //           url: 'https://fonts.googleapis.com/css?family=IBM+Plex+Sans',
+  //           active: true
+  //         }
+  //       }
+  //     }
+  //   },
+  //   (err, info) => {
+  //     if (!err) {
+  //       console.log('Upload Widget event - ', info)
+  //     }
+  //   })
+  // }

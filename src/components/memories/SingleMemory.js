@@ -63,7 +63,7 @@ function SingleMemory() {
               </div>
 
               <div className="column is-half">
-                <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} />
+                <img height ="540px" width="810px"  src={memory.imageUrlUrl} alt={memory.name} />
               </div>
               </div>
 
@@ -96,7 +96,7 @@ function SingleMemory() {
                 <div className="columns is-mobile">
 
                   <div className="column">
-                    <p className="bd-notification is-info"> <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} /></p>
+                    <p className="bd-notification is-info"> <img height ="540px" width="810px"  src={memory.image} alt={memory.name} /></p>
                   </div>
 
                   <div className="column">
