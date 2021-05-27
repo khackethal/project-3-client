@@ -13,6 +13,7 @@ function headers() {
   }
 }
 
+// * Memories backend requests
 export function getAllMemories() {
   return axios.get(`${baseUrl}${memoriesPath}`)
 }
@@ -29,16 +30,14 @@ export function deleteMemory(id) {
   return axios.delete(`${baseUrl}${memoriesPath}${id}`, headers())
 }
 
-// * authentication requests
-export function registerUser(formData) {
-  return axios.post(`${baseUrl}${registerPath}`, formData)
-}
 
-export function loginUser(formData) {
-  console.log('formData: ', formData)
-  return axios.post(`${baseUrl}${loginPath}`, formData)
+// * Authentication Requests
+export function registerUser(formdata) {
+  return axios.post(`${baseUrl}${registerPath}`, formdata)
 }
-
+export function loginUser(formdata) {
+  return axios.post(`${baseUrl}${loginPath}`, formdata)
+}
 export function userCheck(formData) {
   return axios.post(`${baseUrl}${registerPath}${checkUserPath}`, formData)
 }

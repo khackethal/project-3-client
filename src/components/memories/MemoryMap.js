@@ -1,21 +1,19 @@
-// import React from 'react'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import ReactMapGl, { Marker, Popup } from 'react-map-gl'
-import { baseUrl, memoriesPath } from '../../lib/api'
+import axios from 'axios'
 
 function MemoryMap() {
+  
   const [ memories, setAllMemories ] = useState(null)
   const [ isError, setIsError ] = useState(false)
   const isLoading = !memories && !isError
   const [ searchTerm, setSerachTerm ] = useState('')
 
-
   useEffect(() => {
     const getData = async () => {
       try { 
-        const res = await axios.get(`${baseUrl}${memoriesPath}`)
+        const res = await axios.get('/api/memories')
         setAllMemories(res.data)
       } catch (err) {
         setIsError(true)
@@ -31,6 +29,7 @@ function MemoryMap() {
     width: '100vw',
     height: '100vh',
     zoom: 6,
+
   })
 
   const [ selectedMemory, setSelectedMemory ] = useState(null)
@@ -52,9 +51,13 @@ function MemoryMap() {
       memory.location.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
       memory.tags.includes(searchTerm)
+    
     )
   })
 
+
+
+  
   return (
     <>
       { isLoading && <p>...loading</p>}
@@ -71,7 +74,7 @@ function MemoryMap() {
       <div>
         <ReactMapGl {...viewport} 
           mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
-          // mapStyle="mapbox://styles/kathackethal/ckp5bkpci1oy717l1ye73c2iv"
+          mapStyle="mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i"
           onViewportChange={viewport => {
             setViewport(viewport)
           }}
@@ -106,7 +109,7 @@ function MemoryMap() {
             
                 </Link>
                 <br></br>
-                <button onClick= { e => {
+                <button onClick= { (e) => {
                   setSelectedMemory(null)
                 }}>Close</button>
               </div>
