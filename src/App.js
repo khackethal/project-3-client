@@ -16,12 +16,15 @@ import NewMemory from './components/memories/NewMemory'
 
 
 
+import ApiTest from './components/memories/ApiTest'
+
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/api" component={ApiTest} />
         <Route path="/about" component={About} />
         <Route path="/register" component={Register}/>
         <Route path="/login" component={Login}/>

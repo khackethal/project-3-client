@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Error from '../common/Error'
+import { baseUrl, memoriesPath } from '../../lib/api'
 
 function AllMemories() {
   const [ memories, setAllMemories ] = React.useState(null)
@@ -12,7 +13,7 @@ function AllMemories() {
   React.useEffect(() => {
     const getData = async () => {
       try { 
-        const res = await axios.get('/api/memories')
+        const res = await axios.get(`${baseUrl}${memoriesPath}`)
         setAllMemories(res.data)
       } catch (err) {
         setIsError(true)

@@ -1,20 +1,16 @@
-import React from 'react'
-import axios from 'axios'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-
-
-
-import { useState } from 'react'
 import ReactMapGl, { Marker, Popup } from 'react-map-gl'
+import axios from 'axios'
 
 function MemoryMap() {
-  const [memories, setAllMemories] = React.useState(null)
-  const [isError, setIsError] = React.useState(false)
+  
+  const [ memories, setAllMemories ] = useState(null)
+  const [ isError, setIsError ] = useState(false)
   const isLoading = !memories && !isError
-  const [ searchTerm, setSerachTerm ] = React.useState('')
+  const [ searchTerm, setSerachTerm ] = useState('')
 
-
-  React.useEffect(() => {
+  useEffect(() => {
     const getData = async () => {
       try {
         const res = await axios.get('/api/memories')
@@ -36,8 +32,7 @@ function MemoryMap() {
 
   })
 
-  const [selectedMemory, setSelectedMemory] = React.useState(null)
-
+  const [ selectedMemory, setSelectedMemory ] = useState(null)
 
   //* search functions
   const handleInput = (e) => {
@@ -78,7 +73,7 @@ function MemoryMap() {
       <div>
         <ReactMapGl {...viewport} 
           mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
-          // mapStyle="mapbox://styles/kathackethal/ckp5bkpci1oy717l1ye73c2iv"
+          mapStyle="mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i"
           onViewportChange={viewport => {
             setViewport(viewport)
           }}
@@ -89,7 +84,8 @@ function MemoryMap() {
 
               <button className="mapButton" onClick={e => {
                 e.preventDefault()
-                setSelectedMemory(memory) }}
+                setSelectedMemory(memory) 
+              }}
               >
 
                 <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" alt="red location pin"/>
@@ -112,7 +108,7 @@ function MemoryMap() {
 
                 </Link>
                 <br></br>
-                <button onClick= { e => {
+                <button onClick= { (e) => {
                   setSelectedMemory(null)
                 }}>Close</button>
               </div>
