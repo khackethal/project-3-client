@@ -69,7 +69,7 @@ function AllMemories() {
             <p>{memory.date}</p>
 
             <Link to={`/memories/${memory._id}`}>
-              <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} />
+              <img height ="540px" width="810px"  src={memory.image} alt={memory.name} />
             </Link>
 
           </div>

@@ -1,17 +1,37 @@
-import axios from 'axios'
+import React from 'react'
 
-const uploadUrl = process.env.REACT_APP_CLOUDINARY_URL
+// const uploadUrl = process.env.REACT_APP_CLOUDINARY_URL
 const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET
 
-function ImageUploadField({ onChange, labelText, name, value }) {
+function ImageUpload({ onUpload }) {
+  const [image, setImage] = React.useState('')
 
-  const handleUpload = async event => {
-    const data = new FormData()
-    data.append('file', event.target.files[0])
-    data.append('upload_preset', uploadPreset)
-    const res = await axios.post(uploadUrl, data)
-    onChange({ target: { name, value: res.data.url } })
+  function handleUpload() {
+    window.cloudinary
+      .createUploadWidget(
+        {
+          cloudName: 'dhtnqavlg',
+          uploadPreset,
+          sources: ['local'],
+          multiple: false,
+        },
+        (err, result) => {
+          if (err) console.log(err)
+          if (result.event === 'success') {
+            setImage(result.info.url)
+            onUpload(result.info.url)
+          }
+        }
+      )
+      .open()
   }
+
+  return (
+    <>
+      {image && <img src={image} alt="uploaded profile"/>}
+      {!image && <button onClick={handleUpload} type="button">Upload Image</button>}
+    </>
+  )
 }
 
-export default ImageUploadField
+export default ImageUpload
