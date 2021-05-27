@@ -87,6 +87,52 @@ function ApiTest() {
   }
 
 
+  //       setBoundaryBox([[minLongitude, minLatitude], [maxLongitude, maxLatitude]])
+
+  //       const setMap = () => {
+
+  //         const { longitude, latitude, zoom } = new WebMercatorViewport(viewport)
+  //           .fitBounds(boundaryBox, {
+  //             padding: 20,
+  //             offset: [0, -100],
+  //           })
+
+  //         setViewport({
+  //           ...viewport,
+  //           latitude: latitude,
+  //           longitude: longitude,
+  //           zoom: zoom,
+  //           transitionDuration: 2000,
+  //           transitionInterpolator: new FlyToInterpolator(),
+  //           transitionEasing: easeCubic,
+  //         })
+  //       }
+  //       setMap()
+  //     }
+
+  //     getData()
+
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
+
+  const handleViewportChange = useCallback((viewport) => setViewport(viewport), [])
+
+
+
+  const handleResult = (e) => {
+
+    const centerLongitude = e.result.center[0]
+    const centerLatitude = e.result.center[1]
+    setCenterCoordinates([centerLongitude,centerLatitude])
+
+    const minLongitude = e.result.bbox[0]
+    const minLatitude = e.result.bbox[1]
+    const maxLongitude = e.result.bbox[2]
+    const maxLatitude = e.result.bbox[3]
+    setBoundaryBox([[minLongitude, minLatitude], [maxLongitude, maxLatitude]])
+  }
 
   
   return (
