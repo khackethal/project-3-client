@@ -38,7 +38,7 @@ function SingleMemory() {
     longitude: -0.13519,
     width: '500px',
     height: '500px',
-    zoom: 14,
+    zoom: 12,
 
   })
 

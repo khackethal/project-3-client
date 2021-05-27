@@ -38,6 +38,9 @@ function Navbar() {
             <a className="navbar-item">
               <Link to="/api" >Api Test</Link> 
             </a>
+            <a className="navbar-item">
+              <Link to="/apitwo" >Api Test Two</Link> 
+            </a>
           </div>
         </div>
       </div>

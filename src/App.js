@@ -13,6 +13,7 @@ import SingleMemory from './components/memories/SingleMemory'
 import MemoryMap from './components/memories/MemoryMap'
 
 import ApiTest from './components/memories/ApiTest'
+import ApiTestTwo from './components/memories/ApiTestTwo'
 
 function App() {
   return (
@@ -20,7 +21,9 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/apitwo" component={ApiTestTwo} />
         <Route exact path="/api" component={ApiTest} />
+        {/* <Route exact path="/apitwo" component={ApiTestTwo} /> */}
         <Route path="/about" component={About} />
         <Route path="/register" component={Register}/>
         <Route path="/login" component={Login}/>
