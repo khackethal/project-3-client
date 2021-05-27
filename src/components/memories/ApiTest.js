@@ -22,7 +22,7 @@ function ApiTest() {
   React.useEffect( () => {
     const getData = async () => {
       try {
-        const result = await axios.get(`http://open.mapquestapi.com/geocoding/v1/address?key=	kigSTGPns5XZHY23SQS8A2MRiDfG3FwM&location=london,uk`)
+        const result = await axios.get('http://open.mapquestapi.com/geocoding/v1/address?key=	kigSTGPns5XZHY23SQS8A2MRiDfG3FwM&location=london,uk')
         setSingleMemory(result.data)
         // console.log(result.data.results[0].locations[1].displayLatLng.lat)
         setViewport({ ...viewport, latitude: (Number(result.data.results[0].locations[1].displayLatLng.lat)), longitude: (Number(result.data.results[0].locations[1].displayLatLng.lng)) })
@@ -47,8 +47,8 @@ function ApiTest() {
 
   })
 
-  console.log("latitude", latitude)
-  console.log("longitude", longitude)
+  console.log('latitude', latitude)
+  console.log('longitude', longitude)
 
 
   
@@ -71,36 +71,36 @@ function ApiTest() {
                     <p className="bd-notification is-info"> <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} /></p>
                   </div> */}
 
-                  {/* <input></input>
+                {/* <input></input>
                   <button>Search</button>
 
                   <p>latitude ${}</p> */}
 
-                  <div className="column">
-                    <p className="bd-notification is-info">
-                      <ReactMapGl {...viewport} 
-                        mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
-                        mapStyle="mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i"
-                        onViewportChange={viewport => {
-                          setViewport(viewport)
-                        }}
-                      >
+                <div className="column">
+                  <p className="bd-notification is-info">
+                    <ReactMapGl {...viewport} 
+                      mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
+                      mapStyle="mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i"
+                      onViewportChange={viewport => {
+                        setViewport(viewport)
+                      }}
+                    >
 
                       <Marker 
                         latitude={Number(latitude)} 
                         longitude={Number(longitude)}>
-                          <div>
-                            <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
-                          </div>
-                        </Marker> 
+                        <div>
+                          <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
+                        </div>
+                      </Marker> 
                       
 
-                      </ReactMapGl>
-                    </p>
-                  </div>
+                    </ReactMapGl>
+                  </p>
                 </div>
               </div>
             </div>
+          </div>
           {/* </div>   */}
         </>
       )}
