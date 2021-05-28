@@ -1,13 +1,40 @@
 import axios from 'axios'
 import { getToken } from '../lib/auth'
 
-const baseUrl = 'mongodb://localhost/memorymapdb'
-const registerPath = '/register'
-const loginPath = '/login'
-const checkUserPath = '/checkuser'
-const memoriesPath = '/memories'
+export const baseUrl = '/api'
+export const registerPath = '/register'
+export const loginPath = '/login'
+export const checkUserPath = '/checkuser'
+export const memoriesPath = '/memories'
 
-function headers() {
+// export const baseUrl = '/api'
+// export const registerPath = '/register'
+// export const loginPath = '/login'
+// export const checkUserPath = '/checkuser'
+// export const memoriesPath = '/memories'
+
+
+// // * image upload 
+// const uploadUrl = process.env.REACT_APP_CLOUDINARY_URL
+// const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET
+
+
+// // ! not sure this is meant to be here
+// function ImageUploadField({ onChange, labelText, name, value }) {
+
+//   const handleUpload = async event => {
+//     const data = new FormData()
+//     data.append('file', event.target.files[0])
+//     data.append('upload_preset', uploadPreset)
+//     const res = await axios.post(uploadUrl, data)
+//     onChange({ target: { name, value: res.data.url } })
+//   }
+// }
+// // !
+
+
+
+export function headers() {
   return {
     headers: { Authorization: `Bearer ${getToken()}` },
   }
@@ -30,17 +57,14 @@ export function deleteMemory(id) {
 }
 
 
-
-
-
-
-// * Auth Requests
+// * Authentication Requests
 export function registerUser(formdata) {
   return axios.post(`${baseUrl}${registerPath}`, formdata)
 }
 export function loginUser(formdata) {
   return axios.post(`${baseUrl}${loginPath}`, formdata)
 }
+
 export function userCheck(formData) {
   return axios.post(`${baseUrl}${registerPath}${checkUserPath}`, formData)
 }

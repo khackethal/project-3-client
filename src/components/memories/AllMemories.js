@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Error from '../common/Error'
+import { baseUrl, memoriesPath } from '../../lib/api'
 
 function AllMemories() {
   const [ memories, setAllMemories ] = React.useState(null)
@@ -12,7 +13,7 @@ function AllMemories() {
   React.useEffect(() => {
     const getData = async () => {
       try { 
-        const res = await axios.get('/api/memories')
+        const res = await axios.get(`${baseUrl}${memoriesPath}`)
         setAllMemories(res.data)
       } catch (err) {
         setIsError(true)
@@ -20,6 +21,8 @@ function AllMemories() {
     }
     getData()
   },[])
+
+
 
   //* search functions
   const handleInput = (e) => {
@@ -29,6 +32,7 @@ function AllMemories() {
   const handleClear = () => {
     setSerachTerm('')
   }
+
 
   const filteredMemories =  memories?.filter((memory) => {
     return (
@@ -64,11 +68,11 @@ function AllMemories() {
         { filteredMemories && (filteredMemories.map(memory => 
           <div className="card" key={memory.name}>
             <h3>{memory.title}</h3>
-            <p>{memory.location}</p>
+            <p>{memory.location.userInput}</p>
             <p>{memory.date}</p>
 
             <Link to={`/memories/${memory._id}`}>
-              <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} />
+              <img height ="540px" width="810px"  src={memory.image} alt={memory.title} />
             </Link>
 
           </div>

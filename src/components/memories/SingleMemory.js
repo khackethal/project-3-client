@@ -1,28 +1,29 @@
-import React from 'react'
 import axios from 'axios'
-import Error from '../common/Error'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom' 
 import ReactMapGl, { Marker } from 'react-map-gl'
 
+import Error from '../common/Error'
+import { baseUrl, memoriesPath } from '../../lib/api'
 
-import { useState } from 'react'
+
 
 function SingleMemory() {
-  const [ memory, setSingleMemory ] = React.useState(null)
+  const [ memory, setSingleMemory ] = useState(null)
   const { id } = useParams()
-  const [ isError, setIsError ] = React.useState(false)
+  const [ isError, setIsError ] = useState(false)
   const isLoading = !memory && !isError
 
   
 
   //* For normal page content
 
-  React.useEffect( () => {
+  useEffect( () => {
     const getData = async () => {
       try {
-        const result = await axios.get(`/api/memories/${id}`)
+        const result = await axios.get(`${baseUrl}${memoriesPath}/${id}`)
         setSingleMemory(result.data)
-        setViewport({ ...viewport, latitude: (Number(result.data.latitude)), longitude: (Number(result.data.longitude)) })
+        setViewport({ ...viewport, latitude: (Number(result.data.location.coordinates[1])), longitude: (Number(result.data.location.coordinates[0])) })
 
       } catch (err) {
         setIsError(true)
@@ -38,8 +39,7 @@ function SingleMemory() {
     longitude: -0.13519,
     width: '500px',
     height: '500px',
-    zoom: 12,
-
+    zoom: 14,
   })
 
 
@@ -63,7 +63,7 @@ function SingleMemory() {
               </div>
 
               <div className="column is-half">
-                <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} />
+                <img height ="540px" width="810px"  src={memory.imageUrlUrl} alt={memory.name} />
               </div>
               </div>
 
@@ -85,18 +85,18 @@ function SingleMemory() {
               </div>
             </div>
           </div> */}
-{/* 
+          {/* 
         // version 2 - basic styling added */}
           <div className="card">    
             <div className="columns">
               <div className="column">
                 <p className="column">{memory.title}</p>
-                <h2 className="column">{memory.location}</h2>
+                <h2 className="column">{memory.location.userInput}</h2>
                 <div className="column is-60">{memory.description}</div>
                 <div className="columns is-mobile">
 
                   <div className="column">
-                    <p className="bd-notification is-info"> <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} /></p>
+                    <p className="bd-notification is-info"> <img height ="540px" width="810px"  src={memory.image} alt={memory.title} /></p>
                   </div>
 
                   <div className="column">
@@ -109,7 +109,7 @@ function SingleMemory() {
                         }}
                       >
 
-                        <Marker latitude={Number(memory.latitude)} longitude={Number(memory.longitude)}>
+                        <Marker latitude={Number(memory.location.coordinates[1])} longitude={Number(memory.location.coordinates[0])}>
                           <div>
                             <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
                           </div>
