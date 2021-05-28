@@ -10,7 +10,7 @@ function AllMemories() {
   const [ isError, setIsError ] = React.useState(false)
   const isLoading = !memories && !isError
   const [ searchTerm, setSerachTerm ] = React.useState('')
-
+  
   React.useEffect(() => {
     const getData = async () => {
       try { 
@@ -33,7 +33,6 @@ function AllMemories() {
   }
 
   const filteredMemories =  memories?.filter((memory) => {
-
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
       memory.location.toLowerCase().includes(searchTerm) ||
@@ -41,7 +40,8 @@ function AllMemories() {
       memory.tags.includes(searchTerm) 
     )
   })
-  
+
+
   return (
     <>
       <h1>All Memories</h1>
