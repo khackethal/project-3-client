@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ReactMapGl, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
+import { baseUrl, memoriesPath } from '../../lib/api'
 
 function MemoryMap() {
   
@@ -12,21 +13,22 @@ function MemoryMap() {
 
   useEffect(() => {
     const getData = async () => {
-      try { 
-        const res = await axios.get('/api/memories')
+      try {
+        const res = await axios.get(`${baseUrl}${memoriesPath}`)
         setAllMemories(res.data)
+        console.log(res.data.location.coordinates[0])
       } catch (err) {
         setIsError(true)
       }
     }
     getData()
-  },[])
+  }, [])
 
   //* For map content-------------------
-  const [ viewport, setViewport ] = useState({
+  const [viewport, setViewport] = useState({
     latitude: 51.51106,
     longitude: -0.13519,
-    width: '100vw',
+    width: '100vh',
     height: '100vh',
     zoom: 6,
 
@@ -39,16 +41,11 @@ function MemoryMap() {
     setSerachTerm(e.target.value)
   }
 
-  //* had a button to clear here as well but I think it looks really ugly, uncomment function and button to see
-  //* might solve with styling, but also don't think we stirctly need it?
-  // const handleClear = () => {
-  //   setSerachTerm('')
-  // }
 
   const filteredMemories =  memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
-      memory.location.toLowerCase().includes(searchTerm) ||
+      memory.location.userInput.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
       memory.tags.includes(searchTerm)
     
@@ -57,7 +54,6 @@ function MemoryMap() {
 
 
 
-  
   return (
     <>
       { isLoading && <p>...loading</p>}
@@ -80,10 +76,12 @@ function MemoryMap() {
           }}
         >
 
+
+
           { filteredMemories && filteredMemories.map(memory => 
-            <Marker key={memory.name} latitude={Number(memory.latitude)} longitude={Number(memory.longitude)}>
-              
-              <button className="mapButton" onClick={ e  => {
+            <Marker key={memory.title} latitude={Number(memory.location.coordinates[1])} longitude={Number(memory.location.coordinates[0])}>
+
+              <button className="mapButton" onClick={e => {
                 e.preventDefault()
                 setSelectedMemory(memory) 
               }}
@@ -92,21 +90,22 @@ function MemoryMap() {
                 <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" alt="red location pin"/>
               </button>
             </Marker>
-          
+
           )}
 
-          { selectedMemory && (
-            <Popup latitude={Number(selectedMemory.latitude)} longitude={Number(selectedMemory.longitude)}
+
+          {selectedMemory && (
+            <Popup latitude={Number(selectedMemory.location.coordinates[1])} longitude={Number(selectedMemory.location.coordinates[0])}
               // onClose={() => {
               //   setSelectedMemory(null) }}
             >
               <div>
                 <h2>{selectedMemory.title}</h2>
-                <p>{selectedMemory.location}</p>
+                <p>{selectedMemory.location.userInput}</p>
 
                 <Link to={`/memories/${selectedMemory._id}`}>
-                  <img width="400px" height="400px" src={selectedMemory.imageUrl} alt={selectedMemory.location} />
-            
+                  <img width="400px" height="400px" src={selectedMemory.image} alt={selectedMemory.title} />
+
                 </Link>
                 <br></br>
                 <button onClick= { (e) => {
@@ -114,7 +113,7 @@ function MemoryMap() {
                 }}>Close</button>
               </div>
             </Popup>
-          ) }      
+          )}
         </ReactMapGl>
       </div>
     </>

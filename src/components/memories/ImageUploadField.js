@@ -10,13 +10,12 @@ function ImageUpload({ onUpload }) {
     window.cloudinary
       .createUploadWidget(
         {
-          cloudName: 'djmb9tc9z',
+          cloudName: 'dhtnqavlg',
           uploadPreset,
           sources: ['local'],
           multiple: false,
         },
         (err, result) => {
-          console.log('result: ', result)
           if (err) console.log(err)
           if (result.event === 'success') {
             setImage(result.info.url)

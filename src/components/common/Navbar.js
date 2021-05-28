@@ -29,7 +29,7 @@ function Navbar() {
       <div className="container">
         <div className="navbar-brand">
           <a className="navbar-item">
-            <img src="https://i.pinimg.com/originals/33/e6/3d/33e63d5adb0da6b303a83901c8e8463a.png" alt="logo"></img>
+            <Link to="/" ><img src="https://i.pinimg.com/originals/33/e6/3d/33e63d5adb0da6b303a83901c8e8463a.png" alt="logo"></img> </Link>
           </a>
 
           <span
@@ -48,7 +48,6 @@ function Navbar() {
           className={`navbar-menu ${isOpen ? 'is-active' : '' }`}
         >
           <div className="navbar-end">
-
             <a className="navbar-item">
               <Link to="/" >Home</Link>
             </a>
@@ -62,12 +61,13 @@ function Navbar() {
             </a>
 
             <a className="navbar-item">
-              <Link to="/memories/map" >Memory Map</Link>
+              <Link to="/newmemory" >New Memory</Link>
             </a>
 
             <a className="navbar-item">
-              <Link to="/about" >About</Link> 
+              <Link to="/memories/map" >Memory Map</Link>
             </a>
+
 
             {!isLogged &&
               <a className="navbar-item">
@@ -90,10 +90,11 @@ function Navbar() {
               </a>
             }
 
+
+
             <a className="navbar-item">
               <Link to="/api" >Api Test</Link> 
             </a>
-
           </div>
         </div>
       </div>

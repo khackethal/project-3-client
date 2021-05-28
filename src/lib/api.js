@@ -7,13 +7,39 @@ export const loginPath = '/login'
 export const checkUserPath = '/checkuser'
 export const memoriesPath = '/memories'
 
-function headers() {
+// export const baseUrl = '/api'
+// export const registerPath = '/register'
+// export const loginPath = '/login'
+// export const checkUserPath = '/checkuser'
+// export const memoriesPath = '/memories'
+
+
+// // * image upload 
+// const uploadUrl = process.env.REACT_APP_CLOUDINARY_URL
+// const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET
+
+
+// // ! not sure this is meant to be here
+// function ImageUploadField({ onChange, labelText, name, value }) {
+
+//   const handleUpload = async event => {
+//     const data = new FormData()
+//     data.append('file', event.target.files[0])
+//     data.append('upload_preset', uploadPreset)
+//     const res = await axios.post(uploadUrl, data)
+//     onChange({ target: { name, value: res.data.url } })
+//   }
+// }
+// // !
+
+
+
+export function headers() {
   return {
     headers: { Authorization: `Bearer ${getToken()}` },
   }
 }
 
-// * Memories backend requests
 export function getAllMemories() {
   return axios.get(`${baseUrl}${memoriesPath}`)
 }
@@ -38,6 +64,7 @@ export function registerUser(formdata) {
 export function loginUser(formdata) {
   return axios.post(`${baseUrl}${loginPath}`, formdata)
 }
+
 export function userCheck(formData) {
   return axios.post(`${baseUrl}${registerPath}${checkUserPath}`, formData)
 }
