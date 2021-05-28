@@ -5,11 +5,12 @@ import Error from '../common/Error'
 import { baseUrl, memoriesPath } from '../../lib/api'
 
 function AllMemories() {
+
   const [ memories, setAllMemories ] = React.useState(null)
   const [ isError, setIsError ] = React.useState(false)
   const isLoading = !memories && !isError
   const [ searchTerm, setSerachTerm ] = React.useState('')
-
+  
   React.useEffect(() => {
     const getData = async () => {
       try { 
@@ -22,8 +23,6 @@ function AllMemories() {
     getData()
   },[])
 
-
-
   //* search functions
   const handleInput = (e) => {
     setSerachTerm(e.target.value)
@@ -32,7 +31,6 @@ function AllMemories() {
   const handleClear = () => {
     setSerachTerm('')
   }
-
 
   const filteredMemories =  memories?.filter((memory) => {
     return (
@@ -44,7 +42,6 @@ function AllMemories() {
   })
 
 
-  
   return (
     <>
       <h1>All Memories</h1>
@@ -60,27 +57,21 @@ function AllMemories() {
           onChange={handleInput}
           value={searchTerm}
         />
-
         <button className="button is-link is-small is-outlined" onClick={handleClear}>
         Clear
         </button>
-
         { filteredMemories && (filteredMemories.map(memory => 
           <div className="card" key={memory.name}>
             <h3>{memory.title}</h3>
             <p>{memory.location.userInput}</p>
             <p>{memory.date}</p>
-
             <Link to={`/memories/${memory._id}`}>
               <img height ="540px" width="810px"  src={memory.image} alt={memory.title} />
             </Link>
-
           </div>
         ))}
       </div>
     </>
   )
 }
-
-
 export default AllMemories

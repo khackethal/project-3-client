@@ -1,45 +1,98 @@
-// {integrate api and convert adress and then send to api}
 import React from 'react'
 import { useHistory } from 'react-router'
-import { useForm } from '../../hooks/useForm'
-import { createMemory, baseUrl, memoriesPath, headers } from '../../lib/api'
-import axios from 'axios'
-import ImageUploadField from './ImageUploadField'
 
+import MapboxSearch from '../mapbox/MapboxSearch'
+import ImageUploadField from './ImageUploadField'
+import { useForm } from '../../hooks/useForm'
+import { createMemory, memoriesPath } from '../../lib/api'
 
 
 function NewMemory() {
 
-  const history = useHistory()
-  const [formData, setFormData] = React.useState({
-    title: '',
-    image: 'sample image',
-    description: '',
-    tags: '',
-  })
-
-  const [formError, setFormError] = React.useState(formData)
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+  function formatTagArray(tags) {
+    if (typeof tags === 'string') {
+      const tagsArray = tags.replace(/[^a-zA-Z0-9]/g,' ').split(' ')
+      const sanitisedTagsArray = tagsArray.filter(tag => tag !== '')
+      return sanitisedTagsArray
+    }
+    return tags
   }
 
-  const handleUpload = (files) => {
-    handleChange({ target: { name: 'image', value: files } })
+  const history = useHistory()
+
+  const { formData, setFormData, handleChange, formError, setFormError } = useForm({
+    title: '',
+    date: '',
+    image: '',
+    description: '',
+    tags: [],
+    location: '',
+    user: '',
+  })
+
+  const handleNestedChange = (e) => {
+    console.log('e: ', e)
+
+    const getBoundaryBox = (e) => {
+      if (e.bbox) return e.bbox
+    }
+
+    handleChange(
+      { target:
+        { name: 'location',
+          value: {
+            ...formData.location,
+            userInput: e.place_name,
+            coordinates: e.center,
+            boundaryBox: getBoundaryBox(e),
+          },
+        },
+      })
+  }
+
+  const handleTags = (e) => {
+
+    // * reformatting tags
+    const newTags = formatTagArray(e.target.value)
+
+    setFormData({
+      ...formData,
+      tags: newTags,
+    })
+  }
+
+  const handleDanger = (e) => {
+
+    const emptyField = (e.target.value.length === 0)
+    const requiredFields = ['title', 'date', 'description']
+
+    if (requiredFields.includes(e.target.name) && emptyField) {
+      setFormError({ ...formError, [e.target.name]: 'Required field.' })
+    }
+
+    if (formError.errMessage) {
+      setFormError({ ...formError, errMessage: '' })
+    }
+  }
+
+  const handleUpload = (file) => {
+    handleChange({ target: { name: 'image', value: file } })
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+<<<<<<< HEAD
     try {
 
       // const res = await createMemory(formData)
       // const res = await axios.post(`${baseUrl}${memoriesPath}`, formData, { headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFmZDBiZmZjZDEyNzcyZDZhZjE4NjgiLCJpYXQiOjE2MjIxMzQ5NzgsImV4cCI6MTYyMjE3ODE3OH0.Bt2D3Xo8Aa4kwhKnk3BBDz6W_KrwSUTx-iVfn9lQnhs' }, 
       // })
+=======
+>>>>>>> 39c8ba1f96123d6c447e7252efe3785c031391a1
 
-      const res = await axios.post(`${baseUrl}${memoriesPath}`, formData, { headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFmZTAxYjhlZWZjMTUyMTBjNGQ2MTAiLCJpYXQiOjE2MjIxMzg5MDcsImV4cCI6MTYyMjE4MjEwN30.i2cGwt_PdnKxno16BYOP_LtasWRwgblsuigP_AeV2aA' }, 
-      })
     
+<<<<<<< HEAD
       console.log(res.data)
       history.push(`${baseUrl}${memoriesPath}/${res.data._id}`)
     } catch (err) {
@@ -48,12 +101,28 @@ function NewMemory() {
       // setFormError(err.res.data.errors)   
     }
   }
+=======
+
+    // * Get userId
+    // const
+>>>>>>> 39c8ba1f96123d6c447e7252efe3785c031391a1
 
 
+    
+    try {
 
+      const res = await createMemory(formData)
+      console.log('res.data: ', res.data)
 
+      history.push(`${memoriesPath}/${res.data._id}`)
 
+    } catch (err) {
+      console.log('err: ', err)
+      console.log('err.response.data: ', err.response.data)
 
+      setFormError({ ...formError, errMessage: err.response.data.errMessage })   
+    }
+  }
 
   return (
     <section className="section">
@@ -67,128 +136,123 @@ function NewMemory() {
             className="column is-half is-offset-one-quarter box"
             onSubmit={handleSubmit}
           >
+
             <div className="field" htmlFor="title">
               <label className="label">Title</label>
               <div className="control">
-                <input
 
-                  className={`input ${formError.title ? 'is-danger' : ''}`}
-                  placeholder="Title"
+                <input
+                  className={`input ${formError.title || formError.errMessage ? 'is-danger' : ''}`}
+                  type="text"
+                  placeholder="e.g. My cherished memory"
                   name="title"
                   onChange={handleChange}
-                  value={formData.title}
+                  onBlur={handleDanger}
+                  required
                 />
+
               </div>
               {formError.title && <p className="help is-danger">{formError.title}</p>}
             </div>
 
-
-            <div className="field" htmlFor="location">
-              <label className="label">Location</label>
+            <div className="field" htmlFor="title">
+              <label className="label">Where did it take place?</label>
               <div className="control">
+
                 <input
-                  className={`input ${formError.location ? 'is-danger' : ''}`}
-                  placeholder="Location"
+                  className={`input ${formError.location || formError.errMessage ? 'is-danger' : ''}`}
+                  type="text"
+                  placeholder="Find address on map"
                   name="location"
-                  onChange={handleChange}
-                  value={formData.location}
+                  // onChange={handleChange}
+                  onChange={ (e) => {
+                    handleNestedChange(e)
+                    setFormError({ ...formError, location: '' })
+                  }}
+                  value={formData.location.userInput || ''}
+                  onSubmit={handleDanger}
+                  required
+                  disabled
                 />
+
               </div>
-              {formError.location && (
-                <p className="help is-danger">{formError.location}</p>
-              )}
+              {formError.location && <p className="help is-danger">{formError.location}</p>}
             </div>
 
 
-
-            {/* <div className="field">
-              <label className="label">Image URL</label>
+            <div className="field" htmlFor="title">
+              <label className="label">Memory Date</label>
               <div className="control">
+
                 <input
-                  className={`input ${formError.imageUrl ? 'is-danger' : ''}`}
-                  placeholder="Image URL"
-                  name="imageUrl"
-                  onChange={handleChange}
-                  value={formData.imageUrl}
-                />
-              </div>
-              {formError.imageUrl && <p className="help is-danger">{formError.imageUrl}</p>}
-            </div> */}
-
-            <div className="field">
-              <ImageUploadField
-                onUpload={handleUpload}
-              />
-            
-              {/* 
-            <div className="field" htmlFor="imageUrl">
-              <label className="label">Image Upload</label>
-              <div className="control">
-                <input
-                  name="file" type="file"
-                  className="file-upload" data-cloudinary-field="image_id"
-                  data-form-data="{ 'transformation': {'crop':'limit','tags':'samples','width':3000,'height':2000}}"
-                />
-              </div> */}
-              {formError.image && <p className="help is-danger">{formError.image}</p>}
-            </div>
-
-
-
-
-            <div className="field" htmlFor="description">
-              <label className="label">Description</label>
-              <div className="control">
-                <textarea
-                  className={`textarea ${formError.desription ? 'is-danger' : ''}`}
-                  placeholder="Describe the memory...."
-                  name="description"
-                  onChange={handleChange}
-                  value={formData.description}
-                />
-              </div>
-              {formError.description && (
-                <p className="help is-danger">{formError.description}</p>
-              )}
-            </div>
-
-
-
-            {/* <div className="field" htmlFor="date">
-              <label className="label">Date</label>
-              <div className="control">
-                <textarea
-                  className={`input ${formError.date ? 'is-danger' : ''}`}
-                  placeholder="Date"
+                  className={`input ${formError.date || formError.errMessage ? 'is-danger' : ''}`}
+                  type="date"
                   name="date"
                   onChange={handleChange}
-                  value={formData.date}
+                  required
                 />
+
               </div>
-              {formError.date && (
-                <p className="help is-danger">{formError.date}</p>
-              )}
-            </div> */}
+              {formError.date && <p className="help is-danger">{formError.date}</p>}
+            </div>
 
+            <div className="field" htmlFor="title">
+              <label className="label">Description</label>
+              <div className="control">
 
+                <input
+                  className={`input ${formError.description || formError.errMessage ? 'is-danger' : ''}`}
+                  type="text"
+                  placeholder="e.g. Roses are red, violets are blue"
+                  name="description"
+                  onChange={handleChange}
+                  onBlur={handleDanger}
+                  required
+                />
+
+              </div>
+              {formError.description && <p className="help is-danger">{formError.description}</p>}
+            </div>
+
+            <div className="field" htmlFor="title">
+              <label className="label">Tags</label>
+              <div className="control">
+
+                <input
+                  className={`input ${formError.errMessage ? 'is-danger' : '' }`}
+                  type="text"
+                  placeholder="e.g. dreamy, poop, romantic"
+                  name="tags"
+                  onChange={handleTags}
+                />
+
+              </div>
+            </div>
+
+            <div>
+              <ImageUploadField onUpload={handleUpload} />
+            </div>
 
             <div className="field">
               <button type="submit" className="button is-warning is-fullwidth">
-                Submit Memory
+                Send Memory
               </button>
             </div>
 
+            {formError.errMessage && <p className="help is-danger">{formError.errMessage}</p>}
+
+            <MapboxSearch onResult={handleNestedChange} />
 
           </form>
-
-
 
         </div>
       </div>
     </section>
   )
-
 }
 
 export default NewMemory
+<<<<<<< HEAD
 
+=======
+>>>>>>> 39c8ba1f96123d6c447e7252efe3785c031391a1

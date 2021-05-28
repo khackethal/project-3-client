@@ -12,9 +12,6 @@ import AllMemories from './components/memories/AllMemories'
 import SingleMemory from './components/memories/SingleMemory'
 import MemoryMap from './components/memories/MemoryMap'
 import NewMemory from './components/memories/NewMemory'
-// import ImageUploadField from './components/memories/ImageUploadField'
-
-
 
 import ApiTest from './components/memories/ApiTest'
 import ApiTestTwo from './components/memories/ApiTestTwo'
