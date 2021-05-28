@@ -1,28 +1,31 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import { isAuthenticated, removeToken } from '../../lib/auth'
 
 function Navbar() {
 
+  const history = useHistory()
+  const location = useLocation()
+
   const [isOpen, setIsOpen] = React.useState(false)
   const isLogged = isAuthenticated()
 
-  // React.useEffect({
+  React.useEffect( () => {
+    setIsOpen(false)
+  },[location.pathname])
 
-  // },[])
-
-  const handleClick = () => {
+  const handleToggle = () => {
     setIsOpen(!isOpen)
   }
 
   const handleLogout = () => {
     removeToken()
+    history.push('/')
   }
 
   return (
 
     <nav className="navbar is-info">
-      <>{console.log('isLogged: ', isLogged)}</>
       <div className="container">
         <div className="navbar-brand">
           <a className="navbar-item">
@@ -32,7 +35,7 @@ function Navbar() {
           <span
             className={`navbar-burger ${isOpen ? 'is-active' : ''}`}
             data-target="navbarMenuHeroB"
-            onClick={handleClick}
+            onClick={handleToggle}
           >
             <span></span>
             <span></span>
@@ -49,6 +52,10 @@ function Navbar() {
               <Link to="/" >Home</Link>
             </a>
 
+            <a className="navbar-item">
+              <Link to="/newmemory" >New Memory</Link>
+            </a>
+            
             <a className="navbar-item">
               <Link to="/memories" >Memory Index</Link>
             </a>
@@ -75,13 +82,11 @@ function Navbar() {
             }
 
             {isLogged &&
-              <a className="navbar-item">
-                <Link
-                  onClick={handleLogout}
-                  to="/"
-                >
-                  Logout
-                </Link> 
+              <a
+                className="navbar-item"
+                onClick={handleLogout}
+              >
+                Logout
               </a>
             }
 

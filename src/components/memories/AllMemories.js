@@ -5,16 +5,16 @@ import Error from '../common/Error'
 import { baseUrl, memoriesPath } from '../../lib/api'
 
 function AllMemories() {
-  const [ memories, setAllMemories ] = React.useState(null)
+  const [ memories, setAllMemories ] = React.useState([])
   const [ isError, setIsError ] = React.useState(false)
   const isLoading = !memories && !isError
-  const [ searchTerm, setSerachTerm ] = React.useState('')
+  const [ searchTerm, setSearchTerm ] = React.useState('')
 
   React.useEffect(() => {
     const getData = async () => {
       try { 
         const res = await axios.get(`${baseUrl}${memoriesPath}`)
-        setAllMemories(res.data)
+        setAllMemories([res.data])
       } catch (err) {
         setIsError(true)
       }
@@ -26,18 +26,19 @@ function AllMemories() {
 
   //* search functions
   const handleInput = (e) => {
-    setSerachTerm(e.target.value)
+    setSearchTerm(e.target.value)
   }
 
   const handleClear = () => {
-    setSerachTerm('')
+    setSearchTerm('')
   }
 
 
   const filteredMemories =  memories?.filter((memory) => {
+
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
-      memory.location.toLowerCase().includes(searchTerm) ||
+      memory.location.userInput.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
       memory.tags.includes(searchTerm) 
     )
@@ -66,7 +67,7 @@ function AllMemories() {
         </button>
 
         { filteredMemories && (filteredMemories.map(memory => 
-          <div className="card" key={memory.name}>
+          <div className="card" key={memory._id}>
             <h3>{memory.title}</h3>
             <p>{memory.location.userInput}</p>
             <p>{memory.date}</p>
