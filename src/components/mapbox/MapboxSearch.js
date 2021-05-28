@@ -2,7 +2,7 @@ import React from 'react'
 import ReactMapGl from 'react-map-gl'
 import Geocoder from 'react-map-gl-geocoder'
 
-function MapboxSearch() {
+function MapboxSearch({ onResult }) {
 
   const publicToken = 'pk.eyJ1IjoiZGF0YWJveSIsImEiOiJja3A1bzY3MTIwM3JoMm5vZm51bmM1Y3FuIn0.zPC8jQhM2p3S_pIpJIKa9Q'
   const mapRef = React.useRef()
@@ -22,8 +22,7 @@ function MapboxSearch() {
   )
 
   const handleResult = (e) => {
-    console.log('handleResult: ')
-    console.log(e)
+    onResult(e.result)
   }
 
   return (

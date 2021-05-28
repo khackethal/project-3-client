@@ -5,16 +5,17 @@ import Error from '../common/Error'
 import { baseUrl, memoriesPath } from '../../lib/api'
 
 function AllMemories() {
-  const [ memories, setAllMemories ] = React.useState([])
+
+  const [ memories, setAllMemories ] = React.useState(null)
   const [ isError, setIsError ] = React.useState(false)
   const isLoading = !memories && !isError
-  const [ searchTerm, setSearchTerm ] = React.useState('')
+  const [ searchTerm, setSerachTerm ] = React.useState('')
 
   React.useEffect(() => {
     const getData = async () => {
       try { 
         const res = await axios.get(`${baseUrl}${memoriesPath}`)
-        setAllMemories([res.data])
+        setAllMemories(res.data)
       } catch (err) {
         setIsError(true)
       }
@@ -22,29 +23,24 @@ function AllMemories() {
     getData()
   },[])
 
-
-
   //* search functions
   const handleInput = (e) => {
-    setSearchTerm(e.target.value)
+    setSerachTerm(e.target.value)
   }
 
   const handleClear = () => {
-    setSearchTerm('')
+    setSerachTerm('')
   }
-
 
   const filteredMemories =  memories?.filter((memory) => {
 
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
-      memory.location.userInput.toLowerCase().includes(searchTerm) ||
+      memory.location.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
       memory.tags.includes(searchTerm) 
     )
   })
-
-
   
   return (
     <>
@@ -61,27 +57,21 @@ function AllMemories() {
           onChange={handleInput}
           value={searchTerm}
         />
-
         <button className="button is-link is-small is-outlined" onClick={handleClear}>
         Clear
         </button>
-
         { filteredMemories && (filteredMemories.map(memory => 
-          <div className="card" key={memory._id}>
+          <div className="card" key={memory.name}>
             <h3>{memory.title}</h3>
             <p>{memory.location.userInput}</p>
             <p>{memory.date}</p>
-
             <Link to={`/memories/${memory._id}`}>
               <img height ="540px" width="810px"  src={memory.image} alt={memory.title} />
             </Link>
-
           </div>
         ))}
       </div>
     </>
   )
 }
-
-
 export default AllMemories

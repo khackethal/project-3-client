@@ -26,6 +26,7 @@ function Navbar() {
   return (
 
     <nav className="navbar is-info">
+      <>{console.log(isLogged)}</>
       <div className="container">
         <div className="navbar-brand">
           <a className="navbar-item">
@@ -51,18 +52,16 @@ function Navbar() {
             <a className="navbar-item">
               <Link to="/" >Home</Link>
             </a>
-
-            <a className="navbar-item">
-              <Link to="/newmemory" >New Memory</Link>
-            </a>
             
             <a className="navbar-item">
               <Link to="/memories" >Memory Index</Link>
             </a>
 
-            <a className="navbar-item">
-              <Link to="/newmemory" >New Memory</Link>
-            </a>
+            {isLogged &&
+              <a className="navbar-item">
+                <Link to="/newmemory" >New Memory</Link>
+              </a>
+            }
 
             <a className="navbar-item">
               <Link to="/memories/map" >Memory Map</Link>
@@ -89,8 +88,6 @@ function Navbar() {
                 Logout
               </a>
             }
-
-
 
             <a className="navbar-item">
               <Link to="/api" >Api Test</Link> 
