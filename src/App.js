@@ -35,6 +35,7 @@ function App() {
         <Route path="/memories/map" component={MemoryMap} />
         <Route path="/memories/:id" component={SingleMemory} />
         <Route path="/memories" component={AllMemories} />
+        <Route path="/*" component={Error} />
 
       </Switch>
     </BrowserRouter>

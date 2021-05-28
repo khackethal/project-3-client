@@ -29,6 +29,7 @@ function Home() {
           <div className="container">
             <ul>
               <li className="is-active has-text-info">
+
                 <a className="navbar-item">
                   <Link to="/register" >Register</Link>
                 </a>

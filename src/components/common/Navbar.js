@@ -4,6 +4,7 @@ import { isAuthenticated, removeToken } from '../../lib/auth'
 
 function Navbar() {
 
+
   const [isOpen, setIsOpen] = React.useState(false)
   const isLogged = isAuthenticated()
 
@@ -42,7 +43,7 @@ function Navbar() {
         </div>
         <div
           id="navbarMenuHeroB"
-          className={`navbar-menu ${isOpen ? 'is-active' : '' }`}
+          className={`navbar-menu ${isOpen ? 'is-active' : ''}`}
         >
           <div className="navbar-end">
             <a className="navbar-item">
@@ -53,24 +54,19 @@ function Navbar() {
               <Link to="/memories" >Memory Index</Link>
             </a>
 
-            <a className="navbar-item">
+            {!isLogged && <a className="navbar-item">
               <Link to="/newmemory" >New Memory</Link>
             </a>
+            }
 
             <a className="navbar-item">
               <Link to="/memories/map" >Memory Map</Link>
             </a>
-
-
-            {!isLogged &&
-              <a className="navbar-item">
-                <Link to="/register" >Register</Link> 
-              </a>
-            }
+            
 
             {!isLogged &&
               <a className="navbar-item">
-                <Link to="/login" >Login</Link> 
+                <Link to="/login" >Login</Link>
               </a>
             }
 
@@ -81,14 +77,14 @@ function Navbar() {
                   to="/"
                 >
                   Logout
-                </Link> 
+                </Link>
               </a>
             }
 
 
 
             <a className="navbar-item">
-              <Link to="/api" >Api Test</Link> 
+              <Link to="/api" >Api Test</Link>
             </a>
           </div>
         </div>
