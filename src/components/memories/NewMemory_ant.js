@@ -11,7 +11,7 @@ import ImageUploadField from './ImageUploadField'
 function NewMemory() {
 
   const history = useHistory()
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useForm({
     title: '',
     location: '',
     longitude: '',
