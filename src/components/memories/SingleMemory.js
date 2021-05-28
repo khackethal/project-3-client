@@ -4,8 +4,10 @@ import { useParams } from 'react-router-dom'
 import ReactMapGl, { Marker } from 'react-map-gl'
 
 
+
 import Error from '../common/Error'
-import { baseUrl, memoriesPath } from '../../lib/api'
+import { baseUrl, memoriesPath, headers } from '../../lib/api'
+import { isAuthenticated } from '../../lib/auth'
 
 
 
@@ -67,8 +69,8 @@ function SingleMemory() {
     e.preventDefault()
     if (formData.text) {
       try {
-        const res = await axios.post(`${baseUrl}${memoriesPath}/${id}/comment`, formData, { headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGIwY2YzNjc0MzgxOTZhYmJmNTBiODIiLCJpYXQiOjE2MjIyMDAxMjcsImV4cCI6MTYyMjI0MzMyN30.7mg3bFkq29Sk5wSH4qAQflLIQbVEQbLyQdg1kCQx4e8' }, 
-        })
+        const res = await axios.post(`${baseUrl}${memoriesPath}/${id}/comment`, formData,  headers()
+        )
         console.log(res.data.comments)
         setHasComments(!comments)
         formData.text = ''
@@ -93,8 +95,8 @@ function SingleMemory() {
 
 
     try {
-      const res = await axios.delete(`${baseUrl}${memoriesPath}/${id}/comment/${e.target.name}`, { headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGIwY2YzNjc0MzgxOTZhYmJmNTBiODIiLCJpYXQiOjE2MjIyMDAxMjcsImV4cCI6MTYyMjI0MzMyN30.7mg3bFkq29Sk5wSH4qAQflLIQbVEQbLyQdg1kCQx4e8' }, 
-      })
+      const res = await axios.delete(`${baseUrl}${memoriesPath}/${id}/comment/${e.target.name}`,  headers()
+      )
       console.log(res)
       setHasComments(!comments)
       formData.text = ''
@@ -190,10 +192,9 @@ function SingleMemory() {
             <> {memory.comments && memory.comments.map( comment =>
               <>
                 <p>{comment.text}</p>
-                <p>{comment.user}</p>
-                {/* <p>{comment._id}</p> */}
-                {/* <button className=" button is-info is outline">Edit comment</button> */}
-                <button name={comment._id} onClick={handleDelete} className=" button is-info is outline">Delete comment</button>
+                {/* <p>{comment.user}</p> */}
+
+                <button name={comment._id} onClick={handleDelete} className=" button is-info is-small is outline">Delete comment</button>
               </>
             )}
 
