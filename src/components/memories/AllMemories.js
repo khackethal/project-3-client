@@ -22,6 +22,8 @@ function AllMemories() {
     getData()
   },[])
 
+
+
   //* search functions
   const handleInput = (e) => {
     setSerachTerm(e.target.value)
@@ -30,6 +32,7 @@ function AllMemories() {
   const handleClear = () => {
     setSerachTerm('')
   }
+
 
   const filteredMemories =  memories?.filter((memory) => {
     return (
@@ -65,11 +68,11 @@ function AllMemories() {
         { filteredMemories && (filteredMemories.map(memory => 
           <div className="card" key={memory.name}>
             <h3>{memory.title}</h3>
-            <p>{memory.location}</p>
+            <p>{memory.location.userInput}</p>
             <p>{memory.date}</p>
 
             <Link to={`/memories/${memory._id}`}>
-              <img height ="540px" width="810px"  src={memory.image} alt={memory.name} />
+              <img height ="540px" width="810px"  src={memory.image} alt={memory.title} />
             </Link>
 
           </div>

@@ -13,11 +13,7 @@ function NewMemory() {
   const history = useHistory()
   const [formData, setFormData] = React.useState({
     title: '',
-    location: '',
-    longitude: '',
-    latitude: '',
-    date: '',
-    image: '',
+    image: 'sample image',
     description: '',
     tags: '',
   })
@@ -41,11 +37,11 @@ function NewMemory() {
       // const res = await axios.post(`${baseUrl}${memoriesPath}`, formData, { headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFmZDBiZmZjZDEyNzcyZDZhZjE4NjgiLCJpYXQiOjE2MjIxMzQ5NzgsImV4cCI6MTYyMjE3ODE3OH0.Bt2D3Xo8Aa4kwhKnk3BBDz6W_KrwSUTx-iVfn9lQnhs' }, 
       // })
 
-      const res = await createMemory(formData)
+      const res = await axios.post(`${baseUrl}${memoriesPath}`, formData, { headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFmZTAxYjhlZWZjMTUyMTBjNGQ2MTAiLCJpYXQiOjE2MjIxMzg5MDcsImV4cCI6MTYyMjE4MjEwN30.i2cGwt_PdnKxno16BYOP_LtasWRwgblsuigP_AeV2aA' }, 
+      })
     
       console.log(res.data)
-      history.push(`${memoriesPath}/${res.data._id}`)
-      
+      history.push(`${baseUrl}${memoriesPath}/${res.data._id}`)
     } catch (err) {
       console.log(err)
       // console.log(err.response.data.errMessage)

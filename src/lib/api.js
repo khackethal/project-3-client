@@ -7,13 +7,13 @@ export const loginPath = '/login'
 export const checkUserPath = '/checkuser'
 export const memoriesPath = '/memories'
 
-function headers() {
+
+export function headers() {
   return {
     headers: { Authorization: `Bearer ${getToken()}` },
   }
 }
 
-// * Memories backend requests
 export function getAllMemories() {
   return axios.get(`${baseUrl}${memoriesPath}`)
 }

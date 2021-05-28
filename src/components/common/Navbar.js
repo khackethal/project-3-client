@@ -90,7 +90,6 @@ function Navbar() {
             <a className="navbar-item">
               <Link to="/api" >Api Test</Link> 
             </a>
-
           </div>
         </div>
       </div>

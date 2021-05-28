@@ -23,7 +23,7 @@ function SingleMemory() {
       try {
         const result = await axios.get(`${baseUrl}${memoriesPath}/${id}`)
         setSingleMemory(result.data)
-        setViewport({ ...viewport, latitude: (Number(result.data.latitude)), longitude: (Number(result.data.longitude)) })
+        setViewport({ ...viewport, latitude: (Number(result.data.location.coordinates[1])), longitude: (Number(result.data.location.coordinates[0])) })
 
       } catch (err) {
         setIsError(true)
@@ -91,12 +91,12 @@ function SingleMemory() {
             <div className="columns">
               <div className="column">
                 <p className="column">{memory.title}</p>
-                <h2 className="column">{memory.location}</h2>
+                <h2 className="column">{memory.location.userInput}</h2>
                 <div className="column is-60">{memory.description}</div>
                 <div className="columns is-mobile">
 
                   <div className="column">
-                    <p className="bd-notification is-info"> <img height ="540px" width="810px"  src={memory.image} alt={memory.name} /></p>
+                    <p className="bd-notification is-info"> <img height ="540px" width="810px"  src={memory.image} alt={memory.title} /></p>
                   </div>
 
                   <div className="column">
@@ -109,7 +109,7 @@ function SingleMemory() {
                         }}
                       >
 
-                        <Marker latitude={Number(memory.latitude)} longitude={Number(memory.longitude)}>
+                        <Marker latitude={Number(memory.location.coordinates[1])} longitude={Number(memory.location.coordinates[0])}>
                           <div>
                             <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
                           </div>
