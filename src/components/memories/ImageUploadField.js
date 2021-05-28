@@ -1,6 +1,6 @@
 import React from 'react'
 
-const uploadUrl = process.env.REACT_APP_CLOUDINARY_URL
+// const uploadUrl = process.env.REACT_APP_CLOUDINARY_URL
 const uploadPreset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET
 
 function ImageUpload({ onUpload }) {
@@ -10,12 +10,13 @@ function ImageUpload({ onUpload }) {
     window.cloudinary
       .createUploadWidget(
         {
-          cloudName: uploadUrl,
+          cloudName: 'djmb9tc9z',
           uploadPreset,
           sources: ['local'],
           multiple: false,
         },
         (err, result) => {
+          console.log('result: ', result)
           if (err) console.log(err)
           if (result.event === 'success') {
             setImage(result.info.url)
@@ -29,13 +30,7 @@ function ImageUpload({ onUpload }) {
   return (
     <>
       {image && <img src={image} alt="uploaded profile"/>}
-      {!image && <button
-        onClick={handleUpload}
-        className="button is-info is-fullwidth"
-        type="button"
-      >
-        Upload Image
-      </button>}
+      {!image && <button onClick={handleUpload} type="button" className="button is-info is-fullwidth">Upload Image</button>}
     </>
   )
 }

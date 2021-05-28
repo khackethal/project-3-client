@@ -1,10 +1,11 @@
 import React from 'react'
 import { useHistory } from 'react-router'
 
-import ImageUpload from './ImageUpload'
+import MapboxSearch from '../mapbox/MapboxSearch'
+import ImageUploadField from './ImageUploadField'
 import { useForm } from '../../hooks/useForm'
 import { createMemory, memoriesPath } from '../../lib/api'
-import MapGeocoder from '../mapbox/MapGeocoder'
+
 
 function NewMemory() {
 
@@ -25,15 +26,16 @@ function NewMemory() {
     image: '',
     description: '',
     tags: [],
-    location: {
-      userInput: '',
-      coordinates: [0,0],
-      boundaryBox: [0,0,0,0],
-    },
+    location: '',
+    // {
+    //   userInput: '',
+    //   coordinates: [],
+    //   boundaryBox: [],
+    // },
     user: '',
   })
 
-  const handleBlur = (e) => {
+  const handleRequired = (e) => {
 
     const emptyField = (e.target.value.length === 0)
     const requiredFields = ['title', 'date', 'description']
@@ -43,13 +45,8 @@ function NewMemory() {
     }
   }
 
-  const handleImageUpload = (files) => {
-    handleChange({ target: { name: 'image', value: files } })
-  }
-
-  const handleResult = (e) => {
-    console.log('handleResult: ')
-    console.log(e)
+  const handleUpload = (file) => {
+    handleChange({ target: { name: 'image', value: file } })
   }
 
   const handleSubmit = async (e) => {
@@ -64,10 +61,10 @@ function NewMemory() {
     setFormData({
       ...formData,
       tags: newTags,
-      location: {
-        // userInput: 'set address here'
-        // coordinates: [longitude,latitude],
-      },
+      // location: {
+      // userInput: 'set address here'
+      // coordinates: [longitude,latitude],
+      // },
     })
     
     try {
@@ -84,8 +81,6 @@ function NewMemory() {
       setFormError({ ...formError, errorMessage: err.response.data.errMessage })   
     }
   }
-
-
 
 
 
@@ -115,7 +110,7 @@ function NewMemory() {
                   placeholder="e.g. My cherished memory"
                   name="title"
                   onChange={handleChange}
-                  onBlur={handleBlur}
+                  onBlur={handleRequired}
                   required
                 />
 
@@ -132,13 +127,18 @@ function NewMemory() {
                   type="text"
                   placeholder="Find address on map"
                   name="address"
-                  onChange={handleChange}
+                  // onChange={handleChange}
+                  onChange={ () => {
+                    handleChange()
+                    setFormError({ ...formError, location: '' })
+                  }}
+                  onSubmit={handleRequired}
                   required
                   disabled
                 />
 
               </div>
-              {formError.title && <p className="help is-danger">{formError.title}</p>}
+              {formError.location && <p className="help is-danger">{formError.location}</p>}
             </div>
 
 
@@ -168,7 +168,7 @@ function NewMemory() {
                   placeholder="e.g. Roses are red, violets are blue"
                   name="description"
                   onChange={handleChange}
-                  onBlur={handleBlur}
+                  onBlur={handleRequired}
                   required
                 />
 
@@ -192,7 +192,7 @@ function NewMemory() {
             </div>
 
             <div>
-              <ImageUpload upLoad={handleImageUpload} />
+              <ImageUploadField onUpload={handleUpload} />
             </div>
 
             <div className="field">
@@ -201,7 +201,7 @@ function NewMemory() {
               </button>
             </div>
 
-            <MapGeocoder NewMemoryCallback={handleResult} />
+            <MapboxSearch />
 
           </form>
 

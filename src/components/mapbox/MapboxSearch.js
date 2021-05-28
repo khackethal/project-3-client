@@ -1,14 +1,14 @@
-import { useState, useRef, useCallback } from 'react'
+import React from 'react'
 import ReactMapGl from 'react-map-gl'
 import Geocoder from 'react-map-gl-geocoder'
 
-function MapGeocoder() {
+function MapboxSearch() {
 
   const publicToken = 'pk.eyJ1IjoiZGF0YWJveSIsImEiOiJja3A1bzY3MTIwM3JoMm5vZm51bmM1Y3FuIn0.zPC8jQhM2p3S_pIpJIKa9Q'
-  const mapRef = useRef()
+  const mapRef = React.useRef()
 
   //* Display map size, and position/zoom within the map
-  const [ viewport, setViewport ] = useState({
+  const [ viewport, setViewport ] = React.useState({
     latitude: 54.405,
     longitude: 9.431,
     width: '500px',
@@ -16,17 +16,19 @@ function MapGeocoder() {
     zoom: 2,
   })
 
-  const handleViewportChange = useCallback(
+  const handleViewportChange = React.useCallback(
     (viewport) => setViewport(viewport),
     []
   )
 
   const handleResult = (e) => {
-    console.log('e: ', e)
+    console.log('handleResult: ')
+    console.log(e)
   }
-  
+
   return (
-    <section>
+
+    <section className="geocoder">
       <div className="card">    
         <div className="columns">
           <div className="column">
@@ -47,15 +49,6 @@ function MapGeocoder() {
                     onResult={handleResult}
                   />
 
-                  {/* <Marker 
-                    longitude={longitude}
-                    latitude={latitude} 
-                  >
-                    <div>
-                      <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
-                    </div>
-                  </Marker>  */}
-
                 </ReactMapGl>
               </p>
             </div>
@@ -63,6 +56,8 @@ function MapGeocoder() {
         </div>
       </div>
     </section>
+
   )
 }
-export default MapGeocoder
+
+export default MapboxSearch
