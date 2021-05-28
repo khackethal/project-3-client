@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom'
 import Error from '../common/Error'
 import { baseUrl, memoriesPath } from '../../lib/api'
 function AllMemories() {
+
   const [ memories, setAllMemories ] = React.useState(null)
   const [ isError, setIsError ] = React.useState(false)
   const isLoading = !memories && !isError
   const [ searchTerm, setSerachTerm ] = React.useState('')
+  
   React.useEffect(() => {
     const getData = async () => {
       try { 
@@ -34,6 +36,8 @@ function AllMemories() {
       memory.tags.includes(searchTerm) 
     )
   })
+
+
   return (
     <>
       <h1>All Memories</h1>

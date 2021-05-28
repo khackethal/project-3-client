@@ -7,7 +7,8 @@ function MemoryMap() {
   const [ memories, setAllMemories ] = useState(null)
   const [ isError, setIsError ] = useState(false)
   const isLoading = !memories && !isError
-  const [ searchTerm, setSerachTerm ] = useState('')
+  const [ searchTerm, setSearchTerm ] = useState('')
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -31,7 +32,7 @@ function MemoryMap() {
   const [ selectedMemory, setSelectedMemory ] = useState(null)
   //* search functions
   const handleInput = (e) => {
-    setSerachTerm(e.target.value)
+    setSearchTerm(e.target.value)
   }
   const filteredMemories =  memories?.filter((memory) => {
     return (
