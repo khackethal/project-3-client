@@ -43,7 +43,6 @@ export function registerUser(formdata) {
 export function loginUser(formdata) {
   return axios.post(`${baseUrl}${loginPath}`, formdata)
 }
-
 export function userCheck(formData) {
   return axios.post(`${baseUrl}${registerPath}${checkUserPath}`, formData)
 }

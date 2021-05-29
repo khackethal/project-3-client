@@ -3,7 +3,6 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Error from '../common/Error'
 import { baseUrl, memoriesPath } from '../../lib/api'
-
 function AllMemories() {
 
   const [ memories, setAllMemories ] = React.useState(null)
@@ -22,16 +21,13 @@ function AllMemories() {
     }
     getData()
   },[])
-
   //* search functions
   const handleInput = (e) => {
     setSerachTerm(e.target.value)
   }
-
   const handleClear = () => {
     setSerachTerm('')
   }
-
   const filteredMemories =  memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||

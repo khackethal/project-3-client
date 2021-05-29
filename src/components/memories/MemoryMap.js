@@ -4,7 +4,6 @@ import ReactMapGl, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
 
 import { baseUrl, memoriesPath } from '../../lib/api'
-
 function MemoryMap() {
 
   const [ searchTerm, setSearchTerm ] = useState(null)
@@ -45,7 +44,6 @@ function MemoryMap() {
   const handleInput = (e) => {
     setSearchTerm(e.target.value)
   }
-
   const filteredMemories =  memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
@@ -54,7 +52,6 @@ function MemoryMap() {
       memory.tags.includes(searchTerm)
     )
   })
-
   return (
     <>
       { isLoading && <p>...loading</p>}
@@ -76,25 +73,17 @@ function MemoryMap() {
             setViewport(viewport)
           }}
         >
-
-
-
           { filteredMemories && filteredMemories.map(memory => 
             <Marker key={memory.title} latitude={Number(memory.location.coordinates[1])} longitude={Number(memory.location.coordinates[0])}>
-
               <button className="mapButton" onClick={e => {
                 e.preventDefault()
                 setSelectedMemory(memory) 
               }}
               >
-
                 <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" alt="red location pin"/>
               </button>
             </Marker>
-
           )}
-
-
           {selectedMemory && (
             <Popup latitude={Number(selectedMemory.location.coordinates[1])} longitude={Number(selectedMemory.location.coordinates[0])}
               // onClose={() => {
@@ -103,10 +92,8 @@ function MemoryMap() {
               <div>
                 <h2>{selectedMemory.title}</h2>
                 <p>{selectedMemory.location.userInput}</p>
-
                 <Link to={`/memories/${selectedMemory._id}`}>
                   <img width="400px" height="400px" src={selectedMemory.image} alt={selectedMemory.title} />
-
                 </Link>
                 <br></br>
                 <button onClick= { (e) => {
@@ -120,6 +107,4 @@ function MemoryMap() {
     </>
   )
 }
-
-
 export default MemoryMap
