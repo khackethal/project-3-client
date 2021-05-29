@@ -31,7 +31,6 @@ function NewMemory() {
   })
 
   const handleNestedChange = (e) => {
-    console.log('e: ', e)
 
     const getBoundaryBox = (e) => {
       if (e.bbox) return e.bbox
@@ -45,6 +44,7 @@ function NewMemory() {
             userInput: e.place_name,
             coordinates: e.center,
             boundaryBox: getBoundaryBox(e),
+            placeType: e.place_type[0],
           },
         },
       })
@@ -82,25 +82,10 @@ function NewMemory() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-
-    
-
-    // * Get userId
-    // const
-
-
-    
     try {
-
       const res = await createMemory(formData)
-      console.log('res.data: ', res.data)
-
       history.push(`${memoriesPath}/${res.data._id}`)
-
     } catch (err) {
-      console.log('err: ', err)
-      console.log('err.response.data: ', err.response.data)
-
       setFormError({ ...formError, errMessage: err.response.data.errMessage })   
     }
   }
@@ -145,7 +130,6 @@ function NewMemory() {
                   type="text"
                   placeholder="Find address on map"
                   name="location"
-                  // onChange={handleChange}
                   onChange={ (e) => {
                     handleNestedChange(e)
                     setFormError({ ...formError, location: '' })

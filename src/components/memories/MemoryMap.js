@@ -2,27 +2,17 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ReactMapGl, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
+
 import { baseUrl, memoriesPath } from '../../lib/api'
 
 function MemoryMap() {
-  
-  const [ memories, setAllMemories ] = useState(null)
+
+  const [ searchTerm, setSearchTerm ] = useState(null)
+  const [ selectedMemory, setSelectedMemory ] = useState(null)
+  const [ memories, setMemories ] = useState(null)
+
   const [ isError, setIsError ] = useState(false)
   const isLoading = !memories && !isError
-  const [ searchTerm, setSearchTerm ] = useState('')
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await axios.get(`${baseUrl}${memoriesPath}`)
-        setAllMemories(res.data)
-        console.log(res.data.location.coordinates[0])
-      } catch (err) {
-        setIsError(true)
-      }
-    }
-    getData()
-  }, [])
 
   //* For map content-------------------
   const [viewport, setViewport] = useState({
@@ -31,16 +21,30 @@ function MemoryMap() {
     width: '100vh',
     height: '100vh',
     zoom: 6,
-
   })
 
-  const [ selectedMemory, setSelectedMemory ] = useState(null)
+  useEffect(() => {
+
+    const getData = async () => {
+
+      try {
+        const res = await axios.get(`${baseUrl}${memoriesPath}`)
+        setMemories(res.data)
+        console.log(res.data.location.coordinates[0])
+
+      } catch (err) {
+        setIsError(true)
+      }
+    }
+    getData()
+  }, [])
+
+
 
   //* search functions
   const handleInput = (e) => {
     setSearchTerm(e.target.value)
   }
-
 
   const filteredMemories =  memories?.filter((memory) => {
     return (
@@ -50,8 +54,6 @@ function MemoryMap() {
       memory.tags.includes(searchTerm)
     )
   })
-
-
 
   return (
     <>

@@ -2,10 +2,14 @@ import React from 'react'
 import ReactMapGl from 'react-map-gl'
 import Geocoder from 'react-map-gl-geocoder'
 
+import { publicToken } from '../../lib/mapbox'
+
 function MapboxSearch({ onResult }) {
 
-  const publicToken = 'pk.eyJ1IjoiZGF0YWJveSIsImEiOiJja3A1bzY3MTIwM3JoMm5vZm51bmM1Y3FuIn0.zPC8jQhM2p3S_pIpJIKa9Q'
   const mapRef = React.useRef()
+
+  const [ isMapBoxError, setIsMapboxError ] = React.useState(false)
+  const [ isMapBoxLoading, setIsMapboxLoading ] = React.useState(false)
 
   //* Display map size, and position/zoom within the map
   const [ viewport, setViewport ] = React.useState({
@@ -25,6 +29,18 @@ function MapboxSearch({ onResult }) {
     onResult(e.result)
   }
 
+  const handleLoading = () => {
+    setIsMapboxLoading(true)
+  }
+
+  const handleError = () => {
+    setIsMapboxError(true)
+  }
+
+  const handleLoaded = () => {
+    setIsMapboxLoading(false)
+  }
+
   return (
 
     <section className="geocoder">
@@ -32,13 +48,19 @@ function MapboxSearch({ onResult }) {
         <div className="columns">
           <div className="column">
             <div className="column">
-              <p className="bd-notification is-info">
+              <div className="bd-notification is-info">
+
+                {isMapBoxLoading && '... loading map!'}
+                {isMapBoxError && '... Oopsies, the map could not load! Check your connexion and reload the page.'}
 
                 <ReactMapGl 
                   ref={mapRef}
                   {...viewport} 
                   mapboxApiAccessToken={publicToken}
                   onViewportChange={handleViewportChange}
+                  onError={handleError}
+                  onLoading={handleLoading}
+                  onInit={handleLoaded}
                 >
                   <Geocoder
                     mapRef={mapRef}
@@ -46,10 +68,11 @@ function MapboxSearch({ onResult }) {
                     mapboxApiAccessToken={publicToken}
                     position="top-left"
                     onResult={handleResult}
+                    onError={handleError}
                   />
-
                 </ReactMapGl>
-              </p>
+
+              </div>
             </div>
           </div>
         </div>

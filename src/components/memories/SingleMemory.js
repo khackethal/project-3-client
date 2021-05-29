@@ -1,48 +1,32 @@
 import axios from 'axios'
-import { useState, useEffect } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom' 
 import ReactMapGl, { Marker } from 'react-map-gl'
 
 import Error from '../common/Error'
-import { baseUrl, memoriesPath, headers } from '../../lib/api'
-import { isAuthenticated } from '../../lib/auth'
-
+import { baseUrl, memoriesPath, commentPath, headers } from '../../lib/api'
+import { isOwner } from '../../lib/auth'
+import { publicToken } from '../../lib/mapbox'
+import { subSetViewport } from '../../lib/mapbox'
 
 function SingleMemory() {
 
-
-  const [ memory, setSingleMemory ] = useState(null)
   const { id } = useParams()
-  const [ isError, setIsError ] = useState(false)
-  const [ comments, setHasComments ] = useState(false)
+
+  const [ memory, setMemory ] = React.useState(null)
+  const [ isError, setIsError ] = React.useState(false)
+  const [ hasComments, setHasComments ] = React.useState(false)
+
   const isLoading = !memory && !isError
 
-  //* for comments
-  const [formData, setFormData] = useState({
+  //* for comments/error state
+  const [ formComment, setFormComment ] = React.useState({
     text: '',
   })
-
-
-
-  //* For normal page content
-
-  useEffect( () => {
-    const getData = async () => {
-      try {
-        const result = await axios.get(`${baseUrl}${memoriesPath}/${id}`)
-        setSingleMemory(result.data)
-        setViewport({ ...viewport, latitude: (Number(result.data.location.coordinates[1])), longitude: (Number(result.data.location.coordinates[0])) })
-
-      } catch (err) {
-        setIsError(true)
-      }
-    }
-    getData()
-  },[id, comments])
-
+  const [formError, setFormError] = React.useState(formComment)
 
   //* For map content-------------------
-  const [ viewport, setViewport ] = useState({
+  const [ viewport, setViewport ] = React.useState({
     latitude: 51.51106,
     longitude: -0.13519,
     width: '500px',
@@ -50,34 +34,69 @@ function SingleMemory() {
     zoom: 14,
   })
 
+  //* For page content render
+  React.useEffect( () => {
 
-  //* for comments
+    const getData = async () => {
 
-  // * Posting a comment
-  const [formError, setFormError] = useState(formData)
+      try {
+
+        const res = await axios.get(`${baseUrl}${memoriesPath}/${id}`)
+        setMemory(res.data)
+
+        // * setting zoom value depending on stored values
+        const [ [centerLongitude, centerLatitude], zoomValue ] = subSetViewport(res.data)
+        
+        setViewport({
+          ...viewport,
+          // ! I've remove Number because the model currently validates number so we wouln't have otherwise
+          longitude: (centerLongitude),
+          latitude: (centerLatitude),
+          zoom: zoomValue,
+        })
+
+      } catch (err) {
+        setIsError(true)
+      }
+
+    }
+
+    getData()
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[hasComments])
+
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-
+    setFormComment({ ...formComment, [e.target.name]: e.target.value })
   }
 
-
   const handleSubmit = async (e) => {
+
     e.preventDefault()
-    if (formData.text) {
+
+    // * to prevent empty comments submissions
+    if (formComment.text) {
       try {
-        const res = await axios.post(`${baseUrl}${memoriesPath}/${id}/comment`, formData,  headers()
+
+        await axios.post(
+          `${baseUrl}${memoriesPath}/${id}/${commentPath}`,
+          formComment, 
+          headers()
         )
-        console.log(res.data.comments)
-        setHasComments(!comments)
-        formData.text = ''
+
+        // * reset comment input
+        e.target.value = ''
+
+        // * force useEffect render on comment submission
+        setHasComments(!hasComments)
+
+        // * reset comment forms to blank
+        setFormComment({ ...formComment, text: '' })
         setFormError('')
   
       } catch (err) {
-        console.log(err)
-        setFormError(err.message)
-        // console.log(err.response.data.errMessage)
-        // setFormError(res.data.errors)   
+        setFormError({ ...formError, text: err.response.data.errMessage })
       }
 
     } else {
@@ -88,22 +107,26 @@ function SingleMemory() {
 
   //* Delete a comment 
   const handleDelete = async (e) => {
+
     e.preventDefault()
 
-
     try {
-      const res = await axios.delete(`${baseUrl}${memoriesPath}/${id}/comment/${e.target.name}`,  headers()
+
+      await axios.delete(
+        `${baseUrl}${memoriesPath}/${id}/${commentPath}/${e.target.name}`, 
+        headers()
       )
-      console.log(res)
-      setHasComments(!comments)
-      formData.text = ''
-      setFormError('')
+
+      setHasComments(!hasComments)
+      setFormError({ ...formComment, text: '' })
+
+      // ! I don't think it's necessary to blank out the comment form when a comment gets deleted,
+      // ! say if the user was typing a comment and realised wanted to delete a previous one 
+      // ! which are are currently redrafting now. It would mess it up.
+      // setFormComment({ ...formComment, text: '' })
   
     } catch (err) {
-      console.log(err)
-      setFormError(err.message)
-      // console.log(err.response.data.errMessage)
-      // setFormError(res.data.errors)   
+      setFormError({ ...formError, text: err.response.data.errMessage })
     }
 
   }
@@ -132,10 +155,11 @@ function SingleMemory() {
                   </div>
 
                   <div className="column">
-                    <p className="bd-notification is-info">
+                    <div className="bd-notification is-info">
+
                       <ReactMapGl {...viewport} 
-                        mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
-                        mapStyle="mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i"
+                        mapboxApiAccessToken={publicToken}
+                        // mapStyle={mapboxStyleUrl}
                         onViewportChange={viewport => {
                           setViewport(viewport)
                         }}
@@ -146,10 +170,10 @@ function SingleMemory() {
                             <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
                           </div>
                         </Marker>
-                      
 
                       </ReactMapGl>
-                    </p>
+
+                    </div>
                   </div>
                 </div>
               </div>
@@ -157,49 +181,64 @@ function SingleMemory() {
           </div>  
           <div className="container">
             <div className="columns">
+              
               <form
                 className="column is-half is-offset-one-quarter box"
                 onSubmit={handleSubmit}
+                onKeyUp={(
+                  (e) => {
+                    if (e.key === 'Enter') handleSubmit
+                  }
+                )}
               >
+
                 <div className="field" htmlFor="text">
                   <label className="label">Comments</label>
                   <div className="control">
-                    <input
 
+                    <input
                       className={`input ${formError.text ? 'is-danger' : ''}`}
                       placeholder="Type your comments here.."
                       name="text"
+                      value={formComment.text || ''}
                       onChange={handleChange}
-                      value={formData.text}
                     />
+
                   </div>
-                  {formError && <p className="help is-danger">{formError.text}</p>}
+                  {formError.text && <p className="help is-danger">Oops, something went wrong. Check if you are logged in.</p>}
                 </div>
 
                 <div className="field">
-                  <button type="submit" className="button is-info is-fullwidth">
-                Submit comment
+                  <button
+                    type="submit"
+                    className="button is-info is-fullwidth"
+                  >
+                    Submit comment
                   </button>
                 </div>
+                
               </form>
             </div>
           </div>
-          <div>
-            <> {memory.comments && memory.comments.map( comment =>
-              <>
+
+          <div className="comments">
+            {memory.comments && memory.comments.map( comment =>
+              <div key={comment._id}>
                 <p>{comment.text}</p>
-                {/* <p>{comment.user}</p> */}
-
-                <button name={comment._id} onClick={handleDelete} className=" button is-info is-small is outline">Delete comment</button>
-              </>
+                { isOwner(comment.user) &&
+                  <button
+                    name={comment._id}
+                    onClick={handleDelete}
+                    className=" button is-info is-small is outline"
+                  >
+                    Delete comment
+                  </button>
+                }
+              </div>
             )}
-
-            </>
           </div>
 
-        </>
-      )}
-
+        </>      )}
 
     </section>
   )
