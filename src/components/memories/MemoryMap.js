@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import ReactMapGl, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
@@ -8,110 +8,173 @@ import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
 
 function MemoryMap() {
 
-  const [ searchTerm, setSearchTerm ] = useState(null)
-  const [ selectedMemory, setSelectedMemory ] = useState(null)
-  const [ memories, setMemories ] = useState(null)
+  const [ searchTerm, setSearchTerm ] = React.useState(null)
+  const [ selectedMemory, setSelectedMemory ] = React.useState(null)
+  const [ memories, setMemories ] = React.useState(null)
 
-  const [ isError, setIsError ] = useState(false)
+  const [ inputHeight, setInputHeight ] = React.useState(40)
+
+  const navHeight = JSON.parse(localStorage.getItem('navHeight'))
+  const viewportWidth = window.innerWidth
+  const viewportHeight = window.innerHeight - (navHeight + inputHeight)
+
+  const [ isError, setIsError ] = React.useState(false)
   const isLoading = !memories && !isError
 
   //* For map content-------------------
-  const [viewport, setViewport] = useState({
-    latitude: 51.51106,
-    longitude: -0.13519,
-    width: '100vh',
-    height: '100vh',
-    zoom: 6,
+  const [viewport, setViewport] = React.useState({
+    latitude: 50,
+    longitude: 0,
+    width: viewportWidth,
+    height: viewportHeight,
+    zoom: 0,
   })
 
-  useEffect(() => {
+  function handleResize() {
+
+    const newWidth = window.innerWidth
+    const newHeight = window.innerHeight - (navHeight + inputHeight)
+
+    setViewport({ ...viewport,
+      width: newWidth,
+      height: newHeight,
+    })
+  }
+
+  React.useEffect(() => {
+
+    window.addEventListener('resize', handleResize)
 
     const getData = async () => {
 
       try {
         const res = await axios.get(`${baseUrl}${memoriesPath}`)
         setMemories(res.data)
-        console.log(res.data.location.coordinates[0])
+        // console.log(res.data.location.coordinates[0])
 
       } catch (err) {
         setIsError(true)
       }
     }
     getData()
-  }, [])
-
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewport])
 
 
   //* search functions
   const handleSearch = (e) => {
     setSearchTerm(e.target.value)
   }
+
+  const getInputHeight = (e) => {
+    const inputHeight = e.nativeEvent.path[1].offsetHeight
+    setInputHeight(inputHeight)
+  }
   
+  // ! problem with this function. memories coming in but not coming out, therefore no pins being displayed
   const filteredMemories =  memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
+      // ! disbaled the line below to bypass error and display map
+      // memory.location.toLowerCase().includes(searchTerm) ||
       memory.location.userInput.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
       memory.tags.includes(searchTerm)
     )
   })
+
   return (
     <>
       { isLoading && <p>...loading</p>}
-      { console.log('window.innerHeight: ', window.innerHeight) }
-      { console.log('window.innerWidth: ', window.innerWidth) }
+      {console.log('filteredMemories: ', filteredMemories)}
 
-      <input
-        className="input"
-        type="text"
-        placeholder="Search memories.."
-        onChange={handleSearch}
-        value={searchTerm || ''}
-      />
+      <div onFocus={getInputHeight}>
+        <input
+          className="input"
+          type="text"
+          placeholder="Search memories.."
+          onChange={handleSearch}
+          value={searchTerm || ''}
+        />
+      </div>
 
-      <div>
+
+      <div onClick={handleResize}>
 
         <ReactMapGl {...viewport} 
           mapboxApiAccessToken={publicToken}
-          mapStyle={mapboxStyleUrl}
+          // mapStyle={mapboxStyleUrl}
           onViewportChange={viewport => {
             setViewport(viewport)
           }}
         >
 
-          { filteredMemories && filteredMemories.map(memory => 
-            <Marker key={memory.title} latitude={Number(memory.location.coordinates[1])} longitude={Number(memory.location.coordinates[0])}>
-              <button className="mapButton" onClick={e => {
-                e.preventDefault()
-                setSelectedMemory(memory) 
-              }}
+          { filteredMemories && filteredMemories.map(memory => {
+            {console.log('memory: ', memory)}
+            <Marker
+              key={memory._id}
+              latitude={memory.location.coordinates[1]}
+              longitude={memory.location.coordinates[0]}
+            >
+              
+              <button
+                className="mapButton"
+                onClick={ (e) => {
+                  e.preventDefault()
+                  setSelectedMemory(memory) 
+                }}
               >
-                <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" alt="red location pin"/>
+                <img
+                  height="40px"
+                  width="40px"
+                  src="https://i.imgur.com/6IzPeVa.png"
+                  alt="red location pin"
+                />
               </button>
             </Marker>
+          }
 
           )}
 
           {selectedMemory && (
-            <Popup latitude={Number(selectedMemory.location.coordinates[1])} longitude={Number(selectedMemory.location.coordinates[0])}
-              // onClose={() => {
-              //   setSelectedMemory(null) }}
+            <Popup
+              latitude={selectedMemory.location.coordinates[1]}
+              longitude={selectedMemory.location.coordinates[0]}
             >
+
               <div>
                 <h2>{selectedMemory.title}</h2>
                 <p>{selectedMemory.location.userInput}</p>
-                <Link to={`/memories/${selectedMemory._id}`}>
-                  <img width="400px" height="400px" src={selectedMemory.image} alt={selectedMemory.title} />
+
+                <Link to={`${memoriesPath}/${selectedMemory._id}`}>
+                  <img
+                    width="400px"
+                    height="400px"
+                    src={selectedMemory.image}
+                    alt={selectedMemory.title}
+                  />
                 </Link>
+
                 <br></br>
-                <button onClick= { (e) => {
-                  setSelectedMemory(null)
-                }}>Close</button>
+
+                <button
+                  onClick= { () => {
+                    setSelectedMemory(null)
+                  }}>
+                    Close
+                </button>
+
               </div>
+
             </Popup>
+
           )}
+
         </ReactMapGl>
+
       </div>
+
     </>
   )
 }

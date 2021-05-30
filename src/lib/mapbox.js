@@ -1,7 +1,7 @@
 import { WebMercatorViewport } from 'react-map-gl'
 
 export const apiUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
-export const publicToken = 'pk.eyJ1IjoiZGF0YWJveSIsImEiOiJja3A1bzY3MTIwM3JoMm5vZm51bmM1Y3FuIn0.zPC8jQhM2p3S_pIpJIKa9Q'
+export const publicToken = 'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'
 export const endUrl = `.json?access_token=${publicToken}`
 export const mapboxStyleUrl = 'mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i'
 

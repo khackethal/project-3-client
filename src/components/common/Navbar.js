@@ -23,9 +23,17 @@ function Navbar() {
     history.push('/')
   }
 
+  const getHeight = (e) => {
+    const navHeight = e.nativeEvent.path[4].offsetHeight
+    localStorage.setItem('navHeight', JSON.stringify(navHeight))
+  }
+
   return (
 
-    <nav className="navbar is-info">
+    <nav
+      className="navbar is-info"
+      onLoad={getHeight}
+    >
 
       <div className="container">
 

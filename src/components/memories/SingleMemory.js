@@ -6,7 +6,7 @@ import ReactMapGl, { Marker } from 'react-map-gl'
 import Error from '../common/Error'
 import { baseUrl, memoriesPath, commentPath, headers } from '../../lib/api'
 import { isOwner } from '../../lib/auth'
-import { publicToken } from '../../lib/mapbox'
+import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
 import { subSetViewport } from '../../lib/mapbox'
 
 function SingleMemory() {
@@ -159,15 +159,22 @@ function SingleMemory() {
 
                       <ReactMapGl {...viewport} 
                         mapboxApiAccessToken={publicToken}
-                        // mapStyle={mapboxStyleUrl}
+                        mapStyle={mapboxStyleUrl}
                         onViewportChange={viewport => {
                           setViewport(viewport)
                         }}
                       >
 
-                        <Marker latitude={Number(memory.location.coordinates[1])} longitude={Number(memory.location.coordinates[0])}>
+                        <Marker
+                          latitude={memory.location.coordinates[1]}
+                          longitude={memory.location.coordinates[0]}
+                        >
                           <div>
-                            <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
+                            <img
+                              height="40px"
+                              width="40px"
+                              src="https://i.imgur.com/6IzPeVa.png"
+                            />
                           </div>
                         </Marker>
 
@@ -222,9 +229,12 @@ function SingleMemory() {
           </div>
 
           <div className="comments">
-            {memory.comments && memory.comments.map( comment =>
+            {memory.comments && memory.comments.map( comment => {
+
               <div key={comment._id}>
+
                 <p>{comment.text}</p>
+
                 { isOwner(comment.user) &&
                   <button
                     name={comment._id}
@@ -234,7 +244,9 @@ function SingleMemory() {
                     Delete comment
                   </button>
                 }
+
               </div>
+            }
             )}
           </div>
 
