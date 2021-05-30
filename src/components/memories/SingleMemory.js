@@ -212,7 +212,10 @@ function SingleMemory() {
                     />
 
                   </div>
-                  {formError.text && <p className="help is-danger">Oops, something went wrong. Check if you are logged in.</p>}
+                  {formError.text
+                    &&
+                    <p className="help is-danger">Oops, something went wrong. Check if you are logged in.</p>
+                  }
                 </div>
 
                 <div className="field">
