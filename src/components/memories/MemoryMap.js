@@ -4,6 +4,8 @@ import ReactMapGl, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
 
 import { baseUrl, memoriesPath } from '../../lib/api'
+import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
+
 function MemoryMap() {
 
   const [ searchTerm, setSearchTerm ] = useState(null)
@@ -41,9 +43,10 @@ function MemoryMap() {
 
 
   //* search functions
-  const handleInput = (e) => {
+  const handleSearch = (e) => {
     setSearchTerm(e.target.value)
   }
+  
   const filteredMemories =  memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
@@ -55,24 +58,27 @@ function MemoryMap() {
   return (
     <>
       { isLoading && <p>...loading</p>}
+      { console.log('window.innerHeight: ', window.innerHeight) }
+      { console.log('window.innerWidth: ', window.innerWidth) }
+
       <input
         className="input"
         type="text"
         placeholder="Search memories.."
-        onChange={handleInput}
-        value={searchTerm}
+        onChange={handleSearch}
+        value={searchTerm || ''}
       />
-      {/* <button className="button" onClick={handleClear}>
-        Clear
-      </button> */}
+
       <div>
+
         <ReactMapGl {...viewport} 
-          mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
-          mapStyle="mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i"
+          mapboxApiAccessToken={publicToken}
+          mapStyle={mapboxStyleUrl}
           onViewportChange={viewport => {
             setViewport(viewport)
           }}
         >
+
           { filteredMemories && filteredMemories.map(memory => 
             <Marker key={memory.title} latitude={Number(memory.location.coordinates[1])} longitude={Number(memory.location.coordinates[0])}>
               <button className="mapButton" onClick={e => {
@@ -83,7 +89,9 @@ function MemoryMap() {
                 <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" alt="red location pin"/>
               </button>
             </Marker>
+
           )}
+
           {selectedMemory && (
             <Popup latitude={Number(selectedMemory.location.coordinates[1])} longitude={Number(selectedMemory.location.coordinates[0])}
               // onClose={() => {

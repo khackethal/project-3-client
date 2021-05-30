@@ -30,15 +30,14 @@ function Home() {
             <ul>
               <li className="is-active has-text-info">
 
-                <a className="navbar-item">
-                  <Link to="/register" >Register</Link>
-                </a>
+
+                <Link to="/register" >Register</Link>
+
               </li>
               <li>
-                <a className="navbar-item">
-                  <Link to="/about" >About</Link>
-                  {/* About */}
-                </a>
+
+                <Link to="/about" >About</Link>
+
               </li>
             </ul>
           </div>

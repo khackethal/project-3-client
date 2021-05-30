@@ -5,29 +5,40 @@ import Error from '../common/Error'
 import { baseUrl, memoriesPath } from '../../lib/api'
 function AllMemories() {
 
-  const [ memories, setAllMemories ] = React.useState(null)
+  const [ memories, setMemories ] = React.useState(null)
   const [ isError, setIsError ] = React.useState(false)
+  const [ searchTerm, setSearchTerm ] = React.useState('')
   const isLoading = !memories && !isError
-  const [ searchTerm, setSerachTerm ] = React.useState('')
+
   
   React.useEffect(() => {
+
     const getData = async () => {
+
       try { 
+
         const res = await axios.get(`${baseUrl}${memoriesPath}`)
-        setAllMemories(res.data)
+        setMemories(res.data)
+
       } catch (err) {
         setIsError(true)
       }
+
     }
+
     getData()
+
   },[])
+
   //* search functions
   const handleInput = (e) => {
-    setSerachTerm(e.target.value)
+    setSearchTerm(e.target.value)
   }
+
   const handleClear = () => {
-    setSerachTerm('')
+    setSearchTerm('')
   }
+
   const filteredMemories =  memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
@@ -45,7 +56,9 @@ function AllMemories() {
         <div className="column is-multiline"></div>
         { isError && <Error />}
         { isLoading && <p>...loading</p>}
+
         <p>Search </p>
+
         <input
           className="input"
           type="text"
@@ -53,19 +66,25 @@ function AllMemories() {
           onChange={handleInput}
           value={searchTerm}
         />
+
         <button className="button is-link is-small is-outlined" onClick={handleClear}>
-        Clear
+          Clear
         </button>
+
         { filteredMemories && (filteredMemories.map(memory => 
           <div className="card" key={memory.name}>
+
             <h3>{memory.title}</h3>
             <p>{memory.location.userInput}</p>
             <p>{memory.date}</p>
+
             <Link to={`/memories/${memory._id}`}>
               <img height ="540px" width="810px"  src={memory.image} alt={memory.title} />
             </Link>
+
           </div>
         ))}
+
       </div>
     </>
   )
