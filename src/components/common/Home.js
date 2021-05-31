@@ -11,15 +11,13 @@ function Home() {
     < section className="hero is-info is-large">
       <div className="hero-head">
       </div>
-
-
-      <div className="hero-body">
+      <div className="hero-body home-background">
         <div className="container has-text-centered">
           <p className="title">
             MemoryMap
           </p>
           <p className="subtitle">
-            A spatial log of your cherished memories
+            A spatial log for your cherished memories
           </p>
         </div>
       </div>

@@ -31,7 +31,7 @@ function Navbar() {
   return (
 
     <nav
-      className="navbar is-info"
+      className="navbar"
       onLoad={getHeight}
     >
 
@@ -39,7 +39,7 @@ function Navbar() {
 
         <div className="navbar-brand">
           <Link to="/" className="navbar-item">
-            <img src="https://i.pinimg.com/originals/33/e6/3d/33e63d5adb0da6b303a83901c8e8463a.png" alt="logo"></img>
+            <img src="https://i.imgur.com/48rU2yo.png" alt="logo"></img>
           </Link>
 
           <span
@@ -57,10 +57,7 @@ function Navbar() {
           id="navbarMenuHeroB"
           className={`navbar-menu ${isOpen ? 'is-active' : ''}`}
         >
-            
-          <Link to="/" className="navbar-item">
-            Home
-          </Link>
+
         
           <Link to="/memories" className="navbar-item">
             Memory Index

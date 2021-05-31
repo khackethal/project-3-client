@@ -7,7 +7,7 @@ function Error() {
       {'Can\'t find what you\'re looking for? Check you are in the right place...'}
       <span role="img" aria-label="sad-emoji">
         {' '}
-        😞
+        
       </span>
     </h2>
   )

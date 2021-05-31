@@ -1,3 +1,10 @@
+@import '../sass/utilities/initial-variables';
+@import '../sass/utilities/functions';
+
+
+
+
+
 .map-container {
   height: 400px;
   }
@@ -22,8 +29,67 @@
     border-radius: 4px;
     }
 
-  button.mapboxgl-popup-close-button {
+button.mapboxgl-popup-close-button {
     display: none,
   }
+
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.home-background {
+  background-image: url('https://imgur.com/CnylXLj.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  
+}
+
+.about-background {
+  background-image: url('https://imgur.com/Q9nvvcw.png');
+}
+
+.error-background {
+  background-image:url('https://imgur.com/z6KGlzV.png')
+}
+
+.all-memories-background {
+  background-image: url('https://imgur.com/vYMvx4u.png');
+}
+
+.memory-map-background {
+  background-image: url('https://imgur.com/TUTvUli.png');
+}
+
+.new-memory-background {
+  background-image: url('https://imgur.com/zlZby39.png');
+}
+
+
+.single-memory-background {
+  background-image:url('https://imgur.com/283w7JC.png');
+}
+
+.register-background {
+  background-image:url('https://imgur.com/DCugnIH.png')
+}
+
+.login-background {
+  background-image: url('https://imgur.com/JbqMTzr.png')
+
+}
+
+$pink: #ffb3b3;
+$navbar-color: $blue;
+$blue: #6D63FF;
+$blue-invert: rgb(57, 57, 57);
+
+$primary: $blue;
+$primary-invert:rgb(57, 57, 57);
+
+
 
 @import '~bulma/bulma.sass';
