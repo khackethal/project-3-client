@@ -7,7 +7,7 @@ import ReactMapGl, { Marker } from 'react-map-gl'
 
 import Error from '../common/Error'
 import { baseUrl, memoriesPath, headers } from '../../lib/api'
-import { isAuthenticated } from '../../lib/auth'
+
 
 
 

@@ -21,5 +21,9 @@
     margin: 12px;
     border-radius: 4px;
     }
+
+    button.mapboxgl-popup-close-button{
+      display: none;
+    }
     
 @import '~bulma/bulma.sass';
