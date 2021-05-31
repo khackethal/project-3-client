@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { isAuthenticated, removeToken } from '../../lib/auth'
 
@@ -23,14 +23,24 @@ function Navbar() {
     history.push('/')
   }
 
+  const getHeight = (e) => {
+    const navHeight = e.nativeEvent.path[4].offsetHeight
+    localStorage.setItem('navHeight', JSON.stringify(navHeight))
+  }
+
   return (
 
-    <nav className="navbar is-info">
+    <nav
+      className="navbar is-info"
+      onLoad={getHeight}
+    >
+
       <div className="container">
+
         <div className="navbar-brand">
-          <a className="navbar-item">
-            <Link to="/" ><img src="https://i.pinimg.com/originals/33/e6/3d/33e63d5adb0da6b303a83901c8e8463a.png" alt="logo"></img> </Link>
-          </a>
+          <Link to="/" className="navbar-item">
+            <img src="https://i.pinimg.com/originals/33/e6/3d/33e63d5adb0da6b303a83901c8e8463a.png" alt="logo"></img>
+          </Link>
 
           <span
             className={`navbar-burger ${isOpen ? 'is-active' : ''}`}
@@ -41,61 +51,54 @@ function Navbar() {
             <span></span>
             <span></span>
           </span>
-
         </div>
+
         <div
           id="navbarMenuHeroB"
-          className={`navbar-menu ${isOpen ? 'is-active' : '' }`}
+          className={`navbar-menu ${isOpen ? 'is-active' : ''}`}
         >
-          <div className="navbar-end">
-            <a className="navbar-item">
-              <Link to="/" >Home</Link>
-            </a>
-
-            <a className="navbar-item">
-              <Link to="/newmemory" >New Memory</Link>
-            </a>
             
-            <a className="navbar-item">
-              <Link to="/memories" >Memory Index</Link>
-            </a>
+          <Link to="/" className="navbar-item">
+            Home
+          </Link>
+        
+          <Link to="/memories" className="navbar-item">
+            Memory Index
+          </Link>
 
-            <a className="navbar-item">
-              <Link to="/newmemory" >New Memory</Link>
-            </a>
+          {isLogged &&
+              <Link to="/newmemory" className="navbar-item">
+                New Memory
+              </Link>
+          }
 
-            <a className="navbar-item">
-              <Link to="/memories/map" >Memory Map</Link>
-            </a>
-
-
-            {!isLogged &&
-              <a className="navbar-item">
-                <Link to="/register" >Register</Link> 
-              </a>
-            }
-
-            {!isLogged &&
-              <a className="navbar-item">
-                <Link to="/login" >Login</Link> 
-              </a>
-            }
-
-            {isLogged &&
-              <a
-                className="navbar-item"
-                onClick={handleLogout}
-              >
-                Logout
-              </a>
-            }
+          <Link to="/memories/map" className="navbar-item">
+            Memory Map
+          </Link>
 
 
+          {!isLogged &&
+            <Link to="/register" className="navbar-item">
+              Register
+            </Link>
+          }
 
-            <a className="navbar-item">
-              <Link to="/api" >Api Test</Link> 
-            </a>
-          </div>
+          {!isLogged &&
+            <Link to="/login" className="navbar-item">
+              Login
+            </Link> 
+          }
+
+          {isLogged &&
+            <Link
+              to="/"
+              className="navbar-item"
+              onClick={handleLogout}
+            >
+              Logout
+            </Link>
+          }
+
         </div>
       </div>
     </nav>

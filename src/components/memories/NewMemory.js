@@ -27,21 +27,51 @@ function NewMemory() {
     description: '',
     tags: [],
     location: '',
-    // {
-    //   userInput: '',
-    //   coordinates: [],
-    //   boundaryBox: [],
-    // },
     user: '',
   })
 
-  const handleRequired = (e) => {
+  const handleNestedChange = (e) => {
+
+    const getBoundaryBox = (e) => {
+      if (e.bbox) return e.bbox
+    }
+
+    handleChange(
+      { target:
+        { name: 'location',
+          value: {
+            ...formData.location,
+            userInput: e.place_name,
+            coordinates: e.center,
+            boundaryBox: getBoundaryBox(e),
+            placeType: e.place_type[0],
+          },
+        },
+      })
+  }
+
+  const handleTags = (e) => {
+
+    // * reformatting tags
+    const newTags = formatTagArray(e.target.value)
+
+    setFormData({
+      ...formData,
+      tags: newTags,
+    })
+  }
+
+  const handleDanger = (e) => {
 
     const emptyField = (e.target.value.length === 0)
     const requiredFields = ['title', 'date', 'description']
 
     if (requiredFields.includes(e.target.name) && emptyField) {
       setFormError({ ...formError, [e.target.name]: 'Required field.' })
+    }
+
+    if (formError.errMessage) {
+      setFormError({ ...formError, errMessage: '' })
     }
   }
 
@@ -52,39 +82,13 @@ function NewMemory() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // * reformatting tags
-    const newTags = formatTagArray(formData.tags)
-
-    // * Get userId
-    // const
-
-    setFormData({
-      ...formData,
-      tags: newTags,
-      // location: {
-      // userInput: 'set address here'
-      // coordinates: [longitude,latitude],
-      // },
-    })
-    
     try {
-
       const res = await createMemory(formData)
-      console.log('res.data: ', res.data)
-
       history.push(`${memoriesPath}/${res.data._id}`)
-
     } catch (err) {
-      console.log('err: ', err)
-      console.log('err.response.data.errMessage: ', err.response.data.errMessage)
-
-      setFormError({ ...formError, errorMessage: err.response.data.errMessage })   
+      setFormError({ ...formError, errMessage: err.response.data.errMessage })   
     }
   }
-
-
-
-
 
   return (
     <section className="section">
@@ -104,12 +108,12 @@ function NewMemory() {
               <div className="control">
 
                 <input
-                  className={`input ${formError.title ? 'is-danger' : ''}`}
+                  className={`input ${formError.title || formError.errMessage ? 'is-danger' : ''}`}
                   type="text"
                   placeholder="e.g. My cherished memory"
                   name="title"
                   onChange={handleChange}
-                  onBlur={handleRequired}
+                  onBlur={handleDanger}
                   required
                 />
 
@@ -118,20 +122,20 @@ function NewMemory() {
             </div>
 
             <div className="field" htmlFor="title">
-              <label className="label">Where did it happen?</label>
+              <label className="label">Where did it take place?</label>
               <div className="control">
 
                 <input
-                  className={`input ${formError.location ? 'is-danger' : ''}`}
+                  className={`input ${formError.location || formError.errMessage ? 'is-danger' : ''}`}
                   type="text"
                   placeholder="Find address on map"
-                  name="address"
-                  // onChange={handleChange}
-                  onChange={ () => {
-                    handleChange()
+                  name="location"
+                  onChange={ (e) => {
+                    handleNestedChange(e)
                     setFormError({ ...formError, location: '' })
                   }}
-                  onSubmit={handleRequired}
+                  value={formData.location.userInput || ''}
+                  onSubmit={handleDanger}
                   required
                   disabled
                 />
@@ -146,7 +150,7 @@ function NewMemory() {
               <div className="control">
 
                 <input
-                  className={`input ${formError.date ? 'is-danger' : ''}`}
+                  className={`input ${formError.date || formError.errMessage ? 'is-danger' : ''}`}
                   type="date"
                   name="date"
                   onChange={handleChange}
@@ -162,12 +166,12 @@ function NewMemory() {
               <div className="control">
 
                 <input
-                  className={`input ${formError.description ? 'is-danger' : ''}`}
+                  className={`input ${formError.description || formError.errMessage ? 'is-danger' : ''}`}
                   type="text"
                   placeholder="e.g. Roses are red, violets are blue"
                   name="description"
                   onChange={handleChange}
-                  onBlur={handleRequired}
+                  onBlur={handleDanger}
                   required
                 />
 
@@ -180,11 +184,11 @@ function NewMemory() {
               <div className="control">
 
                 <input
-                  className="input"
+                  className={`input ${formError.errMessage ? 'is-danger' : '' }`}
                   type="text"
                   placeholder="e.g. dreamy, poop, romantic"
                   name="tags"
-                  onChange={handleChange}
+                  onChange={handleTags}
                 />
 
               </div>
@@ -200,7 +204,9 @@ function NewMemory() {
               </button>
             </div>
 
-            <MapboxSearch />
+            {formError.errMessage && <p className="help is-danger">{formError.errMessage}</p>}
+
+            <MapboxSearch onResult={handleNestedChange} />
 
           </form>
 

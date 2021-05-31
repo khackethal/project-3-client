@@ -1,113 +1,298 @@
-import React from 'react'
-import axios from 'axios'
-import Error from '../common/Error'
-import { useParams } from 'react-router-dom' 
-import ReactMapGl, { Marker } from 'react-map-gl'
+// import { useState, useEffect } from 'react'
+// // import { useParams } from 'react-router-dom' 
+// import axios from 'axios'
+
+// import mapboxgl from 'mapbox-gl'
+// import ReactMapGl, { Marker, FlyToInterpolator, WebMercatorViewport } from 'react-map-gl'
+// import { easeCubic } from 'd3-ease'
+
+// // import Geocoder from 'react-map-gl-geocoder'
+// // const Geocoder = require('react-map-gl-geocoder')
 
 
-import { useState } from 'react'
+// import { useState } from 'react'
 
-function ApiTest() {
-  const [ memory, setSingleMemory ] = React.useState(null)
-  const { id } = useParams()
-  const [ isError, setIsError ] = React.useState(false)
-  const isLoading = !memory && !isError
-  const [ latitude, setLatitude ] = React.useState(null)
-  const [ longitude, setLongitude ] = React.useState(null)
-
-  
-
-  //* For normal page content
-
-  React.useEffect( () => {
-    const getData = async () => {
-      try {
-        const result = await axios.get(`http://open.mapquestapi.com/geocoding/v1/address?key=	kigSTGPns5XZHY23SQS8A2MRiDfG3FwM&location=london,uk`)
-        setSingleMemory(result.data)
-        // console.log(result.data.results[0].locations[1].displayLatLng.lat)
-        setViewport({ ...viewport, latitude: (Number(result.data.results[0].locations[1].displayLatLng.lat)), longitude: (Number(result.data.results[0].locations[1].displayLatLng.lng)) })
-        setLatitude((result.data.results[0].locations[1].displayLatLng.lat))
-        setLongitude((result.data.results[0].locations[1].displayLatLng.lng))
-      } catch (err) {
-        setIsError(true)
-      }
-    }
-    getData()
-
-  },[id])
-
-
-  //* For map content-------------------
-  const [ viewport, setViewport ] = useState({
-    latitude: 54.405,
-    longitude: 9.431,
-    width: '500px',
-    height: '500px',
-    zoom: 10,
-
-  })
-
-  console.log("latitude", latitude)
-  console.log("longitude", longitude)
-
+// function ApiTest() {
+//   const [ memory, setSingleMemory ] = React.useState(null)
+//   const { id } = useParams()
+//   const [ isError, setIsError ] = React.useState(false)
+//   const isLoading = !memory && !isError
+//   const [ latitude, setLatitude ] = React.useState(null)
+//   const [ longitude, setLongitude ] = React.useState(null)
 
   
-  return (
-    <section>
-      { isError && <Error />}
-      { isLoading && <p> ... loading</p>}
-      { memory && (
-        <>
 
-          <div className="card">    
-            <div className="columns">
-              <div className="column">
-                {/* <p className="column">{memory.title}</p>
-                <h2 className="column">{memory.location}</h2>
-                <div className="column is-60">{memory.description}</div>
-                <div className="columns is-mobile">
+//   //* For normal page content
 
-                  <div className="column">
-                    <p className="bd-notification is-info"> <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} /></p>
-                  </div> */}
+//   React.useEffect( () => {
+//     const getData = async () => {
+//       try {
+//         const result = await axios.get(`http://open.mapquestapi.com/geocoding/v1/address?key=	kigSTGPns5XZHY23SQS8A2MRiDfG3FwM&location=london,uk`)
+//         setSingleMemory(result.data)
+//         // console.log(result.data.results[0].locations[1].displayLatLng.lat)
+//         setViewport({ ...viewport, latitude: (Number(result.data.results[0].locations[1].displayLatLng.lat)), longitude: (Number(result.data.results[0].locations[1].displayLatLng.lng)) })
+//         setLatitude((result.data.results[0].locations[1].displayLatLng.lat))
+//         setLongitude((result.data.results[0].locations[1].displayLatLng.lng))
+//       } catch (err) {
+//         setIsError(true)
+//       }
+//     }
+//     getData()
 
-              {/* <input></input>
-                  <button>Search</button>
+//   },[id])
 
-                  <p>latitude ${}</p> */}
 
-                <div className="column">
-                  <p className="bd-notification is-info">
-                  <ReactMapGl {...viewport} 
-                        mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
-                        mapStyle="mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i"
-                       onViewportChange={viewport => {
-                        setViewport(viewport)
-                      }}
-                    >
+//   //* For map content-------------------
+//   const [ viewport, setViewport ] = useState({
+//     latitude: 54.405,
+//     longitude: 9.431,
+//     width: '500px',
+//     height: '500px',
+//     zoom: 10,
 
-                      <Marker 
-                        latitude={Number(latitude)} 
-                        longitude={Number(longitude)}>
-                        <div>
-                          <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
-                        </div>
-                      </Marker> 
+//   })
+
+//   console.log("latitude", latitude)
+//   console.log("longitude", longitude)
+
+
+  
+//   return (
+//     <section>
+//       { isError && <Error />}
+//       { isLoading && <p> ... loading</p>}
+//       { memory && (
+//         <>
+
+//           <div className="card">    
+//             <div className="columns">
+//               <div className="column">
+//                 {/* <p className="column">{memory.title}</p>
+//                 <h2 className="column">{memory.location}</h2>
+//                 <div className="column is-60">{memory.description}</div>
+//                 <div className="columns is-mobile">
+
+//                   <div className="column">
+//                     <p className="bd-notification is-info"> <img height ="540px" width="810px"  src={memory.imageUrl} alt={memory.name} /></p>
+//                   </div> */}
+
+//               {/* <input></input>
+//                   <button>Search</button>
+
+//                   <p>latitude ${}</p> */}
+
+//                 <div className="column">
+//                   <p className="bd-notification is-info">
+//                   <ReactMapGl {...viewport} 
+//                         mapboxApiAccessToken={'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4bm0ybm1rbnA4OGg0cDUifQ.13jXKE1MWMt27fdEfA1K9g'}
+//                         mapStyle="mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i"
+//                        onViewportChange={viewport => {
+//                         setViewport(viewport)
+//                       }}
+//                     >
+
+//                       <Marker 
+//                         latitude={Number(latitude)} 
+//                         longitude={Number(longitude)}>
+//                         <div>
+//                           <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
+//                         </div>
+//                       </Marker> 
                       
 
-                    </ReactMapGl>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* </div>   */}
-        </>
-      )}
+//                     </ReactMapGl>
+//                   </p>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//           {/* </div>   */}
+//         </>
+//       )}
 
 
-    </section>
-  )
-}
+//     </section>
+//   )
+// }
 
-export default ApiTest
+// export default ApiTest
+// function ApiTest() {
+
+//   const [encodedAddress,setEncodedAddress] = useState('')
+//   const [boundaryBox, setBoundaryBox] = useState([[],[]])
+//   const [centerCoordinates, setCenterCoordinates] = useState([])
+
+//   const apiUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/'
+//   const publicToken = 'pk.eyJ1IjoiZGF0YWJveSIsImEiOiJja3A1bzY3MTIwM3JoMm5vZm51bmM1Y3FuIn0.zPC8jQhM2p3S_pIpJIKa9Q'
+//   const endUrl = `.json?access_token=${publicToken}`
+
+//   //* Display map size, and position/zoom within the map
+//   const [ viewport, setViewport ] = useState({
+//     latitude: 54.405,
+//     longitude: 9.431,
+//     width: '500px',
+//     height: '500px',
+//     zoom: 2,
+//   })
+
+//   const handleChange = (e) => {
+//     const address = e.target.value
+//     setEncodedAddress(encodeURI(address))
+//   }
+
+//   const handleSubmit = (e) => {
+
+//     e.preventDefault()
+
+//     try {
+//       const getData = async () => {
+
+//         const res = await axios.get(`${apiUrl}${encodedAddress}${endUrl}`)
+
+//         const centerLongitude = res.data.features[0].center[0]
+//         const centerLatitude = res.data.features[0].center[1]
+
+//         setCenterCoordinates([])
+
+//         const minLongitude = res.data.features[0].bbox[0]
+//         const minLatitude = res.data.features[0].bbox[1]
+//         const maxLongitude = res.data.features[0].bbox[2]
+//         const maxLatitude = res.data.features[0].bbox[3]
+
+//         setBoundaryBox([[minLongitude, minLatitude], [maxLongitude, maxLatitude]])
+
+//         const setMap = () => {
+
+//           const { longitude, latitude, zoom } = new WebMercatorViewport(viewport)
+//             .fitBounds(boundaryBox, {
+//               padding: 20,
+//               offset: [0, -100],
+//             })
+
+//           setViewport({
+//             ...viewport,
+//             latitude: latitude,
+//             longitude: longitude,
+//             zoom: zoom,
+//             transitionDuration: 2000,
+//             transitionInterpolator: new FlyToInterpolator(),
+//             transitionEasing: easeCubic,
+//           })
+//         }
+//         setMap()
+//       }
+
+//       getData()
+
+//     } catch (err) {
+//       console.log(err)
+//     }
+//   }
+
+
+//   //       setBoundaryBox([[minLongitude, minLatitude], [maxLongitude, maxLatitude]])
+
+//   //       const setMap = () => {
+
+//   //         const { longitude, latitude, zoom } = new WebMercatorViewport(viewport)
+//   //           .fitBounds(boundaryBox, {
+//   //             padding: 20,
+//   //             offset: [0, -100],
+//   //           })
+
+//   //         setViewport({
+//   //           ...viewport,
+//   //           latitude: latitude,
+//   //           longitude: longitude,
+//   //           zoom: zoom,
+//   //           transitionDuration: 2000,
+//   //           transitionInterpolator: new FlyToInterpolator(),
+//   //           transitionEasing: easeCubic,
+//   //         })
+//   //       }
+//   //       setMap()
+//   //     }
+
+//   //     getData()
+
+//   //   } catch (err) {
+//   //     console.log(err)
+//   //   }
+//   // }
+
+//   const handleViewportChange = useCallback((viewport) => setViewport(viewport), [])
+
+
+
+//   const handleResult = (e) => {
+
+//     const centerLongitude = e.result.center[0]
+//     const centerLatitude = e.result.center[1]
+//     setCenterCoordinates([centerLongitude,centerLatitude])
+
+//     const minLongitude = e.result.bbox[0]
+//     const minLatitude = e.result.bbox[1]
+//     const maxLongitude = e.result.bbox[2]
+//     const maxLatitude = e.result.bbox[3]
+//     setBoundaryBox([[minLongitude, minLatitude], [maxLongitude, maxLatitude]])
+//   }
+
+  
+//   return (
+//     <section>
+//       <div className="card">    
+//         <div className="columns">
+//           <div className="column">
+//             <div className="column">
+//               <p className="bd-notification is-info">
+
+//                 <form
+//                   className="column is-half is-offset-one-quarter"
+//                   onSubmit={handleSubmit}
+//                 >
+//                   <input
+//                     className="input"
+//                     type="text" 
+//                     name="searchAddress"
+//                     placeholder="e.g. Lincoln Memorial Circle NW"
+//                     onChange={handleChange}
+//                   />
+
+//                   <button className="button is-link">Search</button>
+
+//                 </form>
+
+//                 {/* <Geocoder
+//                   accessToken={publicToken}
+//                   onSelect={handleChange}
+//                 ></Geocoder> */}
+//                 <ReactMapGl {...viewport} 
+//                   mapboxApiAccessToken={publicToken}
+//                   // mapStyle="mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i"
+//                   onViewportChange={viewport => {
+//                     setViewport(viewport)
+//                   }}
+//                 >
+                  
+
+//                   {/* <Marker 
+//                     longitude={}
+//                     latitude={} 
+//                   >
+//                     <div>
+//                       <img height="40px" width="40px" src="https://i.imgur.com/6IzPeVa.png" />
+//                     </div>
+//                   </Marker>  */}
+                  
+//                 </ReactMapGl>
+
+//               </p>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   )
+// }
+
+// export default ApiTest
