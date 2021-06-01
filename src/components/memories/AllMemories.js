@@ -1,8 +1,11 @@
 import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
+
 import Error from '../common/Error'
 import { baseUrl, memoriesPath } from '../../lib/api'
+
 function AllMemories() {
 
   const [memories, setMemories] = React.useState(null)
@@ -23,11 +26,8 @@ function AllMemories() {
       } catch (err) {
         setIsError(true)
       }
-
     }
-
     getData()
-
   }, [])
 
   //* search functions
@@ -47,7 +47,6 @@ function AllMemories() {
       memory.tags.includes(searchTerm)
     )
   })
-
 
   return (
     <>
@@ -72,6 +71,7 @@ function AllMemories() {
               <button className="button is-link is-small is-outlined" onClick={handleClear}>
                 Clear
               </button>
+              
             </aside>
           </div>
 
@@ -81,19 +81,22 @@ function AllMemories() {
 
                 <div className="title is-3">{memory.title}</div>
                 <div className="has-text-success">{memory.location.userInput}</div>
-                <p>{memory.date}</p>
+                <p>{moment(memory.date).format('MMMM Do YYYY')}</p>
 
                 <Link to={`/memories/${memory._id}`}>
                   <img  height="540px" width="810px" src={memory.image} alt={memory.title} />
                 </Link>
+
               </div>
             </div>
           ))}
+
           <div className="column is-half is-offset-half">
             <figure className="image">
               <img src="https://imgur.com/vYMvx4u.png" />
             </figure>
           </div>
+
         </div>
       </section>
     </>

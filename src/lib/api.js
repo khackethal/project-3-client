@@ -34,7 +34,6 @@ export function deleteMemory(id) {
   return axios.delete(`${baseUrl}${memoriesPath}${id}`, headers())
 }
 
-
 // * Authentication Requests
 export function registerUser(formdata) {
   return axios.post(`${baseUrl}${registerPath}`, formdata)
