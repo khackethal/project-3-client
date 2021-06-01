@@ -42,7 +42,7 @@ function AllMemories() {
   const filteredMemories = memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
-      memory.location.toLowerCase().includes(searchTerm) ||
+      memory.location.userInput.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
       memory.tags.includes(searchTerm)
     )

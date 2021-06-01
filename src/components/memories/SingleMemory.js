@@ -237,8 +237,8 @@ function SingleMemory() {
 
               <div className="section">
                 <div className="comments">
-                  {memory.comments && memory.comments.map(comment => {
-
+                  {memory.comments && memory.comments.map(comment => 
+                
                     <div key={comment._id}>
 
                       <p>{comment.text}</p>
@@ -255,7 +255,7 @@ function SingleMemory() {
 
                     </div>
 
-                  }
+                  
                   )}
                 </div>
               </div>

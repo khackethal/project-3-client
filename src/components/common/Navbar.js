@@ -32,7 +32,7 @@ function Navbar() {
   return (
 
     <nav
-      className="navbar is-info is-fixed-top"
+      className="navbar is-info"
       onLoad={getHeight}
     >
 

@@ -8,9 +8,9 @@ function Error() {
         {'Can\'t find what you\'re looking for? Check you are in the right place...'}
 
       </div>
-      <figure className="image">
+      {/* <figure className="image">
         <img src="https://imgur.com/z6KGlzV.png" />
-      </figure>
+      </figure> */}
     </>
   )
 }
