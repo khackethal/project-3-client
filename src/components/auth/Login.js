@@ -7,7 +7,7 @@ import { setToken } from '../../lib/auth'
 function Login() {
 
   const history = useHistory()
-  const [errorMessage,setErrorMessage] = React.useState('')
+  const [errorMessage, setErrorMessage] = React.useState('')
   const { formData, handleChange } = useForm({
     email: '',
     password: '',
@@ -26,53 +26,67 @@ function Login() {
   }
 
   return (
-    <>
-      <form
-        className="column is-half is-offset-one-quarter"
-        onSubmit={handleSubmit}
-      >
-        <div className="field">
-          <label className="label">Email</label>
-          <div className="control">
-            <input
-              className=
-                {`
-                  input ${ errorMessage ? 'is-danger' : '' }
-                `}
-              type="email"
-              name="email"
-              placeholder="e.g. alinic@bossman.com"
-              onChange={handleChange}
-            />
-          </div>
-        </div>
+    <section className="login-background">
+      <div className="title is-2 has-text-centered has-background-black has-text-white">login</div>
 
-        <div className="field">
-          <label className="label">Password</label>
-          <div className="control">
-            <input
-              className=
-                {`
-                input ${ errorMessage ? 'is-danger' : '' }
+      <div className="container is-fullwidth login-background">
+        <div className="columns is-vcentered">
+          <div className="column is-half is-centered ">
+            <form
+              className="card is-centered is-one-quarter-desktop is-one-third-widescreen is-half-fullhd has-background-info-dark"
+              onSubmit={handleSubmit}
+            >
+              <div className="field">
+                <label className="label has-text-white">Email</label>
+                <div className="control">
+                  <input
+                    className=
+                      {`
+                  input ${errorMessage ? 'is-danger' : ''}
                 `}
-              type="password" 
-              name="password"
-              placeholder="e.g. famgrapejuiceismyfav"
-              onChange={handleChange}
-            />
-            <p className="help is-danger">
-              {errorMessage}
-            </p>
-          </div>
-        </div>
+                    type="email"
+                    name="email"
+                    placeholder="e.g. alinic@bossman.com"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
 
-        <div className="field is-grouped">
-          <div className="control">
-            <button className="button is-link">Log In</button>
+              <div className="field">
+                <label className="label has-text-white">Password</label>
+                <div className="control">
+                  <input
+                    className=
+                      {`
+                input ${errorMessage ? 'is-danger' : ''}
+                `}
+                    type="password"
+                    name="password"
+                    placeholder="e.g. famgrapejuiceismyfav"
+                    onChange={handleChange}
+                  />
+                  <p className="help is-danger">
+                    {errorMessage}
+                  </p>
+                </div>
+              </div>
+
+              <div className="field is-grouped">
+                <div className="control">
+                  <button className="button is-link">Log In</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div className="column is-half">
+            <figure className="image">
+              <img src="https://imgur.com/JbqMTzr.png" />
+            </figure>
           </div>
         </div>
-      </form>
-    </>
+      </div>
+    </section>
+
   )
 }
 

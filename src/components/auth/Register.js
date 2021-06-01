@@ -5,7 +5,7 @@ import { userCheck, registerUser } from '../../lib/api'
 import { setToken } from '../../lib/auth'
 
 function Register() {
-  
+
   const history = useHistory()
 
   // * check if email && username are unique
@@ -72,88 +72,99 @@ function Register() {
 
   return (
     <>
+      <div className="title is-2 has-text-centered has-background-black has-text-white">register</div>
       <p>{console.log('formError: ', formError)}</p>
-      <form
-        className="column is-half is-offset-one-quarter"
-        onSubmit={handleSubmit}
-      >
-        <div className="field">
-          <label className="label">Username</label>
-          <div className="control has-icons-left has-icons-right">
-            <input
-              className=
-                {`input 
+      <section className="container">
+        <div className="columns is-vcentered">
+          <div className="column is-half is-centered">
+            <form className="card is-centered is-one-quarter-desktop is-one-third-widescreen is-half-fullhd has-background-info"
+              onSubmit={handleSubmit}
+            >
+              <div className="field">
+                <label className="label">Username</label>
+                <div className="control has-icons-left has-icons-right">
+                  <input
+                    className=
+                      {`input 
                 ${!isUniqueId ? 'is-danger' : ''}
                 `}
-              type="text"
-              placeholder="e.g. dreamer666"
-              name="username"
-              onChange={handleChange}
-              onBlur={handleUnique}
-            />
-          </div>
-          <p className="help is-danger">
-            {!isUniqueId && 'Invalid credentials, try something else.'}
-          </p>
-        </div>
+                    type="text"
+                    placeholder="e.g. dreamer666"
+                    name="username"
+                    onChange={handleChange}
+                    onBlur={handleUnique}
+                  />
+                </div>
+                <p className="help is-danger">
+                  {!isUniqueId && 'Invalid credentials, try something else.'}
+                </p>
+              </div>
 
-        <div className="field">
-          <label className="label">Email</label>
-          <div className="control has-icons-left has-icons-right">
-            <input
-              className=
-                {`input 
+              <div className="field">
+                <label className="label">Email</label>
+                <div className="control has-icons-left has-icons-right">
+                  <input
+                    className=
+                      {`input 
                 ${!isUniqueId || formError.username ? 'is-danger' : ''}
                 `}
-              type="email"
-              placeholder="Email input"
-              name="email"
-              onChange={handleChange}
-              onInvalid={handleValidity}
-              onBlur={handleUnique}
-            />
+                    type="email"
+                    placeholder="e.g. muppet754@mail.sz"
+                    name="email"
+                    onChange={handleChange}
+                    onInvalid={handleValidity}
+                    onBlur={handleUnique}
+                  />
+                </div>
+                <p className="help is-danger">
+                  {formError.email}
+                </p>
+
+              </div>
+
+              <div className="field">
+                <label className="label">Password</label>
+                <div className="control has-icons-left has-icons-right">
+                  <input
+                    className={`input ${!isPasswordMatch ? 'is-danger' : ''}`}
+                    type="password"
+                    placeholder="e.g. soulfuldreamyclouds"
+                    name="password"
+                    onChange={handleChange}
+                    onBlur={handlePassMatch}
+                  />
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="label">Password Confirmation</label>
+                <div className="control has-icons-left has-icons-right">
+                  <input
+                    className={`input ${!isPasswordMatch ? 'is-danger' : ''}`}
+                    type="password"
+                    placeholder="e.g. soulfuldreamyclouds"
+                    name="passwordConfirmation"
+                    onChange={handleChange}
+                    onBlur={handlePassMatch}
+                  />
+                </div>
+                <p className="help is-danger">
+                  {!isPasswordMatch && 'Passwords not matching'}
+                </p>
+              </div>
+
+              <button type="submit" className="button is-fullwidth  has-text-white has-background-info-dark">
+                Register
+              </button>
+            </form>
           </div>
-          <p className="help is-danger">
-            {formError.email}
-          </p>
-
-        </div>
-
-        <div className="field">
-          <label className="label">Password</label>
-          <div className="control has-icons-left has-icons-right">
-            <input
-              className={`input ${!isPasswordMatch ? 'is-danger' : '' }`}
-              type="password"
-              placeholder="e.g. soulfuldreamyclouds"
-              name="password"
-              onChange={handleChange}
-              onBlur={handlePassMatch}
-            />
+          <div className="column is-half">
+            <figure className="image">
+              <img src="https://imgur.com/DCugnIH.png" />
+            </figure>
           </div>
         </div>
-
-        <div className="field">
-          <label className="label">Password Confirmation</label>
-          <div className="control has-icons-left has-icons-right">
-            <input
-              className= {`input ${ !isPasswordMatch ? 'is-danger' : '' }`}
-              type="password"
-              placeholder="e.g. soulfuldreamyclouds"
-              name="passwordConfirmation"
-              onChange={handleChange}
-              onBlur={handlePassMatch}
-            />
-          </div>
-          <p className="help is-danger">
-            {!isPasswordMatch && 'Passwords not matching'}
-          </p>
-        </div>
-
-        <button type="submit" className="button is-fullwidth">
-          Register
-        </button>
-      </form>
+      </section>
     </>
   )
 }
