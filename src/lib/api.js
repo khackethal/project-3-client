@@ -7,6 +7,7 @@ export const loginPath = '/login'
 export const checkUserPath = '/checkuser'
 export const memoriesPath = '/memories'
 export const commentPath = '/comment'
+export const editPath = '/edit'
 
 export function headers() {
   return {
@@ -27,11 +28,11 @@ export function createMemory(formdata) {
 }
 
 export function editMemory(id, formdata) {
-  return axios.put(`${baseUrl}${memoriesPath}${id}`, formdata, headers())
+  return axios.put(`${baseUrl}${memoriesPath}/${id}`, formdata, headers())
 }
 
 export function deleteMemory(id) {
-  return axios.delete(`${baseUrl}${memoriesPath}${id}`, headers())
+  return axios.delete(`${baseUrl}${memoriesPath}/${id}`, headers())
 }
 
 // * Authentication Requests

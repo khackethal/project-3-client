@@ -1,24 +1,28 @@
 import React from 'react'
-import { useHistory } from 'react-router'
+import axios from 'axios'
+import { useParams, useHistory } from 'react-router'
+import moment from 'moment'
 
 import MapboxSearch from '../mapbox/MapboxSearch'
 import ImageUploadField from './ImageUploadField'
 import { useForm } from '../../hooks/useForm'
-import { createMemory, memoriesPath } from '../../lib/api'
+import {  baseUrl, editMemory, memoriesPath } from '../../lib/api'
 
-
-function NewMemory() {
+function EditMemory() {
+  const history = useHistory()
+  const { memoryId } = useParams()
 
   function formatTagArray(tags) {
+
     if (typeof tags === 'string') {
       const tagsArray = tags.replace(/[^a-zA-Z0-9]/g, ' ').split(' ')
       const sanitisedTagsArray = tagsArray.filter(tag => tag !== '')
       return sanitisedTagsArray
     }
-    return tags
-  }
 
-  const history = useHistory()
+    return tags
+
+  }
 
   const { formData, setFormData, handleChange, formError, setFormError } = useForm({
     title: '',
@@ -29,6 +33,25 @@ function NewMemory() {
     location: '',
     user: '',
   })
+  
+  React.useEffect(() => {
+
+    const getData = async () => {
+
+      try {
+
+        const res = await axios.get(`${baseUrl}${memoriesPath}/${memoryId}`)
+        setFormData(res.data)
+
+      } catch (err) {
+        setFormError(err.response.data.errorss)
+      }
+    }
+
+    getData()
+
+  }, [memoryId, setFormData, setFormError])
+
 
   const handleNestedChange = (e) => {
 
@@ -85,8 +108,9 @@ function NewMemory() {
     e.preventDefault()
 
     try {
-      const res = await createMemory(formData)
-      history.push(`${memoriesPath}/${res.data._id}`)
+      const res = await editMemory(memoryId, formData)
+      console.log('res',res.data)
+      history.push(`${memoriesPath}/${memoryId}`)
     } catch (err) {
       setFormError({ ...formError, errMessage: err.response.data.errMessage })
     }
@@ -94,9 +118,7 @@ function NewMemory() {
 
   return (
     <div className="new-memory-background">
-      <div className="title is-2 has-text-centered has-background-black has-text-white">
-        new memory
-      </div>
+      <div className="title is-2 has-text-centered has-background-black has-text-white">edit memory</div>
       <section>
 
         <div className="container">
@@ -111,28 +133,32 @@ function NewMemory() {
                 <div className="control">
 
                   <input
-                    className={`input ${formError.title || formError.errMessage ? 'is-danger' : ''}`}
+                    className={`input
+                    ${formError.title
+                      ||
+                      formError.errMessage ? 'is-danger' : ''}`}
                     type="text"
                     placeholder="e.g. My cherished memory"
                     name="title"
                     onChange={handleChange}
                     onBlur={handleDanger}
+                    value={formData.title}
                     required
                   />
 
                 </div>
-
                 {formError.title
                   &&
                   <p className="help is-danger">
                     {formError.title}
                   </p>
                 }
-
               </div>
 
               <div className="field" htmlFor="title">
-                <label className="label has-text-white">Where did it take place?</label>
+                <label className="label has-text-white">
+                  Where did it take place?
+                </label>
                 <div className="control">
 
                   <input
@@ -151,21 +177,11 @@ function NewMemory() {
                   />
 
                 </div>
-
-                {formError.location
-                  &&
-                  <p className="help is-danger">
-                    {formError.location}
-                  </p>
-                }
-
+                {formError.location && <p className="help is-danger">{formError.location}</p>}
               </div>
 
-
               <div className="field" htmlFor="title">
-                <label className="label has-text-white">
-                  Memory Date
-                </label>
+                <label className="label has-text-white">Memory Date</label>
                 <div className="control">
 
                   <input
@@ -173,6 +189,7 @@ function NewMemory() {
                     type="date"
                     name="date"
                     onChange={handleChange}
+                    value={moment(formData.date).format('YYYY-MM-DD')}
                     required
                   />
 
@@ -191,18 +208,12 @@ function NewMemory() {
                     name="description"
                     onChange={handleChange}
                     onBlur={handleDanger}
+                    value={formData.description}
                     required
                   />
 
                 </div>
-                
-                {formError.description
-                  &&
-                  <p className="help is-danger">
-                    {formError.description}
-                  </p>
-                }
-                
+                {formError.description && <p className="help is-danger">{formError.description}</p>}
               </div>
 
               <div className="field" htmlFor="title">
@@ -215,6 +226,7 @@ function NewMemory() {
                     placeholder="e.g. crazy, miraculous, romantic"
                     name="tags"
                     onChange={handleTags}
+                    value={formData.tags}
                   />
 
                 </div>
@@ -226,7 +238,7 @@ function NewMemory() {
 
               <div className="field">
                 <button type="submit" className="button is-warning is-fullwidth">
-                  Send Memory
+                  Send Updated Memory
                 </button>
               </div>
 
@@ -247,4 +259,4 @@ function NewMemory() {
   )
 }
 
-export default NewMemory
+export default EditMemory

@@ -1,11 +1,11 @@
 import axios from 'axios'
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import ReactMapGl, { Marker } from 'react-map-gl'
 import moment from 'moment'
 
 import Error from '../common/Error'
-import { baseUrl, memoriesPath, commentPath, headers } from '../../lib/api'
+import { baseUrl, memoriesPath, commentPath, headers, deleteMemory, editPath } from '../../lib/api'
 import { isOwner } from '../../lib/auth'
 import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
 import { subSetViewport } from '../../lib/mapbox'
@@ -13,6 +13,7 @@ import { subSetViewport } from '../../lib/mapbox'
 function SingleMemory() {
 
   const { memoryId } = useParams()
+  const history = useHistory()
 
   const [memory, setMemory] = React.useState(null)
   const [isError, setIsError] = React.useState(false)
@@ -56,7 +57,6 @@ function SingleMemory() {
         })
 
       } catch (err) {
-        console.log('err.response.data: ', err)
         setIsError(true)
       }
     }
@@ -127,6 +127,21 @@ function SingleMemory() {
     }
   }
 
+  //* Delete a memory
+  const handleMemoryDelete = async() => {
+    const shouldDelete = confirm('Are you sure you want to delete?')
+    if (shouldDelete) {
+      console.log(memory._id)
+      await deleteMemory(memory._id)
+      history.push(memoriesPath)
+    }
+  }
+
+  //* Edit a memory
+  const handleMemoryEdit = async() => {
+    history.push(`${memoriesPath}/${memory._id}${editPath}`)
+  }
+
   return (
     <section>
       
@@ -149,12 +164,25 @@ function SingleMemory() {
               <div className="columns">
                 <div className="column">
 
-                  <div className="title is-5 has-text-success">{memory.location.userInput}</div>
-                  <div className="column is-half is-offset-half">
-                    <figure className="image"><img height="540px" width="810px" src={memory.image} alt={memory.title} />
+                  <div className="title is-5 has-text-success">
+                    {memory.location.userInput}
+                  </div>
 
+                  <div className="column is-half is-offset-half">
+
+                    <figure className="image">
+                      <img
+                        height="540px"
+                        width="810px"
+                        src={memory.image}
+                        alt={memory.title}
+                      />
                     </figure>
-                  </div><div className="column is-6 description">{memory.description}</div>
+
+                  </div><div className="column is-6 description">
+                    {memory.description}
+                  </div>
+
                   <div className="columns is-mobile">
 
                   </div>
@@ -185,7 +213,19 @@ function SingleMemory() {
                         </Marker>
 
                       </ReactMapGl>
-
+                      <br></br>
+                      {isOwner(memory.user.userId) &&
+                      <button 
+                        className="button is-warning"
+                        onClick={handleMemoryEdit}
+                      >Edit Memory</button>
+                      }
+                      {isOwner(memory.user.userId) &&
+                      <button 
+                        className="button is-danger"
+                        onClick={handleMemoryDelete}
+                      >Delete Memory</button>
+                      }
                     </div>
                   </div>
                 </div>
@@ -220,7 +260,9 @@ function SingleMemory() {
                     </div>
                     {formError.text
                       &&
-                      <p className="help is-danger">Oops, something went wrong. Check if you are logged in.</p>
+                      <p className="help is-danger">
+                        Oops, something went wrong. Check if you are logged in.
+                      </p>
                     }
                   </div>
 
@@ -263,10 +305,8 @@ function SingleMemory() {
                 </div>
               </div>
             </div>
-
           </div>
         </>)}
-
     </section>
   )
 }

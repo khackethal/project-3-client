@@ -51,7 +51,11 @@ function AllMemories() {
   return (
     <>
       <section className="all-memories-background">
-        <div className="title is-2 has-text-centered has-background-black has-text-white">all memories</div>
+
+        <div className="title is-2 has-text-centered has-background-black has-text-white">
+          All memories
+        </div>
+
         <div className="container">
           <div className="columns is-multiline"></div>
 
@@ -77,17 +81,25 @@ function AllMemories() {
 
           {filteredMemories && (filteredMemories.map(memory =>
             <div className="column content is-half is-offset-half" key={memory._id}>
+
               <div className="card index-card has-background-info-light" >
+                <Link to={`${memoriesPath}/${memory._id}`}>
+                  <div className="title is-3">{memory.title}</div>
 
-                <div className="title is-3">{memory.title}</div>
-                <div className="has-text-success">{memory.location.userInput}</div>
-                <p>{moment(memory.date).format('MMMM Do YYYY')}</p>
-
-                <Link to={`/memories/${memory._id}`}>
-                  <img  height="540px" width="810px" src={memory.image} alt={memory.title} />
+                  <div className="has-text-success">
+                    {memory.location.userInput}
+                  </div>
+                  
+                  <p>{moment(memory.date).format('MMMM Do YYYY')}</p>
+                  <img 
+                    height="540px"
+                    width="810px"
+                    src={memory.image}
+                    alt={memory.title}
+                  />
                 </Link>
-
               </div>
+
             </div>
           ))}
 
