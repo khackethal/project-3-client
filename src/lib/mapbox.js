@@ -5,40 +5,51 @@ export const publicToken = 'pk.eyJ1Ijoia2F0aGFja2V0aGFsIiwiYSI6ImNrcDJyeG15aDA4b
 export const endUrl = `.json?access_token=${publicToken}`
 export const mapboxStyleUrl = 'mapbox://styles/kathackethal/ckp5dwj7a02wb18rxnm537n5i'
 
-export function subSetViewport(memoryObject, viewport) {
+export function subSetViewport(memoryObject) {
 
   const centerCoordinates = memoryObject.location.coordinates
-  const boundaryBox = memoryObject.location.boundaryBox
+  // const boundaryBox = memoryObject.location.boundaryBox
   const placeType = memoryObject.location.placeType
 
   // * checking first is boundaryBox was stored, for mor accuracy in viewport display
-  if (boundaryBox && boundaryBox.length === 4) {
+  // if (boundaryBox && boundaryBox.length === 4) {
+  //   console.log('in if')
 
-    const { longitude, latitude, zoom } = new WebMercatorViewport(viewport)
-      .fitBounds(boundaryBox, {
-        padding: 10,
-        offset: [0, -100],
-      })
+  //   console.log('viewport: ', viewport)
+  //   // const { longitude, latitude, zoom } = new WebMercatorViewport(viewport)
+  //   //   .fitBounds(boundaryBox, {
+  //   //     padding: 10,
+  //   //     offset: [0, -100],
+  //   //   })
 
-    return [[longitude,latitude],zoom]
+  //   const stuff = new WebMercatorViewport(viewport)
+  //   console.log('stuff: ', stuff)
 
-    // * else just manually define depending on the place type
-  } else {
 
-    let zoom = 10
 
-    if (placeType === 'country') zoom = 6
-    if (placeType === 'region') zoom = 7
-    if (placeType === 'postcode') zoom = 8
-    if (placeType === 'district') zoom = 9
-    if (placeType === 'place') zoom = 10
-    if (placeType === 'locality') zoom = 11
-    if (placeType === 'neighbourhood') zoom = 12
-    if (placeType === 'address') zoom = 13
-    if (placeType === 'poi') zoom = 14
+  //   console.log('longitude: ', longitude)
+  //   console.log('latitude: ', latitude)
+  //   console.log('zoom: ', zoom)
 
-    return [centerCoordinates,zoom]
+  //   return [[longitude,latitude],zoom]
 
-  }
+  //   // * else just manually define depending on the place type
+  // } else {
+
+  let zoom = 10
+
+  if (placeType === 'country') zoom = 6
+  if (placeType === 'region') zoom = 7
+  if (placeType === 'postcode') zoom = 8
+  if (placeType === 'district') zoom = 9
+  if (placeType === 'place') zoom = 10
+  if (placeType === 'locality') zoom = 11
+  if (placeType === 'neighbourhood') zoom = 12
+  if (placeType === 'address') zoom = 13
+  if (placeType === 'poi') zoom = 14
+
+  console.log('[centerCoordinates,zoom]: ', [centerCoordinates,zoom])
+  return [centerCoordinates,zoom]
+
 }
 

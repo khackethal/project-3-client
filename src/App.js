@@ -23,7 +23,7 @@ function App() {
         <Route path="/login" component={Login}/>
         <SecureRoute Route path="/newmemory" component={NewMemory} />
         <Route path="/memories/map" component={MemoryMap} />
-        <Route path="/memories/:id" component={SingleMemory} />
+        <Route path="/memories/:memoryId" component={SingleMemory} />
         <Route path="/memories" component={AllMemories} />
         <Route path="/*" component={Error} />
 

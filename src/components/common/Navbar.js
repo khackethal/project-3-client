@@ -10,9 +10,9 @@ function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false)
   const isLogged = isAuthenticated()
 
-  React.useEffect( () => {
+  React.useEffect(() => {
     setIsOpen(false)
-  },[location.pathname])
+  }, [location.pathname])
 
   const handleToggle = () => {
     setIsOpen(!isOpen)
@@ -28,6 +28,7 @@ function Navbar() {
     localStorage.setItem('navHeight', JSON.stringify(navHeight))
   }
 
+
   return (
 
     <nav
@@ -39,8 +40,15 @@ function Navbar() {
 
         <div className="navbar-brand">
           <Link to="/" className="navbar-item">
-            <img src="https://i.pinimg.com/originals/33/e6/3d/33e63d5adb0da6b303a83901c8e8463a.png" alt="logo"></img>
+            <img src="https://i.imgur.com/48rU2yo.png" alt="logo"></img>
           </Link>
+
+          <div className="container has-text-centered">
+            <p className="title ">
+              memory.map
+            </p>
+
+          </div>
 
           <span
             className={`navbar-burger ${isOpen ? 'is-active' : ''}`}
@@ -57,23 +65,20 @@ function Navbar() {
           id="navbarMenuHeroB"
           className={`navbar-menu ${isOpen ? 'is-active' : ''}`}
         >
-            
-          <Link to="/" className="navbar-item">
-            Home
-          </Link>
-        
+
+
           <Link to="/memories" className="navbar-item">
             Memory Index
           </Link>
 
           {isLogged &&
-              <Link to="/newmemory" className="navbar-item">
-                New Memory
-              </Link>
+            <Link to="/newmemory" className="navbar-item">
+              New Memory
+            </Link>
           }
 
           <Link to="/memories/map" className="navbar-item">
-            Memory Map
+            Map
           </Link>
 
 
@@ -86,7 +91,7 @@ function Navbar() {
           {!isLogged &&
             <Link to="/login" className="navbar-item">
               Login
-            </Link> 
+            </Link>
           }
 
           {isLogged &&
