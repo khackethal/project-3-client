@@ -1,10 +1,10 @@
 import axios from 'axios'
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import ReactMapGl, { Marker } from 'react-map-gl'
 
 import Error from '../common/Error'
-import { baseUrl, memoriesPath, commentPath, headers } from '../../lib/api'
+import { baseUrl, memoriesPath, commentPath, headers, deleteMemory } from '../../lib/api'
 import { isOwner } from '../../lib/auth'
 import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
 import { subSetViewport } from '../../lib/mapbox'
@@ -13,6 +13,7 @@ function SingleMemory() {
 
   const { memoryId } = useParams()
   console.log('memoryId: ', memoryId)
+  const history = useHistory()
 
   const [memory, setMemory] = React.useState(null)
   const [isError, setIsError] = React.useState(false)
@@ -136,6 +137,16 @@ function SingleMemory() {
 
   }
 
+  //* Delete a memory
+  const handleMemoryDelete = async() => {
+    const shouldDelete = confirm('Are you sure you want to delete?')
+    if (shouldDelete) {
+      console.log(memory._id)
+      await deleteMemory(memory._id)
+      history.push('/memories')
+    }
+  }
+
 
 
 
@@ -188,7 +199,13 @@ function SingleMemory() {
                         </Marker>
 
                       </ReactMapGl>
-
+                      <br></br>
+                      {isOwner(memory.user.userId) &&
+                      <button 
+                        className="button is-danger"
+                        onClick={handleMemoryDelete}
+                      >Delete Memory</button>
+                      }
                     </div>
                   </div>
                 </div>

@@ -31,7 +31,7 @@ export function editMemory(id, formdata) {
 }
 
 export function deleteMemory(id) {
-  return axios.delete(`${baseUrl}${memoriesPath}${id}`, headers())
+  return axios.delete(`${baseUrl}${memoriesPath}/${id}`, headers())
 }
 
 
