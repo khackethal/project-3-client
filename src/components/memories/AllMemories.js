@@ -5,17 +5,17 @@ import Error from '../common/Error'
 import { baseUrl, memoriesPath } from '../../lib/api'
 function AllMemories() {
 
-  const [ memories, setMemories ] = React.useState(null)
-  const [ isError, setIsError ] = React.useState(false)
-  const [ searchTerm, setSearchTerm ] = React.useState('')
+  const [memories, setMemories] = React.useState(null)
+  const [isError, setIsError] = React.useState(false)
+  const [searchTerm, setSearchTerm] = React.useState('')
   const isLoading = !memories && !isError
 
-  
+
   React.useEffect(() => {
 
     const getData = async () => {
 
-      try { 
+      try {
 
         const res = await axios.get(`${baseUrl}${memoriesPath}`)
         setMemories(res.data)
@@ -28,7 +28,7 @@ function AllMemories() {
 
     getData()
 
-  },[])
+  }, [])
 
   //* search functions
   const handleInput = (e) => {
@@ -39,53 +39,61 @@ function AllMemories() {
     setSearchTerm('')
   }
 
-  const filteredMemories =  memories?.filter((memory) => {
+  const filteredMemories = memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
       memory.location.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
-      memory.tags.includes(searchTerm) 
+      memory.tags.includes(searchTerm)
     )
   })
 
 
   return (
     <>
-      <h1>All Memories</h1>
-      <div className="container">
-        <div className="column is-multiline"></div>
-        { isError && <Error />}
-        { isLoading && <p>...loading</p>}
+      <section className="all-memories-background">
+        <div className="title is-2 has-text-centered has-background-black has-text-white">all memories</div>
+        <div className="container">
+          <div className="columns is-multiline"></div>
+          {isError && <Error />}
+          {isLoading && <p>...loading</p>}
+          <div className="column ">
+            <aside className="searchbar">
+              <input
+                className="input"
+                type="text"
+                placeholder="find memory..."
+                onChange={handleInput}
+                value={searchTerm}
+              />
 
-        <p>Search </p>
-
-        <input
-          className="input"
-          type="text"
-          placeholder="Search memories.."
-          onChange={handleInput}
-          value={searchTerm}
-        />
-
-        <button className="button is-link is-small is-outlined" onClick={handleClear}>
-          Clear
-        </button>
-
-        { filteredMemories && (filteredMemories.map(memory => 
-          <div className="card" key={memory.name}>
-
-            <h3>{memory.title}</h3>
-            <p>{memory.location.userInput}</p>
-            <p>{memory.date}</p>
-
-            <Link to={`/memories/${memory._id}`}>
-              <img height ="540px" width="810px"  src={memory.image} alt={memory.title} />
-            </Link>
-
+              <button className="button is-link is-small is-outlined" onClick={handleClear}>
+                Clear
+              </button>
+            </aside>
           </div>
-        ))}
 
-      </div>
+          {filteredMemories && (filteredMemories.map(memory =>
+            <div className="column content is-half is-offset-half" key={memory.name}>
+              <div className="card index-card has-background-info-light" >
+
+                <div className="title is-3">{memory.title}</div>
+                <div className="has-text-success">{memory.location.userInput}</div>
+                <p>{memory.date}</p>
+
+                <Link to={`/memories/${memory._id}`}>
+                  <img  height="540px" width="810px" src={memory.image} alt={memory.title} />
+                </Link>
+              </div>
+            </div>
+          ))}
+          <div className="column is-half is-offset-half">
+            <figure className="image">
+              <img src="https://imgur.com/vYMvx4u.png" />
+            </figure>
+          </div>
+        </div>
+      </section>
     </>
   )
 }

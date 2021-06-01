@@ -11,7 +11,7 @@ function NewMemory() {
 
   function formatTagArray(tags) {
     if (typeof tags === 'string') {
-      const tagsArray = tags.replace(/[^a-zA-Z0-9]/g,' ').split(' ')
+      const tagsArray = tags.replace(/[^a-zA-Z0-9]/g, ' ').split(' ')
       const sanitisedTagsArray = tagsArray.filter(tag => tag !== '')
       return sanitisedTagsArray
     }
@@ -37,8 +37,10 @@ function NewMemory() {
     }
 
     handleChange(
-      { target:
-        { name: 'location',
+      {
+        target:
+        {
+          name: 'location',
           value: {
             ...formData.location,
             userInput: e.place_name,
@@ -86,133 +88,150 @@ function NewMemory() {
       const res = await createMemory(formData)
       history.push(`${memoriesPath}/${res.data._id}`)
     } catch (err) {
-      setFormError({ ...formError, errMessage: err.response.data.errMessage })   
+      setFormError({ ...formError, errMessage: err.response.data.errMessage })
     }
   }
 
   return (
-    <section className="section">
+    <div className="has-background-info-dark">
+      <div className="title is-2 has-text-centered has-background-black has-text-white">new memory</div>
+      <section>
 
-      <>{console.log('formData: ', formData)}</>
-      <>{console.log('formError: ', formError)}</>
 
-      <div className="container">
-        <div className="columns">
-          <form
-            className="column is-half is-offset-one-quarter box"
-            onSubmit={handleSubmit}
-          >
+        <>{console.log('formData: ', formData)}</>
+        <>{console.log('formError: ', formError)}</>
 
-            <div className="field" htmlFor="title">
-              <label className="label">Title</label>
-              <div className="control">
+        <div className="container">
+          <div className="columns is-multiline is-variable is-1-mobile is-0-tablet is-2-desktop is-8-widescreen is-3-fullhd">
+            <form
+              className="column is-half is-offset-one-sixth box"
+              onSubmit={handleSubmit}
+            >
 
-                <input
-                  className={`input ${formError.title || formError.errMessage ? 'is-danger' : ''}`}
-                  type="text"
-                  placeholder="e.g. My cherished memory"
-                  name="title"
-                  onChange={handleChange}
-                  onBlur={handleDanger}
-                  required
-                />
+              <div className="field" htmlFor="title">
+                <label className="label">Title</label>
+                <div className="control">
 
+                  <input
+                    className={`input ${formError.title || formError.errMessage ? 'is-danger' : ''}`}
+                    type="text"
+                    placeholder="e.g. My cherished memory"
+                    name="title"
+                    onChange={handleChange}
+                    onBlur={handleDanger}
+                    required
+                  />
+
+                </div>
+                {formError.title && <p className="help is-danger">{formError.title}</p>}
               </div>
-              {formError.title && <p className="help is-danger">{formError.title}</p>}
-            </div>
 
-            <div className="field" htmlFor="title">
-              <label className="label">Where did it take place?</label>
-              <div className="control">
+              <div className="field" htmlFor="title">
+                <label className="label">Where did it take place?</label>
+                <div className="control">
 
-                <input
-                  className={`input ${formError.location || formError.errMessage ? 'is-danger' : ''}`}
-                  type="text"
-                  placeholder="Find address on map"
-                  name="location"
-                  onChange={ (e) => {
-                    handleNestedChange(e)
-                    setFormError({ ...formError, location: '' })
-                  }}
-                  value={formData.location.userInput || ''}
-                  onSubmit={handleDanger}
-                  required
-                  disabled
-                />
+                  <input
+                    className={`input ${formError.location || formError.errMessage ? 'is-danger' : ''}`}
+                    type="text"
+                    placeholder="Find address on map"
+                    name="location"
+                    onChange={(e) => {
+                      handleNestedChange(e)
+                      setFormError({ ...formError, location: '' })
+                    }}
+                    value={formData.location.userInput || ''}
+                    onSubmit={handleDanger}
+                    required
+                    disabled
+                  />
 
+                </div>
+                {formError.location && <p className="help is-danger">{formError.location}</p>}
               </div>
-              {formError.location && <p className="help is-danger">{formError.location}</p>}
-            </div>
 
 
-            <div className="field" htmlFor="title">
-              <label className="label">Memory Date</label>
-              <div className="control">
+              <div className="field" htmlFor="title">
+                <label className="label">Memory Date</label>
+                <div className="control">
 
-                <input
-                  className={`input ${formError.date || formError.errMessage ? 'is-danger' : ''}`}
-                  type="date"
-                  name="date"
-                  onChange={handleChange}
-                  required
-                />
+                  <input
+                    className={`input ${formError.date || formError.errMessage ? 'is-danger' : ''}`}
+                    type="date"
+                    name="date"
+                    onChange={handleChange}
+                    required
+                  />
 
+                </div>
+                {formError.date && <p className="help is-danger">{formError.date}</p>}
               </div>
-              {formError.date && <p className="help is-danger">{formError.date}</p>}
-            </div>
 
-            <div className="field" htmlFor="title">
-              <label className="label">Description</label>
-              <div className="control">
+              <div className="field" htmlFor="title">
+                <label className="label">Description</label>
+                <div className="control">
 
-                <input
-                  className={`input ${formError.description || formError.errMessage ? 'is-danger' : ''}`}
-                  type="text"
-                  placeholder="e.g. Roses are red, violets are blue"
-                  name="description"
-                  onChange={handleChange}
-                  onBlur={handleDanger}
-                  required
-                />
+                  <input
+                    className={`input ${formError.description || formError.errMessage ? 'is-danger' : ''}`}
+                    type="text"
+                    placeholder="e.g. Roses are red, violets are blue"
+                    name="description"
+                    onChange={handleChange}
+                    onBlur={handleDanger}
+                    required
+                  />
 
+                </div>
+                {formError.description && <p className="help is-danger">{formError.description}</p>}
               </div>
-              {formError.description && <p className="help is-danger">{formError.description}</p>}
-            </div>
 
-            <div className="field" htmlFor="title">
-              <label className="label">Tags</label>
-              <div className="control">
+              <div className="field" htmlFor="title">
+                <label className="label">Tags</label>
+                <div className="control">
 
-                <input
-                  className={`input ${formError.errMessage ? 'is-danger' : '' }`}
-                  type="text"
-                  placeholder="e.g. dreamy, poop, romantic"
-                  name="tags"
-                  onChange={handleTags}
-                />
+                  <input
+                    className={`input ${formError.errMessage ? 'is-danger' : ''}`}
+                    type="text"
+                    placeholder="e.g. crazy, miraculous, romantic"
+                    name="tags"
+                    onChange={handleTags}
+                  />
 
+                </div>
               </div>
+
+              <div>
+                <ImageUploadField onUpload={handleUpload} />
+              </div>
+
+              <div className="field">
+                <button type="submit" className="button is-warning is-fullwidth">
+                  Send Memory
+                </button>
+              </div>
+
+              <figure className="image">
+                <img className="" src="https://imgur.com/zlZby39.png" />
+              </figure>
+
+
+            </form>
+
+            {/* <div className="column is-half"> */}
+            <div className="column is-half paddingless">
+              {formError.errMessage && <p className="help is-danger">{formError.errMessage}</p>}
+
+              <MapboxSearch onResult={handleNestedChange} />
             </div>
-
-            <div>
-              <ImageUploadField onUpload={handleUpload} />
-            </div>
-
-            <div className="field">
-              <button type="submit" className="button is-warning is-fullwidth">
-                Send Memory
-              </button>
-            </div>
-
-            {formError.errMessage && <p className="help is-danger">{formError.errMessage}</p>}
-
-            <MapboxSearch onResult={handleNestedChange} />
-
-          </form>
-
+          </div>
         </div>
-      </div>
-    </section>
+
+        {/* </div> */}
+
+      </section>
+
+
+
+    </div>
   )
 }
 

@@ -26,16 +26,18 @@ function Login() {
   }
 
   return (
-    <>
-      <div className="container is-fullwidth">
-        <div className="columns is-centered">
-          <div className="column is-half ">
+    <section className="login-background">
+      <div className="title is-2 has-text-centered has-background-black has-text-white">login</div>
+
+      <div className="container is-fullwidth login-background">
+        <div className="columns is-vcentered">
+          <div className="column is-half is-centered ">
             <form
-              className="card is-centered is-one-quarter-desktop is-one-third-widescreen is-half-fullhd"
+              className="card is-centered is-one-quarter-desktop is-one-third-widescreen is-half-fullhd has-background-info-dark"
               onSubmit={handleSubmit}
             >
               <div className="field">
-                <label className="label">Email</label>
+                <label className="label has-text-white">Email</label>
                 <div className="control">
                   <input
                     className=
@@ -51,7 +53,7 @@ function Login() {
               </div>
 
               <div className="field">
-                <label className="label">Password</label>
+                <label className="label has-text-white">Password</label>
                 <div className="control">
                   <input
                     className=
@@ -76,9 +78,15 @@ function Login() {
               </div>
             </form>
           </div>
+          <div className="column is-half">
+            <figure className="image">
+              <img src="https://imgur.com/JbqMTzr.png" />
+            </figure>
+          </div>
         </div>
       </div>
-    </>
+    </section>
+
   )
 }
 

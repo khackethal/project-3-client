@@ -8,17 +8,17 @@ import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
 
 function MemoryMap() {
 
-  const [ searchTerm, setSearchTerm ] = React.useState(null)
-  const [ selectedMemory, setSelectedMemory ] = React.useState(null)
-  const [ memories, setMemories ] = React.useState(null)
+  const [searchTerm, setSearchTerm] = React.useState(null)
+  const [selectedMemory, setSelectedMemory] = React.useState(null)
+  const [memories, setMemories] = React.useState(null)
 
-  const [ inputHeight, setInputHeight ] = React.useState(40)
+  const [inputHeight, setInputHeight] = React.useState(40)
 
   const navHeight = JSON.parse(localStorage.getItem('navHeight'))
   const viewportWidth = window.innerWidth
   const viewportHeight = window.innerHeight - (navHeight + inputHeight)
 
-  const [ isError, setIsError ] = React.useState(false)
+  const [isError, setIsError] = React.useState(false)
   const isLoading = !memories && !isError
 
   //* For map content-------------------
@@ -35,7 +35,8 @@ function MemoryMap() {
     const newWidth = window.innerWidth
     const newHeight = window.innerHeight - (navHeight + inputHeight)
 
-    setViewport({ ...viewport,
+    setViewport({
+      ...viewport,
       width: newWidth,
       height: newHeight,
     })
@@ -57,8 +58,8 @@ function MemoryMap() {
       }
     }
     getData()
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewport])
 
 
@@ -71,9 +72,9 @@ function MemoryMap() {
     const inputHeight = e.nativeEvent.path[1].offsetHeight
     setInputHeight(inputHeight)
   }
-  
+
   // ! problem with this function. memories coming in but not coming out, therefore no pins being displayed
-  const filteredMemories =  memories?.filter((memory) => {
+  const filteredMemories = memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
       // ! disbaled the line below to bypass error and display map
@@ -85,8 +86,11 @@ function MemoryMap() {
   })
 
   return (
+
     <>
-      { isLoading && <p>...loading</p>}
+      <div className="title is-2 has-text-centered has-background-black has-text-white">memory map</div>
+
+      {isLoading && <p>...loading</p>}
       {console.log('filteredMemories: ', filteredMemories)}
 
       <div onFocus={getInputHeight}>
@@ -102,7 +106,7 @@ function MemoryMap() {
 
       <div onClick={handleResize}>
 
-        <ReactMapGl {...viewport} 
+        <ReactMapGl {...viewport}
           mapboxApiAccessToken={publicToken}
           // mapStyle={mapboxStyleUrl}
           onViewportChange={viewport => {
@@ -110,19 +114,19 @@ function MemoryMap() {
           }}
         >
 
-          { filteredMemories && filteredMemories.map(memory => {
-            {console.log('memory: ', memory)}
+          {filteredMemories && filteredMemories.map(memory => {
+            { console.log('memory: ', memory) }
             <Marker
               key={memory._id}
               latitude={memory.location.coordinates[1]}
               longitude={memory.location.coordinates[0]}
             >
-              
+
               <button
                 className="mapButton"
-                onClick={ (e) => {
+                onClick={(e) => {
                   e.preventDefault()
-                  setSelectedMemory(memory) 
+                  setSelectedMemory(memory)
                 }}
               >
                 <img
@@ -159,10 +163,10 @@ function MemoryMap() {
                 <br></br>
 
                 <button
-                  onClick= { () => {
+                  onClick={() => {
                     setSelectedMemory(null)
                   }}>
-                    Close
+                  Close
                 </button>
 
               </div>
@@ -174,8 +178,8 @@ function MemoryMap() {
         </ReactMapGl>
 
       </div>
-
     </>
+
   )
 }
 export default MemoryMap

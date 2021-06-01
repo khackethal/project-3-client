@@ -10,9 +10,9 @@ function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false)
   const isLogged = isAuthenticated()
 
-  React.useEffect( () => {
+  React.useEffect(() => {
     setIsOpen(false)
-  },[location.pathname])
+  }, [location.pathname])
 
   const handleToggle = () => {
     setIsOpen(!isOpen)
@@ -31,7 +31,7 @@ function Navbar() {
   return (
 
     <nav
-      className="navbar"
+      className="navbar is-info"
       onLoad={getHeight}
     >
 
@@ -41,6 +41,13 @@ function Navbar() {
           <Link to="/" className="navbar-item">
             <img src="https://i.imgur.com/48rU2yo.png" alt="logo"></img>
           </Link>
+
+          <div className="container has-text-centered">
+            <p className="title ">
+              memory.map
+            </p>
+
+          </div>
 
           <span
             className={`navbar-burger ${isOpen ? 'is-active' : ''}`}
@@ -58,14 +65,14 @@ function Navbar() {
           className={`navbar-menu ${isOpen ? 'is-active' : ''}`}
         >
 
-        
+
           <Link to="/memories" className="navbar-item">
             Memory Index
           </Link>
 
           {isLogged &&
-              <Link to="/newmemory" className="navbar-item">
-                New Memory
+            <Link to="/newmemory" className="navbar-item">
+              New Memory
               </Link>
           }
 
@@ -83,7 +90,7 @@ function Navbar() {
           {!isLogged &&
             <Link to="/login" className="navbar-item">
               Login
-            </Link> 
+            </Link>
           }
 
           {isLogged &&
