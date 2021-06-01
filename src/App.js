@@ -6,17 +6,11 @@ import Navbar from './components/common/Navbar'
 import Home from './components/common/Home'
 import About from './components/common/About'
 import Error from './components/common/Error'
-
-// * auth imports
-
 import AllMemories from './components/memories/AllMemories'
 import SingleMemory from './components/memories/SingleMemory'
 import MemoryMap from './components/memories/MemoryMap'
 import NewMemory from './components/memories/NewMemory'
 import SecureRoute from './components/common/SecureRoute'
-
-
-
 
 function App() {
   return (
@@ -29,7 +23,7 @@ function App() {
         <Route path="/login" component={Login}/>
         <SecureRoute Route path="/newmemory" component={NewMemory} />
         <Route path="/memories/map" component={MemoryMap} />
-        <Route path="/memories/:id" component={SingleMemory} />
+        <Route path="/memories/:memoryId" component={SingleMemory} />
         <Route path="/memories" component={AllMemories} />
         <Route path="/*" component={Error} />
 

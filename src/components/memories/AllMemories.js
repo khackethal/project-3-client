@@ -55,8 +55,10 @@ function AllMemories() {
         <div className="title is-2 has-text-centered has-background-black has-text-white">all memories</div>
         <div className="container">
           <div className="columns is-multiline"></div>
+
           {isError && <Error />}
           {isLoading && <p>...loading</p>}
+
           <div className="column ">
             <aside className="searchbar">
               <input
@@ -74,7 +76,7 @@ function AllMemories() {
           </div>
 
           {filteredMemories && (filteredMemories.map(memory =>
-            <div className="column content is-half is-offset-half" key={memory.name}>
+            <div className="column content is-half is-offset-half" key={memory._id}>
               <div className="card index-card has-background-info-light" >
 
                 <div className="title is-3">{memory.title}</div>

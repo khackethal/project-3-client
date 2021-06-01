@@ -41,14 +41,19 @@ function Register() {
   }
 
   const handleUnique = async () => {
+    console.log('formData: ', formData)
     try {
-      await userCheck({
+      const res = await userCheck({
         username: formData.username,
         email: formData.email,
       })
+      
+      console.log('res: ', res)
+
       setIsUniqueId(true)
       setFormError({ ...formError, username: '' })
     } catch (err) {
+      console.log('err.response.data: ', err.response.data)
       const errorMessage = err.response.data.errMessage.username
       setIsUniqueId(false)
       setFormError({ ...formError, username: errorMessage })

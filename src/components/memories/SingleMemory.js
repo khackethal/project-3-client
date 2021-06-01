@@ -11,7 +11,8 @@ import { subSetViewport } from '../../lib/mapbox'
 
 function SingleMemory() {
 
-  const { id } = useParams()
+  const { memoryId } = useParams()
+  console.log('memoryId: ', memoryId)
 
   const [memory, setMemory] = React.useState(null)
   const [isError, setIsError] = React.useState(false)
@@ -41,21 +42,27 @@ function SingleMemory() {
 
       try {
 
-        const res = await axios.get(`${baseUrl}${memoriesPath}/${id}`)
+        const res = await axios.get(`${baseUrl}${memoriesPath}/${memoryId}`)
+        console.log('res: ', res)
         setMemory(res.data)
 
         // * setting zoom value depending on stored values
-        const [[centerLongitude, centerLatitude], zoomValue] = subSetViewport(res.data)
+        // const [[centerLongitude, centerLatitude], zoomValue] = subSetViewport(res.data)
+        const coordinates = subSetViewport(res.data)
+
+        const centerLongitude = coordinates[0][0]
+        const centerLatitude = coordinates[0][1]
+        const zoomValue = coordinates[1]
 
         setViewport({
           ...viewport,
-          // ! I've remove Number because the model currently validates number so we wouln't have otherwise
-          longitude: (centerLongitude),
-          latitude: (centerLatitude),
+          longitude: centerLongitude,
+          latitude: centerLatitude,
           zoom: zoomValue,
         })
 
       } catch (err) {
+        console.log('err.response.data: ', err)
         setIsError(true)
       }
 
@@ -68,19 +75,22 @@ function SingleMemory() {
 
 
   const handleChange = (e) => {
-    setFormComment({ ...formComment, [e.target.name]: e.target.value })
+    setFormComment({ ...formComment,
+      [e.target.name]: e.target.value,
+    })
   }
 
   const handleSubmit = async (e) => {
 
     e.preventDefault()
+    console.log('formComment: ', formComment)
 
     // * to prevent empty comments submissions
     if (formComment.text) {
       try {
 
         await axios.post(
-          `${baseUrl}${memoriesPath}/${id}/${commentPath}`,
+          `${baseUrl}${memoriesPath}/${memoryId}/${commentPath}`,
           formComment,
           headers()
         )
@@ -113,18 +123,12 @@ function SingleMemory() {
     try {
 
       await axios.delete(
-        `${baseUrl}${memoriesPath}/${id}/${commentPath}/${e.target.name}`,
+        `${baseUrl}${memoriesPath}/${memoryId}/${commentPath}/${e.target.name}`,
         headers()
       )
 
       setHasComments(!hasComments)
       setFormError({ ...formComment, text: '' })
-
-      // ! I don't think it's necessary to blank out the comment form when a comment gets deleted,
-      // ! say if the user was typing a comment and realised wanted to delete a previous one 
-      // ! which are are currently redrafting now. It would mess it up.
-      // ? Fair enough that makes sense - let's delete on next round
-      // setFormComment({ ...formComment, text: '' })
 
     } catch (err) {
       setFormError({ ...formError, text: err.response.data.errMessage })
@@ -143,7 +147,7 @@ function SingleMemory() {
         <>
           <div className="container">
             <div className="card has-background-black has-text-white is-centered">
-              <div className="title has-text-white is-3">{memory.title} <span className="subtitle is-7 has-text-warning">member - {memory.user}</span></div>
+              <div className="title has-text-white is-3">{memory.title} <span className="subtitle is-7 has-text-warning">member - {memory.user.username}</span></div>
 
               <div className="columns">
                 <div className="column">
@@ -237,25 +241,29 @@ function SingleMemory() {
 
               <div className="section">
                 <div className="comments">
-                  {memory.comments && memory.comments.map(comment => 
-                
-                    <div key={comment._id}>
+                  {memory.comments && memory.comments.map(comment => {
 
-                      <p>{comment.text}</p>
+                    {console.log('comment: ', comment)}
 
-                      {isOwner(comment.user) &&
-                        <button
-                          name={comment._id}
-                          onClick={handleDelete}
-                          className=" button is-info is-small is outline"
-                        >
-                          Delete comment
-                        </button>
-                      }
+                    return (
+                      <div key={comment._id}>
 
-                    </div>
+                        <h6>{comment.user.username}</h6>
+                        <p>{comment.text}</p>
 
-                  
+                        {isOwner(comment.user.userId) &&
+                          <button
+                            name={comment._id}
+                            onClick={handleDelete}
+                            className="button is-info is-small is-outline"
+                          >
+                            Delete comment
+                          </button>
+                        }
+
+                      </div>
+                    )
+                  }
                   )}
                 </div>
               </div>

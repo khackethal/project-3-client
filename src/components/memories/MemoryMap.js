@@ -2,18 +2,25 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import ReactMapGl, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
+
 import { baseUrl, memoriesPath } from '../../lib/api'
 import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
+
 function MemoryMap() {
+
   const [searchTerm, setSearchTerm] = React.useState('')
   const [selectedMemory, setSelectedMemory] = React.useState(null)
   const [memories, setMemories] = React.useState(null)
+
   const [inputHeight, setInputHeight] = React.useState(40)
   const navHeight = JSON.parse(localStorage.getItem('navHeight'))
+
   const viewportWidth = window.innerWidth
   const viewportHeight = window.innerHeight - (navHeight + inputHeight)
+
   const [isError, setIsError] = React.useState(false)
   const isLoading = !memories && !isError
+
   //* For map content-------------------
   const [viewport, setViewport] = React.useState({
     latitude: 50,
@@ -22,6 +29,7 @@ function MemoryMap() {
     height: viewportHeight,
     zoom: 0,
   })
+
   function handleResize() {
     const newWidth = window.innerWidth
     const newHeight = window.innerHeight - (navHeight + inputHeight)
@@ -31,31 +39,44 @@ function MemoryMap() {
       height: newHeight,
     })
   }
+
   React.useEffect(() => {
-    window.addEventListener('resize', handleResize)
+
+    // window.addEventListener('resize', handleResize)
+
     const getData = async () => {
       try {
         const res = await axios.get(`${baseUrl}${memoriesPath}`)
         setMemories(res.data)
+        handleResize()
       } catch (err) {
         setIsError(true)
       }
     }
     getData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewport])
+  }, [])
+
+  React.useEffect( () => {
+    window.addEventListener('resize', handleResize)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
+
   //* search functions
   const handleSearch = (e) => {
     setSearchTerm(e.target.value)
   }
+  
   const getInputHeight = (e) => {
     const inputHeight = e.nativeEvent.path[1].offsetHeight
     setInputHeight(inputHeight)
   }
+
   // ! Fixed by chaning the intial searchterm back to ('') rather than (null) no problem with this function 
   const filteredMemories = memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
+      // memory.location.toLowerCase().includes(searchTerm) ||
       memory.location.userInput.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
       memory.tags.includes(searchTerm)
@@ -65,6 +86,7 @@ function MemoryMap() {
   return (
     <>
       { isLoading && <p>...loading</p>}
+
       <div onFocus={getInputHeight}>
         <input
           className="input"
@@ -74,6 +96,7 @@ function MemoryMap() {
           value={searchTerm || ''}
         />
       </div>
+
       <div onClick={handleResize}>
         <ReactMapGl {...viewport}
           mapboxApiAccessToken={publicToken}
@@ -95,13 +118,16 @@ function MemoryMap() {
                   setSelectedMemory(memory)
                 }}
               >
+
                 <img
                   height="40px"
                   width="40px"
                   src="https://i.imgur.com/6IzPeVa.png"
                   alt="red location pin"
                 />
+
               </button>
+              
             </Marker>
           )}
 
