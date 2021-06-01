@@ -147,6 +147,11 @@ function SingleMemory() {
     }
   }
 
+  //* Edit a memory
+  const handleMemoryEdit = async() => {
+    history.push(`/memories/${memory._id}/edit`)
+  }
+
 
 
 
@@ -200,6 +205,12 @@ function SingleMemory() {
 
                       </ReactMapGl>
                       <br></br>
+                      {isOwner(memory.user.userId) &&
+                      <button 
+                        className="button is-warning"
+                        onClick={handleMemoryEdit}
+                      >Edit Memory</button>
+                      }
                       {isOwner(memory.user.userId) &&
                       <button 
                         className="button is-danger"
