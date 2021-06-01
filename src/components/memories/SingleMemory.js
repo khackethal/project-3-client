@@ -255,6 +255,7 @@ function SingleMemory() {
           </div>
 
         </>      )}
+      { isOwner(memory.user._id) && <button onClick={handleDelete} className="button is-info">Delete Memory</button>}
 
     </section>
   )
