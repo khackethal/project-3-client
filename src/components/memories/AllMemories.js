@@ -62,7 +62,7 @@ function AllMemories() {
               <input
                 className="input"
                 type="text"
-                placeholder="find memory..."
+                placeholder="Find memory..."
                 onChange={handleInput}
                 value={searchTerm}
               />

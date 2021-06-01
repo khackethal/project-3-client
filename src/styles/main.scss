@@ -21,6 +21,10 @@
 //   width: 450px;
 // }
 
+
+
+
+
 .paddingless {
   padding: 0px 0px 0px 0px;
 }
@@ -29,7 +33,7 @@
   display: inline-block;
 }
 
-section.section {
+.section {
   min-height: calc(100vh - 11.25rem);
 }
 
@@ -137,7 +141,10 @@ button.mapboxgl-popup-close-button {
 // }
 
 .new-memory-background {
-  background-image: url('https://imgur.com/zlZby39.png');
+  background-image: url('https://imgur.com/evNO5MR.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .description {

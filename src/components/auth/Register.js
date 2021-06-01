@@ -109,7 +109,7 @@ function Register() {
                 ${!isUniqueId || formError.username ? 'is-danger' : ''}
                 `}
                     type="email"
-                    placeholder="Email input"
+                    placeholder="e.g. muppet754@mail.sz"
                     name="email"
                     onChange={handleChange}
                     onInvalid={handleValidity}

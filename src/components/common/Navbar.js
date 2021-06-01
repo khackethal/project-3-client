@@ -28,10 +28,11 @@ function Navbar() {
     localStorage.setItem('navHeight', JSON.stringify(navHeight))
   }
 
+
   return (
 
     <nav
-      className="navbar is-info"
+      className="navbar is-info is-fixed-top"
       onLoad={getHeight}
     >
 
@@ -73,11 +74,11 @@ function Navbar() {
           {isLogged &&
             <Link to="/newmemory" className="navbar-item">
               New Memory
-              </Link>
+            </Link>
           }
 
           <Link to="/memories/map" className="navbar-item">
-            Memory Map
+            Map
           </Link>
 
 

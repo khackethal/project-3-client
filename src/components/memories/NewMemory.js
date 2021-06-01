@@ -93,7 +93,7 @@ function NewMemory() {
   }
 
   return (
-    <div className="has-background-info-dark">
+    <div className="new-memory-background">
       <div className="title is-2 has-text-centered has-background-black has-text-white">new memory</div>
       <section>
 
@@ -104,12 +104,12 @@ function NewMemory() {
         <div className="container">
           <div className="columns is-multiline is-variable is-1-mobile is-0-tablet is-2-desktop is-8-widescreen is-3-fullhd">
             <form
-              className="column is-half is-offset-one-sixth box"
+              className="column is-half is-offset-one-sixth box has-background-black"
               onSubmit={handleSubmit}
             >
 
               <div className="field" htmlFor="title">
-                <label className="label">Title</label>
+                <label className="label has-text-white">Title</label>
                 <div className="control">
 
                   <input
@@ -127,7 +127,7 @@ function NewMemory() {
               </div>
 
               <div className="field" htmlFor="title">
-                <label className="label">Where did it take place?</label>
+                <label className="label has-text-white">Where did it take place?</label>
                 <div className="control">
 
                   <input
@@ -151,7 +151,7 @@ function NewMemory() {
 
 
               <div className="field" htmlFor="title">
-                <label className="label">Memory Date</label>
+                <label className="label has-text-white">Memory Date</label>
                 <div className="control">
 
                   <input
@@ -167,7 +167,7 @@ function NewMemory() {
               </div>
 
               <div className="field" htmlFor="title">
-                <label className="label">Description</label>
+                <label className="label has-text-white">Description</label>
                 <div className="control">
 
                   <input
@@ -185,7 +185,7 @@ function NewMemory() {
               </div>
 
               <div className="field" htmlFor="title">
-                <label className="label">Tags</label>
+                <label className="label has-text-white">Tags</label>
                 <div className="control">
 
                   <input
@@ -209,18 +209,19 @@ function NewMemory() {
                 </button>
               </div>
 
-              <figure className="image">
-                <img className="" src="https://imgur.com/zlZby39.png" />
+
+
+              <figure>
+                <img className="image is-256x256" src="https://imgur.com/bWMKvl8.png" />
               </figure>
-
-
             </form>
 
             {/* <div className="column is-half"> */}
-            <div className="column is-half paddingless">
+            <div className="column is-half">
               {formError.errMessage && <p className="help is-danger">{formError.errMessage}</p>}
 
               <MapboxSearch onResult={handleNestedChange} />
+
             </div>
           </div>
         </div>

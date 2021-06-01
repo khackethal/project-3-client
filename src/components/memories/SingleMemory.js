@@ -209,7 +209,7 @@ function SingleMemory() {
                     <div className="control">
 
                       <input
-                        className={`input ${formError.text ? 'is-danger' : ''}`}
+                        className={`input ${formError.text ? 'is-danger' : ''} `}
                         placeholder="Type your comments here.."
                         name="text"
                         value={formComment.text || ''}
