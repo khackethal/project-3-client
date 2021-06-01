@@ -234,21 +234,23 @@ function SingleMemory() {
           <div className="comments">
             {memory.comments && memory.comments.map( comment => {
 
-              <div key={comment._id}>
+              return (
+                <div key={comment._id}>
 
-                <p>{comment.text}</p>
+                  <p>{comment.text}</p>
 
-                { isOwner(comment.user) &&
-                  <button
-                    name={comment._id}
-                    onClick={handleDelete}
-                    className=" button is-info is-small is outline"
-                  >
-                    Delete comment
-                  </button>
-                }
+                  { isOwner(comment.user) &&
+                    <button
+                      name={comment._id}
+                      onClick={handleDelete}
+                      className=" button is-info is-small is outline"
+                    >
+                      Delete comment
+                    </button>
+                  }
 
-              </div>
+                </div>
+              )
             }
             )}
           </div>

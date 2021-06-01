@@ -2,19 +2,19 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import ReactMapGl, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
-
 import { baseUrl, memoriesPath } from '../../lib/api'
 import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
 
 function MemoryMap() {
 
-  const [ searchTerm, setSearchTerm ] = React.useState(null)
+  const [ searchTerm, setSearchTerm ] = React.useState('')
   const [ selectedMemory, setSelectedMemory ] = React.useState(null)
-  const [ memories, setMemories ] = React.useState(null)
 
+  const [ memories, setMemories ] = React.useState(null)
   const [ inputHeight, setInputHeight ] = React.useState(40)
 
   const navHeight = JSON.parse(localStorage.getItem('navHeight'))
+
   const viewportWidth = window.innerWidth
   const viewportHeight = window.innerHeight - (navHeight + inputHeight)
 
@@ -31,10 +31,8 @@ function MemoryMap() {
   })
 
   function handleResize() {
-
     const newWidth = window.innerWidth
     const newHeight = window.innerHeight - (navHeight + inputHeight)
-
     setViewport({ ...viewport,
       width: newWidth,
       height: newHeight,
@@ -42,25 +40,18 @@ function MemoryMap() {
   }
 
   React.useEffect(() => {
-
     window.addEventListener('resize', handleResize)
-
     const getData = async () => {
-
       try {
         const res = await axios.get(`${baseUrl}${memoriesPath}`)
         setMemories(res.data)
-        // console.log(res.data.location.coordinates[0])
-
       } catch (err) {
         setIsError(true)
       }
     }
     getData()
-    
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewport])
-
 
   //* search functions
   const handleSearch = (e) => {
@@ -71,13 +62,12 @@ function MemoryMap() {
     const inputHeight = e.nativeEvent.path[1].offsetHeight
     setInputHeight(inputHeight)
   }
-  
-  // ! problem with this function. memories coming in but not coming out, therefore no pins being displayed
+
+  // ! Fixed by chaning the intial searchterm back to ('') rather than (null) no problem with this function 
   const filteredMemories =  memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
-      // ! disbaled the line below to bypass error and display map
-      // memory.location.toLowerCase().includes(searchTerm) ||
+      memory.location.toLowerCase().includes(searchTerm) ||
       memory.location.userInput.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
       memory.tags.includes(searchTerm)
@@ -87,7 +77,6 @@ function MemoryMap() {
   return (
     <>
       { isLoading && <p>...loading</p>}
-      {console.log('filteredMemories: ', filteredMemories)}
 
       <div onFocus={getInputHeight}>
         <input
@@ -99,25 +88,22 @@ function MemoryMap() {
         />
       </div>
 
-
       <div onClick={handleResize}>
-
         <ReactMapGl {...viewport} 
           mapboxApiAccessToken={publicToken}
-          // mapStyle={mapboxStyleUrl}
+          mapStyle={mapboxStyleUrl}
           onViewportChange={viewport => {
             setViewport(viewport)
           }}
         >
 
-          { filteredMemories && filteredMemories.map(memory => {
-            {console.log('memory: ', memory)}
+          { filteredMemories && filteredMemories.map(memory => 
             <Marker
               key={memory._id}
               latitude={memory.location.coordinates[1]}
               longitude={memory.location.coordinates[0]}
             >
-              
+
               <button
                 className="mapButton"
                 onClick={ (e) => {
@@ -125,16 +111,17 @@ function MemoryMap() {
                   setSelectedMemory(memory) 
                 }}
               >
+
                 <img
                   height="40px"
                   width="40px"
                   src="https://i.imgur.com/6IzPeVa.png"
                   alt="red location pin"
                 />
-              </button>
-            </Marker>
-          }
 
+              </button>
+              
+            </Marker>
           )}
 
           {selectedMemory && (

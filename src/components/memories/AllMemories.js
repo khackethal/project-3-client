@@ -57,7 +57,7 @@ function AllMemories() {
         { isError && <Error />}
         { isLoading && <p>...loading</p>}
 
-        <p>Search </p>
+        <p>Search</p>
 
         <input
           className="input"
@@ -72,7 +72,7 @@ function AllMemories() {
         </button>
 
         { filteredMemories && (filteredMemories.map(memory => 
-          <div className="card" key={memory.name}>
+          <div className="card" key={memory._id}>
 
             <h3>{memory.title}</h3>
             <p>{memory.location.userInput}</p>
