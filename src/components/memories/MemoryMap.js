@@ -8,9 +8,9 @@ import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
 
 function MemoryMap() {
 
-  const [searchTerm, setSearchTerm] = React.useState(null)
-  const [selectedMemory, setSelectedMemory] = React.useState(null)
-  const [memories, setMemories] = React.useState(null)
+  const [ searchTerm, setSearchTerm ] = React.useState('')
+  const [ selectedMemory, setSelectedMemory ] = React.useState(null)
+  const [ memories, setMemories ] = React.useState(null)
 
   const [inputHeight, setInputHeight] = React.useState(40)
 
@@ -51,7 +51,6 @@ function MemoryMap() {
       try {
         const res = await axios.get(`${baseUrl}${memoriesPath}`)
         setMemories(res.data)
-        // console.log(res.data.location.coordinates[0])
 
       } catch (err) {
         setIsError(true)
@@ -72,13 +71,12 @@ function MemoryMap() {
     const inputHeight = e.nativeEvent.path[1].offsetHeight
     setInputHeight(inputHeight)
   }
-
-  // ! problem with this function. memories coming in but not coming out, therefore no pins being displayed
-  const filteredMemories = memories?.filter((memory) => {
+  
+  // ! Fixed by chaning the intial searchterm back to ('') rather than (null) no problem with this function 
+  const filteredMemories =  memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
-      // ! disbaled the line below to bypass error and display map
-      // memory.location.toLowerCase().includes(searchTerm) ||
+      memory.location.toLowerCase().includes(searchTerm) ||
       memory.location.userInput.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
       memory.tags.includes(searchTerm)
@@ -108,14 +106,14 @@ function MemoryMap() {
 
         <ReactMapGl {...viewport}
           mapboxApiAccessToken={publicToken}
-          // mapStyle={mapboxStyleUrl}
+          mapStyle={mapboxStyleUrl}
           onViewportChange={viewport => {
             setViewport(viewport)
           }}
         >
 
-          {filteredMemories && filteredMemories.map(memory => {
-            { console.log('memory: ', memory) }
+          { filteredMemories && filteredMemories.map(memory => 
+            
             <Marker
               key={memory._id}
               latitude={memory.location.coordinates[1]}
@@ -137,7 +135,7 @@ function MemoryMap() {
                 />
               </button>
             </Marker>
-          }
+          
 
           )}
 

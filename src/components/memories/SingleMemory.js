@@ -123,6 +123,7 @@ function SingleMemory() {
       // ! I don't think it's necessary to blank out the comment form when a comment gets deleted,
       // ! say if the user was typing a comment and realised wanted to delete a previous one 
       // ! which are are currently redrafting now. It would mess it up.
+      // ? Fair enough that makes sense - let's delete on next round
       // setFormComment({ ...formComment, text: '' })
 
     } catch (err) {
