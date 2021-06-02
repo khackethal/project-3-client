@@ -10,6 +10,9 @@ import { isOwner } from '../../lib/auth'
 import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
 import { subSetViewport } from '../../lib/mapbox'
 
+import { confirmAlert } from 'react-confirm-alert'
+import 'react-confirm-alert/src/react-confirm-alert.css'
+
 function SingleMemory() {
 
   const { memoryId } = useParams()
@@ -127,14 +130,30 @@ function SingleMemory() {
     }
   }
 
+
   //* Delete a memory
-  const handleMemoryDelete = async() => {
-    const shouldDelete = confirm('Are you sure you want to delete?')
-    if (shouldDelete) {
-      console.log(memory._id)
-      await deleteMemory(memory._id)
-      history.push(memoriesPath)
-    }
+  const submitDelete = () => {
+    confirmAlert({
+      title: 'Are you sure you would like to delete this memory? ',
+      message: 'Click yes to confirm the delete request.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: async() => {
+
+            await deleteMemory(memory._id)
+            history.push(memoriesPath)
+            
+          },
+        },
+        {
+          label: 'No',
+          onClick: () =>  { 
+            return 
+          },
+        }
+      ],
+    })
   }
 
   //* Edit a memory
@@ -220,11 +239,8 @@ function SingleMemory() {
                         onClick={handleMemoryEdit}
                       >Edit Memory</button>
                       }
-                      {isOwner(memory.user.userId) &&
-                      <button 
-                        className="button is-danger"
-                        onClick={handleMemoryDelete}
-                      >Delete Memory</button>
+                      {isOwner(memory.user.userId) && 
+                        <button className="button is-danger" onClick={submitDelete}>Delete Memory</button>
                       }
                     </div>
                   </div>
