@@ -171,7 +171,7 @@ function EditMemory() {
 
 
               <div className="field" htmlFor="title">
-                <label className="label has-text-white">Memory Date</label>
+                <label className="label has-text-white">Memory Date - Old Date: {formData.date}.</label>
                 <div className="control">
 
                   <input
@@ -239,7 +239,6 @@ function EditMemory() {
               </figure>
             </form>
 
-            {/* <div className="column is-half"> */}
             <div className="column is-half">
               {formError.errMessage && <p className="help is-danger">{formError.errMessage}</p>}
 
@@ -248,8 +247,6 @@ function EditMemory() {
             </div>
           </div>
         </div>
-
-        {/* </div> */}
 
       </section>
 
