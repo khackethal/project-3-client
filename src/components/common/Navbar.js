@@ -28,7 +28,6 @@ function Navbar() {
     localStorage.setItem('navHeight', JSON.stringify(navHeight))
   }
 
-
   return (
 
     <nav

@@ -42,8 +42,6 @@ function MemoryMap() {
 
   React.useEffect(() => {
 
-    // window.addEventListener('resize', handleResize)
-
     const getData = async () => {
       try {
         const res = await axios.get(`${baseUrl}${memoriesPath}`)
@@ -72,11 +70,9 @@ function MemoryMap() {
     setInputHeight(inputHeight)
   }
 
-  // ! Fixed by chaning the intial searchterm back to ('') rather than (null) no problem with this function 
   const filteredMemories = memories?.filter((memory) => {
     return (
       memory.title.toLowerCase().includes(searchTerm) ||
-      // memory.location.toLowerCase().includes(searchTerm) ||
       memory.location.userInput.toLowerCase().includes(searchTerm) ||
       memory.date.includes(searchTerm) ||
       memory.tags.includes(searchTerm)

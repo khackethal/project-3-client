@@ -28,7 +28,6 @@ function App() {
         <Route path="/memories/:memoryId" component={SingleMemory} />
         <Route path="/memories" component={AllMemories} />
         <Route path="/*" component={Error} />
-
       </Switch>
     </BrowserRouter>
   )

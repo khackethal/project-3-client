@@ -2,9 +2,10 @@ import axios from 'axios'
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import ReactMapGl, { Marker } from 'react-map-gl'
+import moment from 'moment'
 
 import Error from '../common/Error'
-import { baseUrl, memoriesPath, commentPath, headers, deleteMemory } from '../../lib/api'
+import { baseUrl, memoriesPath, commentPath, headers, deleteMemory, editPath } from '../../lib/api'
 import { isOwner } from '../../lib/auth'
 import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
 import { subSetViewport } from '../../lib/mapbox'
@@ -12,7 +13,6 @@ import { subSetViewport } from '../../lib/mapbox'
 function SingleMemory() {
 
   const { memoryId } = useParams()
-  console.log('memoryId: ', memoryId)
   const history = useHistory()
 
   const [memory, setMemory] = React.useState(null)
@@ -44,16 +44,10 @@ function SingleMemory() {
       try {
 
         const res = await axios.get(`${baseUrl}${memoriesPath}/${memoryId}`)
-        console.log('res: ', res)
         setMemory(res.data)
 
         // * setting zoom value depending on stored values
-        // const [[centerLongitude, centerLatitude], zoomValue] = subSetViewport(res.data)
-        const coordinates = subSetViewport(res.data)
-
-        const centerLongitude = coordinates[0][0]
-        const centerLatitude = coordinates[0][1]
-        const zoomValue = coordinates[1]
+        const [[centerLongitude, centerLatitude], zoomValue] = subSetViewport(res.data)
 
         setViewport({
           ...viewport,
@@ -63,10 +57,8 @@ function SingleMemory() {
         })
 
       } catch (err) {
-        console.log('err.response.data: ', err)
         setIsError(true)
       }
-
     }
 
     getData()
@@ -84,7 +76,6 @@ function SingleMemory() {
   const handleSubmit = async (e) => {
 
     e.preventDefault()
-    console.log('formComment: ', formComment)
 
     // * to prevent empty comments submissions
     if (formComment.text) {
@@ -134,7 +125,6 @@ function SingleMemory() {
     } catch (err) {
       setFormError({ ...formError, text: err.response.data.errMessage })
     }
-
   }
 
   //* Delete a memory
@@ -143,37 +133,56 @@ function SingleMemory() {
     if (shouldDelete) {
       console.log(memory._id)
       await deleteMemory(memory._id)
-      history.push('/memories')
+      history.push(memoriesPath)
     }
   }
 
   //* Edit a memory
   const handleMemoryEdit = async() => {
-    history.push(`/memories/${memory._id}/edit`)
+    history.push(`${memoriesPath}/${memory._id}${editPath}`)
   }
-
-
-
 
   return (
     <section>
+      
       { isError && <Error />}
       { isLoading && <p> ... loading</p>}
+
       { memory && (
         <>
           <div className="container">
             <div className="card has-background-black has-text-white is-centered">
-              <div className="title has-text-white is-3">{memory.title} <span className="subtitle is-7 has-text-warning">member - {memory.user.username}</span></div>
+              
+              <div className="title has-text-white is-3">
+                {memory.title}
+                <span className="subtitle is-7 has-text-warning">
+                  member - {memory.user.username}
+                </span>
+                <p>{moment(memory.date).format('MMMM Do, YYYY')}</p>
+              </div>
 
               <div className="columns">
                 <div className="column">
 
-                  <div className="title is-5 has-text-success">{memory.location.userInput}</div>
-                  <div className="column is-half is-offset-half">
-                    <figure className="image"><img height="540px" width="810px" src={memory.image} alt={memory.title} />
+                  <div className="title is-5 has-text-success">
+                    {memory.location.userInput}
+                  </div>
 
+                  <div className="column is-half is-offset-half">
+
+                    <figure className="image">
+                      <img
+                        height="540px"
+                        width="810px"
+                        src={memory.image}
+                        alt={memory.title}
+                      />
                     </figure>
-                  </div><div className="column is-6 description">{memory.description}</div>
+
+                  </div><div className="column is-6 description">
+                    {memory.description}
+                  </div>
+
                   <div className="columns is-mobile">
 
                   </div>
@@ -251,7 +260,9 @@ function SingleMemory() {
                     </div>
                     {formError.text
                       &&
-                      <p className="help is-danger">Oops, something went wrong. Check if you are logged in.</p>
+                      <p className="help is-danger">
+                        Oops, something went wrong. Check if you are logged in.
+                      </p>
                     }
                   </div>
 
@@ -270,8 +281,6 @@ function SingleMemory() {
               <div className="section">
                 <div className="comments">
                   {memory.comments && memory.comments.map(comment => {
-
-                    {console.log('comment: ', comment)}
 
                     return (
                       <div key={comment._id}>
@@ -296,10 +305,8 @@ function SingleMemory() {
                 </div>
               </div>
             </div>
-
           </div>
         </>)}
-
     </section>
   )
 }

@@ -1,29 +1,28 @@
 import React from 'react'
 import axios from 'axios'
 import { useParams, useHistory } from 'react-router'
+import moment from 'moment'
 
 import MapboxSearch from '../mapbox/MapboxSearch'
 import ImageUploadField from './ImageUploadField'
 import { useForm } from '../../hooks/useForm'
 import {  baseUrl, editMemory, memoriesPath } from '../../lib/api'
 
-
-
 function EditMemory() {
   const history = useHistory()
   const { memoryId } = useParams()
 
   function formatTagArray(tags) {
+
     if (typeof tags === 'string') {
       const tagsArray = tags.replace(/[^a-zA-Z0-9]/g, ' ').split(' ')
       const sanitisedTagsArray = tagsArray.filter(tag => tag !== '')
       return sanitisedTagsArray
     }
+
     return tags
+
   }
-
-  console.log(memoryId)
-
 
   const { formData, setFormData, handleChange, formError, setFormError } = useForm({
     title: '',
@@ -36,15 +35,21 @@ function EditMemory() {
   })
   
   React.useEffect(() => {
+
     const getData = async () => {
+
       try {
+
         const res = await axios.get(`${baseUrl}${memoriesPath}/${memoryId}`)
         setFormData(res.data)
+
       } catch (err) {
         setFormError(err.response.data.errorss)
       }
     }
+
     getData()
+
   }, [memoryId, setFormData, setFormError])
 
 
@@ -104,8 +109,8 @@ function EditMemory() {
 
     try {
       const res = await editMemory(memoryId, formData)
-      history.push(`${memoriesPath}/${memoryId}`)
       console.log('res',res.data)
+      history.push(`${memoriesPath}/${memoryId}`)
     } catch (err) {
       setFormError({ ...formError, errMessage: err.response.data.errMessage })
     }
@@ -116,10 +121,6 @@ function EditMemory() {
       <div className="title is-2 has-text-centered has-background-black has-text-white">edit memory</div>
       <section>
 
-
-        <>{console.log('formData: ', formData)}</>
-        <>{console.log('formError: ', formError)}</>
-
         <div className="container">
           <div className="columns is-multiline is-variable is-1-mobile is-0-tablet is-2-desktop is-8-widescreen is-3-fullhd">
             <form
@@ -128,11 +129,14 @@ function EditMemory() {
             >
 
               <div className="field" htmlFor="title">
-                <label className="label has-text-white"> Title</label>
+                <label className="label has-text-white">Title</label>
                 <div className="control">
 
                   <input
-                    className={`input ${formError.title || formError.errMessage ? 'is-danger' : ''}`}
+                    className={`input
+                    ${formError.title
+                      ||
+                      formError.errMessage ? 'is-danger' : ''}`}
                     type="text"
                     placeholder="e.g. My cherished memory"
                     name="title"
@@ -143,11 +147,18 @@ function EditMemory() {
                   />
 
                 </div>
-                {formError.title && <p className="help is-danger">{formError.title}</p>}
+                {formError.title
+                  &&
+                  <p className="help is-danger">
+                    {formError.title}
+                  </p>
+                }
               </div>
 
               <div className="field" htmlFor="title">
-                <label className="label has-text-white">Where did it take place?</label>
+                <label className="label has-text-white">
+                  Where did it take place?
+                </label>
                 <div className="control">
 
                   <input
@@ -169,9 +180,8 @@ function EditMemory() {
                 {formError.location && <p className="help is-danger">{formError.location}</p>}
               </div>
 
-
               <div className="field" htmlFor="title">
-                <label className="label has-text-white">Memory Date - Old Date: {formData.date}.</label>
+                <label className="label has-text-white">Memory Date </label>
                 <div className="control">
 
                   <input
@@ -179,7 +189,7 @@ function EditMemory() {
                     type="date"
                     name="date"
                     onChange={handleChange}
-                    value={formData.date}
+                    value={moment(formData.date).format('YYYY-MM-DD')}
                     required
                   />
 
@@ -232,8 +242,6 @@ function EditMemory() {
                 </button>
               </div>
 
-
-
               <figure>
                 <img className="image is-256x256" src="https://imgur.com/bWMKvl8.png" />
               </figure>
@@ -241,17 +249,12 @@ function EditMemory() {
 
             <div className="column is-half">
               {formError.errMessage && <p className="help is-danger">{formError.errMessage}</p>}
-
               <MapboxSearch onResult={handleNestedChange} />
-
             </div>
+
           </div>
         </div>
-
       </section>
-
-
-
     </div>
   )
 }

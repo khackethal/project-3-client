@@ -94,12 +94,10 @@ function NewMemory() {
 
   return (
     <div className="new-memory-background">
-      <div className="title is-2 has-text-centered has-background-black has-text-white">new memory</div>
+      <div className="title is-2 has-text-centered has-background-black has-text-white">
+        new memory
+      </div>
       <section>
-
-
-        <>{console.log('formData: ', formData)}</>
-        <>{console.log('formError: ', formError)}</>
 
         <div className="container">
           <div className="columns is-multiline is-variable is-1-mobile is-0-tablet is-2-desktop is-8-widescreen is-3-fullhd">
@@ -123,7 +121,14 @@ function NewMemory() {
                   />
 
                 </div>
-                {formError.title && <p className="help is-danger">{formError.title}</p>}
+
+                {formError.title
+                  &&
+                  <p className="help is-danger">
+                    {formError.title}
+                  </p>
+                }
+
               </div>
 
               <div className="field" htmlFor="title">
@@ -146,12 +151,21 @@ function NewMemory() {
                   />
 
                 </div>
-                {formError.location && <p className="help is-danger">{formError.location}</p>}
+
+                {formError.location
+                  &&
+                  <p className="help is-danger">
+                    {formError.location}
+                  </p>
+                }
+
               </div>
 
 
               <div className="field" htmlFor="title">
-                <label className="label has-text-white">Memory Date</label>
+                <label className="label has-text-white">
+                  Memory Date
+                </label>
                 <div className="control">
 
                   <input
@@ -181,7 +195,14 @@ function NewMemory() {
                   />
 
                 </div>
-                {formError.description && <p className="help is-danger">{formError.description}</p>}
+                
+                {formError.description
+                  &&
+                  <p className="help is-danger">
+                    {formError.description}
+                  </p>
+                }
+                
               </div>
 
               <div className="field" htmlFor="title">
@@ -209,29 +230,19 @@ function NewMemory() {
                 </button>
               </div>
 
-
-
               <figure>
                 <img className="image is-256x256" src="https://imgur.com/bWMKvl8.png" />
               </figure>
             </form>
 
-            {/* <div className="column is-half"> */}
             <div className="column is-half">
               {formError.errMessage && <p className="help is-danger">{formError.errMessage}</p>}
-
               <MapboxSearch onResult={handleNestedChange} />
-
             </div>
+
           </div>
         </div>
-
-        {/* </div> */}
-
       </section>
-
-
-
     </div>
   )
 }
