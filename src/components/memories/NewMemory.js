@@ -23,7 +23,7 @@ function NewMemory() {
   const { formData, setFormData, handleChange, formError, setFormError } = useForm({
     title: '',
     date: '',
-    image: '',
+    image: 'https://i.imgur.com/CnylXLj.png',
     description: '',
     tags: [],
     location: '',
