@@ -11,7 +11,7 @@ export function subSetViewport(memoryObject) {
   const boundaryBox = memoryObject.location.boundaryBox
   const placeType = memoryObject.location.placeType
 
-  // * checking first is boundaryBox was stored, for mor accuracy in viewport display
+  // * checking first if boundaryBox was stored, for mor accuracy in viewport display
   if (boundaryBox && boundaryBox.length === 4) {
 
     const bboxFormat = [[boundaryBox[0],boundaryBox[1]],[boundaryBox[2],boundaryBox[3]]]
