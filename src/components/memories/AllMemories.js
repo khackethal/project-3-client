@@ -5,6 +5,7 @@ import moment from 'moment'
 
 import Error from '../common/Error'
 import { baseUrl, memoriesPath } from '../../lib/api'
+import Loader from 'react-loader-spinner'
 
 function AllMemories() {
 
@@ -60,7 +61,14 @@ function AllMemories() {
           <div className="columns is-multiline"></div>
 
           {isError && <Error />}
-          {isLoading && <p>...loading</p>}
+          {isLoading && 
+                        <Loader
+                          type="TailSpin"
+                          color="black"
+                          height={100}
+                          width={100}
+                          timeout={2000} 
+                        /> }
 
           <div className="column ">
             <aside className="searchbar">

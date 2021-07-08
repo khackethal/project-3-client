@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import ReactMapGl, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
+import Loader from 'react-loader-spinner'
 
 import { baseUrl, memoriesPath } from '../../lib/api'
 import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
@@ -81,7 +82,14 @@ function MemoryMap() {
 
   return (
     <>
-      { isLoading && <p>...loading</p>}
+      { isLoading && 
+                              <Loader
+                                type="TailSpin"
+                                color="black"
+                                height={100}
+                                width={100}
+                                timeout={2000} 
+                              />}
 
       <div onFocus={getInputHeight}>
         <input

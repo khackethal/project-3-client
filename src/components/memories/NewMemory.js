@@ -63,19 +63,19 @@ function NewMemory() {
     })
   }
 
-  // const handleDanger = (e) => {
+  const handleDanger = (e) => {
 
-  //   const emptyField = (e.target.value.length === 0)
-  //   const requiredFields = ['title', 'date', 'description']
+    const emptyField = (e.target.value.length === 0)
+    const requiredFields = ['title', 'date', 'description']
 
-  //   if (requiredFields.includes(e.target.name) && emptyField) {
-  //     setFormError({ ...formError, [e.target.name]: 'Required field.' })
-  //   }
+    if (requiredFields.includes(e.target.name) && emptyField) {
+      setFormError({ ...formError, [e.target.name]: 'Required field.' })
+    }
 
-  //   if (formError.errMessage) {
-  //     setFormError({ ...formError, errMessage: '' })
-  //   }
-  // }
+    if (formError.errMessage) {
+      setFormError({ ...formError, errMessage: '' })
+    }
+  }
 
   const handleUpload = (file) => {
     handleChange({ target: { name: 'image', value: file } })
@@ -110,15 +110,16 @@ function NewMemory() {
                 <label className="label has-text-white">Title</label>
                 <div className="control">
 
+                  { handleDanger && 
                   <input
                     className={`input ${formError.title || formError.errMessage ? 'is-danger' : ''}`}
                     type="text"
                     placeholder="e.g. My cherished memory"
                     name="title"
                     onChange={handleChange}
-                    onBlur={handleDanger}
+                    onBlur={handleDanger} 
                     required
-                  />
+                  /> }
 
                 </div>
 

@@ -19,7 +19,6 @@ function EditMemory() {
       const sanitisedTagsArray = tagsArray.filter(tag => tag !== '')
       return sanitisedTagsArray
     }
-
     return tags
 
   }
@@ -35,21 +34,15 @@ function EditMemory() {
   })
   
   React.useEffect(() => {
-
     const getData = async () => {
-
       try {
-
         const res = await axios.get(`${baseUrl}${memoriesPath}/${memoryId}`)
         setFormData(res.data)
-
       } catch (err) {
         setFormError(err.response.data.errorss)
       }
     }
-
     getData()
-
   }, [memoryId, setFormData, setFormError])
 
 
@@ -76,10 +69,8 @@ function EditMemory() {
   }
 
   const handleTags = (e) => {
-
     // * reformatting tags
     const newTags = formatTagArray(e.target.value)
-
     setFormData({
       ...formData,
       tags: newTags,

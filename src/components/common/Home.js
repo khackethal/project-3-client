@@ -2,9 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 function Home() {
-  React.useEffect(() => {
-    console.log('HomePage mounted.')
-  }, [])
 
   return (
     < section className="hero is-large">
