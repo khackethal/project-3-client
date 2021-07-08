@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { getToken } from '../lib/auth'
+import { baseUrl } from '../config'
 
-export const baseUrl = '/api'
 export const registerPath = '/register'
 export const loginPath = '/login'
 export const checkUserPath = '/checkuser'
