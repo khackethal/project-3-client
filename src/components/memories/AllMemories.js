@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 
 import Error from '../common/Error'
-import { baseUrl, memoriesPath } from '../../lib/api'
+import { memoriesPath } from '../../lib/api'
 import Loader from 'react-loader-spinner'
+import { baseUrl } from '../../config'
 
 function AllMemories() {
 

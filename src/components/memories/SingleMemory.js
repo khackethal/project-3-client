@@ -5,7 +5,8 @@ import ReactMapGl, { Marker } from 'react-map-gl'
 import moment from 'moment'
 
 import Error from '../common/Error'
-import { baseUrl, memoriesPath, commentPath, headers, deleteMemory, editPath } from '../../lib/api'
+import { memoriesPath, commentPath, headers, deleteMemory, editPath } from '../../lib/api'
+import { baseUrl } from '../../config'
 import { isOwner } from '../../lib/auth'
 import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
 import { subSetViewport } from '../../lib/mapbox'
@@ -109,19 +110,15 @@ function SingleMemory() {
     }
   }
 
-
   //* Delete a comment 
   const handleDelete = async (e) => {
-
     e.preventDefault()
-
     try {
 
       await axios.delete(
         `${baseUrl}${memoriesPath}/${memoryId}/${commentPath}/${e.target.name}`,
         headers()
       )
-
       setHasComments(!hasComments)
       setFormError({ ...formComment, text: '' })
 
@@ -129,7 +126,6 @@ function SingleMemory() {
       setFormError({ ...formError, text: err.response.data.errMessage })
     }
   }
-
 
   //* Delete a memory
   const submitDelete = () => {

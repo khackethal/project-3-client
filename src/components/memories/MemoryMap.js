@@ -4,7 +4,8 @@ import ReactMapGl, { Marker, Popup } from 'react-map-gl'
 import axios from 'axios'
 import Loader from 'react-loader-spinner'
 
-import { baseUrl, memoriesPath } from '../../lib/api'
+import { memoriesPath } from '../../lib/api'
+import { baseUrl } from '../../config'
 import { publicToken, mapboxStyleUrl } from '../../lib/mapbox'
 
 function MemoryMap() {

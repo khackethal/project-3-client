@@ -6,7 +6,8 @@ import moment from 'moment'
 import MapboxSearch from '../mapbox/MapboxSearch'
 import ImageUploadField from './ImageUploadField'
 import { useForm } from '../../hooks/useForm'
-import {  baseUrl, editMemory, memoriesPath } from '../../lib/api'
+import { editMemory, memoriesPath } from '../../lib/api'
+import { baseUrl } from '../../config'
 
 function EditMemory() {
   const history = useHistory()
