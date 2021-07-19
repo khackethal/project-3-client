@@ -573,7 +573,6 @@ Then as always more time would have been great, we scrambled a little to get all
 One small bug remains with mapbox, namely the style I've used has actually been officially taken out of the mapbox style library- I found it and was able to add it via a blogpost of the creator.
 Therefore a warning console log appears about versions.
 
-
 ### Key Learnings & Future Features
 
 The most valuable lesson from this project was working as a larger group, and the importance of correctly integrating your own code into a larger codebase. 

@@ -3,6 +3,7 @@ import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import ReactMapGl, { Marker } from 'react-map-gl'
 import moment from 'moment'
+import Loader from 'react-loader-spinner'
 
 import Error from '../common/Error'
 import { memoriesPath, commentPath, headers, deleteMemory, editPath } from '../../lib/api'
@@ -161,7 +162,14 @@ function SingleMemory() {
     <section>
       
       { isError && <Error />}
-      { isLoading && <p> ... loading</p>}
+      { isLoading && 
+                              <Loader
+                                type="TailSpin"
+                                color="black"
+                                height={100}
+                                width={100}
+                                timeout={2000} 
+                              />}
 
       { memory && (
         <>
