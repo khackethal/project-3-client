@@ -87,7 +87,7 @@ function SingleMemory() {
       try {
 
         await axios.post(
-          `${baseUrl}${memoriesPath}/${memoryId}/${commentPath}`,
+          `${baseUrl}${memoriesPath}/${memoryId}${commentPath}`,
           formComment,
           headers()
         )
